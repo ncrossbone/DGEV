@@ -215,9 +215,8 @@ placesSearchCB = function(status, data, pagination){
 	if (status === daum.maps.services.Status.OK) {
 		var addressSearch = Ext.ComponentQuery.query("#addressSearch")[0];
 		var html = "";
-		//console.info(data.places);
 		for(var i = 0; i<data.places.length; i++){
-			html += "<dl class='list_add'><span id='922496'>" +
+			html += "<dl class='list_add'><span>" +
 						"<dl style='padding: 10px;' class='922496' tabindex='0'>" +
 						"<dt>"+data.places[i].title+"</dt>" +
 						"<dd class='tel'>"+data.places[i].phone +

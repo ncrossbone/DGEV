@@ -90,8 +90,7 @@ Ext.define('DgEv.view.map.CoreMap', {
 	            	 LAYERS : "EV:EV_point"
 	             }
 				//serverType: 'geoserver'
-			}),
-			opacity: me.opacity
+			})
 		});
 		me.map.addLayer(layer);
 		layer.setVisible(true);
