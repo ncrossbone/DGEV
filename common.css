@@ -386,3 +386,33 @@ select {
   background: url('./resources/images/button/arrow.jpg') no-repeat 98% 50%; /* 화살표 모양의 이미지 */
   background-size: 20px 20px; 
 }
+
+.zoomPart div{
+	position: absolute;
+	width: 6px;
+	height: 1px;
+	background-color: darkgrey;
+	left: 37px;
+}
+
+.zoomPartClick div{
+	position: absolute;
+	width: 16px;
+	height: 10px;
+	left: 32px;
+}
+
+.zoomText {
+	margin: 20px 0px 0px -30px;
+	background-size: 515px 26px;
+	width: 30px;
+	height: 126px;
+}
+
+.zoomText div {
+	position: absolute;
+	width: 29px;
+	left: 0px;
+	height: 15px;
+	margin: -6px 0px 0px;
+}

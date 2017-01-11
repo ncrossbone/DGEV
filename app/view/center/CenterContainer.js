@@ -2,7 +2,7 @@ Ext.define("DgEv.view.center.CenterContainer", {
 
 	extend: "Ext.window.Window",
 	xtype: "dgev-centercontainer",
-	id:"centercontainer",
+	itemId:"centercontainer",
 	border:false,
 	title:"충전소 운영 현황",
 	layout:{
@@ -10,10 +10,11 @@ Ext.define("DgEv.view.center.CenterContainer", {
 	},
 	height:700,
 	width:410,
-	x:400,
+	x:1400,
 	y:100,
 	items:[{
 		xtype:"panel",
+		itemId:"stationInfo",
 		border:false,
 		autoScroll:true,
 		width:405,

@@ -73,10 +73,12 @@ Ext.onReady(function(){
 	getSido();
 	getDemo();
 	getSgg(27);
+	getSgg(27,"west");
+	
 	$('#sidoSelect').change(function() {
 	    var val = $("#sidoSelect option:selected");
 	    sidoZoom(val[0].value);
-	    console.info(val[0].value);
+	    //console.info(val[0].value);
 	    getSgg(val[0].value);
 	});
 	

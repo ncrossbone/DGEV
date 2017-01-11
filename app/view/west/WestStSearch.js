@@ -34,15 +34,29 @@ Ext.define("DgEv.view.west.WestStSearch", {
 			itemId:"westSido",
 			width:150,
 			emptyText:"==시도 전체==",
+			//triggerAction: 'all',
+			value: '27',
+			selectOnFocus:true,
 			listeners:{
 	    		select: function(){
 	    			var westSido = Ext.ComponentQuery.query("#westSido")[0];
 	    			var searchBtn = Ext.ComponentQuery.query("#searchBtn")[0];
-	    			searchBtn.fireHandler();
+	    			var serachValue = Ext.ComponentQuery.query("#serachValue")[0];
+	    			var westSgg = Ext.ComponentQuery.query("#westSgg")[0];
+	    			
+	    			if(westSgg.lastValue!=""){
+	    				westSgg.setValue("");
+	    			}
+	    			if(serachValue.lastValue!=""){
+	    				serachValue.setValue("");
+	    			}
 	    			if(westSido.lastValue!="all"){
 	    				sidoZoom(westSido.lastValue);
 	    				getSgg(westSido.lastValue,"west");
 	    			}
+	    			
+	    			searchBtn.fireHandler();
+	    			
 	    		}
 	    	}
 		},{
@@ -60,9 +74,16 @@ Ext.define("DgEv.view.west.WestStSearch", {
 			listeners:{
 	    		select: function(){
 	    			var searchBtn = Ext.ComponentQuery.query("#searchBtn")[0];
-	    			searchBtn.fireHandler();
 	    			var westSgg = Ext.ComponentQuery.query("#westSgg")[0];
-	    			sggZoom(westSgg.lastValue);
+	    			var serachValue = Ext.ComponentQuery.query("#serachValue")[0];
+	    			if(serachValue.lastValue!=""){
+	    				serachValue.setValue("");
+	    			}
+	    			if(westSgg.lastValue!="all"){
+	    				sggZoom(westSgg.lastValue);
+	    			}
+	    			searchBtn.fireHandler();
+	    			
 	    		}
 	    	}
 		}]
@@ -143,33 +164,65 @@ Ext.define("DgEv.view.west.WestStSearch", {
 			text:"조회",
 			itemId:"searchBtn",
 			handler:function(){
-				/*var test = Ext.create("DgEv.view.center.CenterContainer");
-				test.show();*/
+				
 				var westSido = Ext.ComponentQuery.query("#westSido")[0];
 				var westSgg = Ext.ComponentQuery.query("#westSgg")[0];
 				var serachValue = Ext.ComponentQuery.query("#serachValue")[0];
+				
+				_searchArr = [];
+				_searchAddressArr = [];
+				
+				if(westSido.rawValue=="전체"){
+					westSido.rawValue="";
+				}
+
+				if(westSgg.rawValue=="전체"){
+					westSgg.rawValue="";
+				}
 				
 				if(westSido.rawValue!="" || westSgg.rawValue!="" || serachValue.lastValue!=""){
 					var searchResult = Ext.ComponentQuery.query("#searchResult")[0];
 					searchResult.show();
 
 					var stationSearch = Ext.ComponentQuery.query("#stationSearch")[0];
-					var params = "EV/wfs?service=wfs&version=1.1.0";
-					params += "&request=getfeature";
-					params += "&typename=EV:EV_point";
-					//params += "&PROPERTYNAME=NM";
-					params += "&outputformat=application/json";
-
+					
+					if(westSgg.rawValue==""){
+						var featureRequest = new ol.format.WFS().writeGetFeature({
+							srsName : "EPSG:4326",
+							featureTypes : ['EV:EV_point'],
+							outputFormat : 'application/json',
+							geometryName : 'SHAPE',
+							maxFeatures : 300,
+							filter: ol.format.filter.and(
+									ol.format.filter.like('NM',"*" + serachValue.lastValue + "*"),
+									ol.format.filter.like('JUSO',"*" + westSido.rawValue + "*")
+							)
+						});
+					}else{
+						var featureRequest = new ol.format.WFS().writeGetFeature({
+							srsName : "EPSG:4326",
+							featureTypes : ['EV:EV_point'],
+							outputFormat : 'application/json',
+							geometryName : 'SHAPE',
+							maxFeatures : 300,
+							filter: ol.format.filter.and(
+									ol.format.filter.like('NM',"*" + serachValue.lastValue + "*"),
+									ol.format.filter.like('JUSO',"*" + westSido.rawValue + " " + westSgg.rawValue +"*")
+							)
+						});
+					}
+					
+					
 					var html = "";
 					$.ajax({
-						url: _proxyUrl + _serviceUrl + params,
+						url: _proxyUrl + _serviceUrl + "EV/wfs?",
 
-						type : 'GET',
+						type : 'POST',
 						async : false,
-
+						data : new XMLSerializer().serializeToString( featureRequest ),
 						contentType : 'text/xml',
 						success : function(response_) {
-							console.info(response_.features);
+							//console.info(response_.features);
 							for(var i = 0; i < response_.features.length; i++){
 								var gubunHtml ="";
 								switch (response_.features[i].properties.GUBUN) {
@@ -191,25 +244,20 @@ Ext.define("DgEv.view.west.WestStSearch", {
 								default:
 									break;
 								}
-
-								html += "<div class='fw_path' onclick=alert('click');><div class='thumb'><img src='./resources/images/test/01.png'></div>" +
+								html += "<div class='fw_path' onclick=onclickStation("+i+");><div class='thumb'><img src='./resources/images/test/01.png'></div>" +
 								"<div class='state'><p><strong>" + response_.features[i].properties.NM + "</strong><em><span class='L0'></span></em></p>" +
 								"<p class='MgT5 borB0'>" + gubunHtml +
 								"<img alt='급속충전 이미지' src='./resources/images/test/icon_fast.png' width='20px' height='20px' style='margin-left:140px;'>" +
 								"<em style='margin-top:5px;'>급속</em></p></div></div>";
+								
+								_searchArr.push({data:response_.features[i].properties});
 							}
 
 						}
 					});
 
 
-					if(westSido.rawValue=="전체"){
-						westSido.rawValue="";
-					}
-
-					if(westSgg.rawValue=="전체"){
-						westSgg.rawValue="";
-					}
+					
 
 					var searchParam = westSido.rawValue+westSgg.rawValue+serachValue.lastValue;
 
@@ -303,4 +351,6 @@ Ext.define("DgEv.view.west.WestStSearch", {
 			}]
 		}]
 	}]
+	
+	
 });
