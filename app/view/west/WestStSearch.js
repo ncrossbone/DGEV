@@ -33,11 +33,30 @@ Ext.define("DgEv.view.west.WestStSearch", {
 			valueField: 'CODE',
 			itemId:"westSido",
 			width:150,
+			emptyText:"==시도 전체==",
+			//triggerAction: 'all',
+			value: '27',
+			selectOnFocus:true,
 			listeners:{
 	    		select: function(){
 	    			var westSido = Ext.ComponentQuery.query("#westSido")[0];
-	    			sidoZoom(westSido.lastValue);
-	    			getSgg(westSido.lastValue,"west");
+	    			var searchBtn = Ext.ComponentQuery.query("#searchBtn")[0];
+	    			var serachValue = Ext.ComponentQuery.query("#serachValue")[0];
+	    			var westSgg = Ext.ComponentQuery.query("#westSgg")[0];
+	    			
+	    			if(westSgg.lastValue!=""){
+	    				westSgg.setValue("");
+	    			}
+	    			if(serachValue.lastValue!=""){
+	    				serachValue.setValue("");
+	    			}
+	    			if(westSido.lastValue!="all"){
+	    				sidoZoom(westSido.lastValue);
+	    				getSgg(westSido.lastValue,"west");
+	    			}
+	    			
+	    			searchBtn.fireHandler();
+	    			
 	    		}
 	    	}
 		},{
@@ -48,13 +67,23 @@ Ext.define("DgEv.view.west.WestStSearch", {
 			displayField: 'NAME',
 			valueField: 'CODE',
 			editable:false,
+			emptyText:"==시/군/구 전체==",
 			width:150,
 			itemId:"westSgg",
 			width:150,
 			listeners:{
 	    		select: function(){
+	    			var searchBtn = Ext.ComponentQuery.query("#searchBtn")[0];
 	    			var westSgg = Ext.ComponentQuery.query("#westSgg")[0];
-	    			sggZoom(westSgg.lastValue);
+	    			var serachValue = Ext.ComponentQuery.query("#serachValue")[0];
+	    			if(serachValue.lastValue!=""){
+	    				serachValue.setValue("");
+	    			}
+	    			if(westSgg.lastValue!="all"){
+	    				sggZoom(westSgg.lastValue);
+	    			}
+	    			searchBtn.fireHandler();
+	    			
 	    		}
 	    	}
 		}]
@@ -114,8 +143,9 @@ Ext.define("DgEv.view.west.WestStSearch", {
 	},{
 		style:"margin-left:10px;",
 		xtype:"textfield",
+		itemId:"serachValue",
 		width:310,
-		value:"검색어를 입력하세요.",
+		emptyText:"검색어를 입력하세요."
 	},{
 		xtype:"container",
 		height:10
@@ -132,44 +162,111 @@ Ext.define("DgEv.view.west.WestStSearch", {
 			xtype:"button",
 			style:"background : #555; border: 1px solid #303030",
 			text:"조회",
+			itemId:"searchBtn",
 			handler:function(){
-				/*var test = Ext.create("DgEv.view.center.CenterContainer");
-				test.show();*/
 				
-				var westSgg = Ext.ComponentQuery.query("#searchResult")[0];
-				westSgg.show();
+				var westSido = Ext.ComponentQuery.query("#westSido")[0];
+				var westSgg = Ext.ComponentQuery.query("#westSgg")[0];
+				var serachValue = Ext.ComponentQuery.query("#serachValue")[0];
 				
-				var stationSearch = Ext.ComponentQuery.query("#stationSearch")[0];
-				var params = "EV/wfs?service=wfs&version=1.1.0";
-				params += "&request=getfeature";
-				params += "&typename=EV:EV_point";
-				//params += "&PROPERTYNAME=NM";
-				params += "&outputformat=application/json";
+				_searchArr = [];
+				_searchAddressArr = [];
 				
-				var html = "";
-				$.ajax({
-			    	url: _proxyUrl + _serviceUrl + params,
-			    	
-			        type : 'GET',
-			        async : false,
-			        
-			        contentType : 'text/xml',
-			        success : function(response_) {
-			        	for(var i = 0; i < response_.features.length; i++){
-			        		
-			        		html += "<div class='fw_path'><div class='thumb'><img src='./resources/images/test/01.png'></div>" +
-			        			"<div class='state'><p><strong>" + response_.features[i].properties.NM + "</strong><em><span class='L0'></span></em></p>" +
-								"<p class='MgT5 borB0'><span class='condition03'>사용가능</span>" +
+				if(westSido.rawValue=="전체"){
+					westSido.rawValue="";
+				}
+
+				if(westSgg.rawValue=="전체"){
+					westSgg.rawValue="";
+				}
+				
+				if(westSido.rawValue!="" || westSgg.rawValue!="" || serachValue.lastValue!=""){
+					var searchResult = Ext.ComponentQuery.query("#searchResult")[0];
+					searchResult.show();
+
+					var stationSearch = Ext.ComponentQuery.query("#stationSearch")[0];
+					
+					if(westSgg.rawValue==""){
+						var featureRequest = new ol.format.WFS().writeGetFeature({
+							srsName : "EPSG:4326",
+							featureTypes : ['EV:EV_point'],
+							outputFormat : 'application/json',
+							geometryName : 'SHAPE',
+							maxFeatures : 300,
+							filter: ol.format.filter.and(
+									ol.format.filter.like('NM',"*" + serachValue.lastValue + "*"),
+									ol.format.filter.like('JUSO',"*" + westSido.rawValue + "*")
+							)
+						});
+					}else{
+						var featureRequest = new ol.format.WFS().writeGetFeature({
+							srsName : "EPSG:4326",
+							featureTypes : ['EV:EV_point'],
+							outputFormat : 'application/json',
+							geometryName : 'SHAPE',
+							maxFeatures : 300,
+							filter: ol.format.filter.and(
+									ol.format.filter.like('NM',"*" + serachValue.lastValue + "*"),
+									ol.format.filter.like('JUSO',"*" + westSido.rawValue + " " + westSgg.rawValue +"*")
+							)
+						});
+					}
+					
+					
+					var html = "";
+					$.ajax({
+						url: _proxyUrl + _serviceUrl + "EV/wfs?",
+
+						type : 'POST',
+						async : false,
+						data : new XMLSerializer().serializeToString( featureRequest ),
+						contentType : 'text/xml',
+						success : function(response_) {
+							//console.info(response_.features);
+							for(var i = 0; i < response_.features.length; i++){
+								var gubunHtml ="";
+								switch (response_.features[i].properties.GUBUN) {
+								case "01":
+									gubunHtml = "<span class='condition01'>충전중</span>";
+									break;
+								case "02":
+									gubunHtml = "<span class='condition03'>사용가능</span>";
+									break;
+								case "03":
+									gubunHtml = "<span class='condition04'>운영중지</span>";
+									break;
+								case "04":
+									gubunHtml = "<span class='condition02'>점검중</span>";
+									break;
+								case "05":
+									gubunHtml = "<span class='condition05'>타기관</span>";
+									break;
+								default:
+									break;
+								}
+								html += "<div class='fw_path' onclick=onclickStation("+i+");><div class='thumb'><img src='./resources/images/test/01.png'></div>" +
+								"<div class='state'><p><strong>" + response_.features[i].properties.NM + "</strong><em><span class='L0'></span></em></p>" +
+								"<p class='MgT5 borB0'>" + gubunHtml +
 								"<img alt='급속충전 이미지' src='./resources/images/test/icon_fast.png' width='20px' height='20px' style='margin-left:140px;'>" +
 								"<em style='margin-top:5px;'>급속</em></p></div></div>";
-			        	}
-			        	
-			        }
-			    });
-				
-				stationSearch.setHtml(html);
-				var ps = new daum.maps.services.Places();; 
-				 ps.keywordSearch("대구광역시", placesSearchCB); 
+								
+								_searchArr.push({data:response_.features[i].properties});
+							}
+
+						}
+					});
+
+
+					
+
+					var searchParam = westSido.rawValue+westSgg.rawValue+serachValue.lastValue;
+
+					stationSearch.setHtml(html);
+					var ps = new daum.maps.services.Places(); 
+					ps.keywordSearch(searchParam, placesSearchCB);
+				}else{
+					alert("검색어를 입력하세요.");
+				}
 			}
 		},{
 			xtype:"container",
@@ -254,4 +351,6 @@ Ext.define("DgEv.view.west.WestStSearch", {
 			}]
 		}]
 	}]
+	
+	
 });

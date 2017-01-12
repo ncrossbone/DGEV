@@ -41,7 +41,6 @@ Ext.define("DgEv.store.map.LayerStore", {
 	    	      width: 1.25
 	    	    });*/
 				
-				console.info(src);
 				var vectorSource = new ol.source.Vector({
 			        format: new ol.format.GeoJSON(),
 			        url: './resources/Proxy.jsp?url=http://112.217.167.123:38080/geoserver/EV/wfs?service=WFS&version=1.0.0&request=GetFeature&typeName=EV:EV_point&maxFeatures=50&outputFormat=application/json&CQL_FILTER=GUBUN=0'+i
