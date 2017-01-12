@@ -320,10 +320,46 @@ ChargChkBox = function(data,check){
 	
 	var coreMap = Ext.getCmp("_mapDiv_");
 	var layers = coreMap.map.getLayers();
-	
 	for(var i = 0 ; i < layers.array_.length; i++){
-		if(layers.array_[i].TITLE == data.layerId){
-			layers.array_[i].setVisible(check);
+		console.info();
+		if(layers.array_[i].values_.TITLE != undefined){
+			if(layers.array_[i].values_.TITLE.substring(0,1) == data.layerId){
+				layers.array_[i].setVisible(check);
+			}
 		}
+	}
+}
+
+
+
+layerIconChange = function(zoomLevel){
+	
+var coreMap = Ext.getCmp("_mapDiv_");
+
+	for(var i = 0 ; i < coreMap.map.getLayers().array_.length  ; i++){
+		if(coreMap.map.getLayers().array_[i].style_ != undefined){
+			console.info(coreMap.map.getLayers().array_[i]);
+			if(zoomLevel > 13){
+				coreMap.map.getLayers().array_[i].setStyle(
+					new ol.style.Style({
+			        	image: new ol.style.Icon({
+			        		size: [43,43],
+			        		src: "./resources/images/maker/m"+coreMap.map.getLayers().array_[i].values_.GUBUN+"_b_"+coreMap.map.getLayers().array_[i].values_.CHARG+".png"
+			        	})
+			        })
+				);
+			}else{
+				coreMap.map.getLayers().array_[i].setStyle(
+					new ol.style.Style({
+			        	image: new ol.style.Icon({
+			        		size: [29,26],
+			        		src: "./resources/images/maker/m"+coreMap.map.getLayers().array_[i].values_.GUBUN+"_s_"+coreMap.map.getLayers().array_[i].values_.CHARG+".png"
+			        	})
+			        })
+				);
+		
+			}
+		}
+		
 	}
 }

@@ -20,19 +20,8 @@ Ext.define("DgEv.store.map.LayerStore", {
 				
 			for(var i = 1 ; i < 6 ;i++){
 				
-				var color = "";
 				
-				if(i == 1){
-					src = "./resources/images/maker/m"+i+"_s_fast.png";
-				}else if(i == 2){
-					src = "./resources/images/maker/m"+i+"_s_fast.png";
-				}else if(i == 3){
-					src = "./resources/images/maker/m"+i+"_s_fast.png";
-				}else if(i == 4){
-					src = "./resources/images/maker/m"+i+"_s_fast.png";
-				}else{
-					src = "./resources/images/maker/m"+i+"_s_fast.png";
-				}
+				
 				/*var fill = new ol.style.Fill({
 	        	      color: color
 	        	    });
@@ -41,39 +30,51 @@ Ext.define("DgEv.store.map.LayerStore", {
 	    	      width: 1.25
 	    	    });*/
 				
-				var vectorSource = new ol.source.Vector({
+				var repidVectorSource = new ol.source.Vector({
 			        format: new ol.format.GeoJSON(),
-			        url: './resources/Proxy.jsp?url=http://112.217.167.123:38080/geoserver/EV/wfs?service=WFS&version=1.0.0&request=GetFeature&typeName=EV:EV_point&maxFeatures=50&outputFormat=application/json&CQL_FILTER=GUBUN=0'+i
-			      });
+			        charge: 'fast',
+			        url: './resources/Proxy.jsp?url=http://112.217.167.123:38080/geoserver/EV/wfs?service=WFS&version=1.0.0&request=GetFeature&typeName=EV:EV_point&maxFeatures=50&outputFormat=application/json&CQL_FILTER=GUBUN=0'+i+'and Rapid <> \'\' '
+			    });
 				
-				var vector = new ol.layer.Vector({
-			        source: vectorSource,
+				
+				var slowVectorSource = new ol.source.Vector({
+					format: new ol.format.GeoJSON(),
+					charge: 'slow',
+			        url: './resources/Proxy.jsp?url=http://112.217.167.123:38080/geoserver/EV/wfs?service=WFS&version=1.0.0&request=GetFeature&typeName=EV:EV_point&maxFeatures=50&outputFormat=application/json&CQL_FILTER=GUBUN=0'+i+'and Rapid = \'\' '
+			    });
+				
+				var rapidSrc = "./resources/images/maker/m"+i+"_s_fast.png";
+				var slowSrc = "./resources/images/maker/m"+i+"_s_slow.png";
+				
+				var rapidVector = new ol.layer.Vector({
+					TITLE: i+'_fast',
+					CHARG: 'fast',
+					GUBUN: i,
+					source: repidVectorSource,
 			        style: new ol.style.Style({
 			        	image: new ol.style.Icon({
 			        		size: [29,26],
-			        		src: src
+			        		src: rapidSrc
+			        	})
+			        })
+				})
+				
+				var slowVector = new ol.layer.Vector({
+			        TITLE: i+'_slow',
+			        CHARG: 'slow',
+			        GUBUN: i,
+					source: slowVectorSource,
+			        style: new ol.style.Style({
+			        	image: new ol.style.Icon({
+			        		size: [29,26],
+			        		src: slowSrc
 			        	})
 			        })
 				})
 				
 				
-				/*var vector = new ol.layer.Vector({
-			        source: vectorSource,
-			        style: new ol.style.Style({
-	        	        image: new ol.style.Circle({
-		        	          fill: fill,
-		        	          stroke: stroke,
-		        	          radius: 5
-		        	        }),
-		        	        fill: fill,
-		        	        stroke: stroke
-		        	      })
-				})*/
-				vector.TITLE = i;
-				vector.setVisible(false);
-				
-				
-				coreMap.map.addLayer(vector);
+				coreMap.map.addLayer(rapidVector);
+				coreMap.map.addLayer(slowVector);
 			
 			}
 				
