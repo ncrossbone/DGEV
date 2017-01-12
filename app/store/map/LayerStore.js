@@ -70,7 +70,7 @@ Ext.define("DgEv.store.map.LayerStore", {
 		        	      })
 				})*/
 				vector.TITLE = i;
-				vector.setVisible(false);
+				vector.setVisible(true);
 				
 				
 				coreMap.map.addLayer(vector);

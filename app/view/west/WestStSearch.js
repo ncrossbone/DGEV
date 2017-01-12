@@ -35,7 +35,7 @@ Ext.define("DgEv.view.west.WestStSearch", {
 			width:150,
 			emptyText:"==시도 전체==",
 			//triggerAction: 'all',
-			value: '27',
+			value: '2700000000',
 			selectOnFocus:true,
 			listeners:{
 	    		select: function(){
@@ -126,7 +126,22 @@ Ext.define("DgEv.view.west.WestStSearch", {
 		},{
 			xtype:"combobox",
 			value:"==전체==",
-			editable:false,
+			editable:false,/*,
+			displayField: 'name',
+			valueField: 'code',
+			store: Ext.create('Ext.data.Store', {
+			    fields: ['code', 'name'],
+			    data : [
+			        {"code":"all","name":"==전체=="},
+			        {"code":"01", "name":"SM3"},
+			        {"code":"02", "name":"스파크"},
+			        {"code":"03", "name":"레이"},
+			        {"code":"04", "name":"BMW I3"},
+			        {"code":"05", "name":"Nissan LEAF"},
+			        {"code":"06", "name":"SOUL"},
+			        {"code":"07", "name":"아이오닉"}
+			    ]
+			}),*/
 			width:150
 		},{
 			xtype:"container",
@@ -135,7 +150,17 @@ Ext.define("DgEv.view.west.WestStSearch", {
 			xtype:"combobox",
 			value:"==전체==",
 			editable:false,
-			width:150
+			width:150/*,
+			displayField: 'name',
+			valueField: 'code',
+			store: Ext.create('Ext.data.Store', {
+			    fields: ['code', 'name'],
+			    data : [
+			        {"code":"all","name":"==전체=="},
+			        {"code":"01", "name":"급속"},
+			        {"code":"02", "name":"완속"}
+			    ]
+			})*/
 		}]
 	},{
 		xtype:"container",
@@ -244,7 +269,7 @@ Ext.define("DgEv.view.west.WestStSearch", {
 								default:
 									break;
 								}
-								html += "<div class='fw_path' onclick=onclickStation("+i+");><div class='thumb'><img src='./resources/images/test/01.png'></div>" +
+								html += "<div class='fw_path' onclick=onclickStation("+i+");><div class='thumb'><img src='./resources/images/test/02.png'></div>" +
 								"<div class='state'><p><strong>" + response_.features[i].properties.NM + "</strong><em><span class='L0'></span></em></p>" +
 								"<p class='MgT5 borB0'>" + gubunHtml +
 								"<img alt='급속충전 이미지' src='./resources/images/test/icon_fast.png' width='20px' height='20px' style='margin-left:140px;'>" +

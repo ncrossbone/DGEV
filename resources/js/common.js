@@ -83,7 +83,9 @@ sidoZoom = function(val){
 	
 }
 
-getSgg = function(sidoCd,con){
+getSgg = function(paramSidoCd,con){
+	//console.info(paramSidoCd);
+	var sidoCd = paramSidoCd.toString().substring(0, 2);
 	if(con!="west"){
 		var featureRequest = new ol.format.WFS().writeGetFeature({
 			srsName : "EPSG:4326",
@@ -93,8 +95,6 @@ getSgg = function(sidoCd,con){
 			maxFeatures : 300,
 			filter: ol.format.filter.like('ADM_CD',sidoCd+'*')
 		});
-
-
 
 		$.ajax({
 			url : _proxyUrl + _serviceUrl + "tmdl/wfs?",
@@ -126,8 +126,7 @@ getSgg = function(sidoCd,con){
 			maxFeatures : 300,
 			filter: ol.format.filter.like('ADM_CD',sidoCd+'*')
 		});
-
-
+		
 
 		$.ajax({
 			url : _proxyUrl + _serviceUrl + "tmdl/wfs?",
