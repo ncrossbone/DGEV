@@ -31,41 +31,61 @@ Ext.define("DgEv.view.north.NorthContainer", {
 		xtype:"checkbox",
 		labelSeparator: '',
 		hideLabel: true,
-		checked:true,
+		checked:false,
 		style:"margin-right:10px;",
 		boxLabel: '충전중',
-		fieldLabel: 'text' 
+		layerId: '1',
+		fieldLabel: 'text',
+		handler: function(data,check){
+			ChargChkBox(data,check);
+		}
 	},{
 		xtype:"checkbox",
 		labelSeparator: '',
 		hideLabel: true,
-		checked:true,
+		checked:false,
 		style:"margin-right:10px;",
 		boxLabel: '사용가능',
-		fieldLabel: 'text'
+		fieldLabel: 'text',
+		layerId: '2',
+		handler: function(data,check){
+			ChargChkBox(data,check);
+		}
 	},{
 		xtype:"checkbox",
 		labelSeparator: '',
 		hideLabel: true,
-		checked:true,
+		checked:false,
 		style:"margin-right:10px;",
 		boxLabel: '운영중지',
-		fieldLabel: 'text'
+		layerId: '3',
+		fieldLabel: 'text',
+		handler: function(data,check){
+			ChargChkBox(data,check);
+		}
 	},{
 		xtype:"checkbox",
 		labelSeparator: '',
 		hideLabel: true,
-		checked:true,
+		checked:false,
 		style:"margin-right:10px;",
 		boxLabel: '점검중',
-		fieldLabel: 'text'
+		fieldLabel: 'text',
+		layerId: '4',
+		handler: function(data,check){
+			ChargChkBox(data,check);
+		}
 	},{
 		xtype:"checkbox",
 		labelSeparator: '',
 		hideLabel: true,
-		checked:true,
+		checked:false,
 		boxLabel: '타기관',
-		fieldLabel: 'text'
+		fieldLabel: 'text',
+		layerId: '5',
+		handler: function(data,check){
+			ChargChkBox(data,check);
+		}
 	}]
 });
 

@@ -83,18 +83,9 @@ Ext.define('DgEv.view.map.CoreMap', {
 	      });
 		me.map.getView().getCenter();
 		
-		var layer = new ol.layer.Tile({
-			source: new ol.source.TileWMS({
-				url: _serviceUrl + "wms",
-				params : {
-	            	 LAYERS : "EV:EV_point"
-	             }
-				//serverType: 'geoserver'
-			}),
-			opacity: me.opacity
-		});
-		me.map.addLayer(layer);
-		layer.setVisible(true);
+		var layerStore = Ext.create('DgEv.store.map.LayerStore');
+		layerStore.load();
+		
 	},
 	
 	onclickMapSelect: function(val){

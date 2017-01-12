@@ -242,3 +242,18 @@ placesSearchCB = function(status, data, pagination){
 
     }
 }
+
+
+ChargChkBox = function(data,check){
+	
+	var coreMap = Ext.getCmp("_mapDiv_");
+	var layers = coreMap.map.getLayers();
+	
+	for(var i = 0 ; i < layers.array_.length; i++){
+		if(layers.array_[i].TITLE == data.layerId){
+			layers.array_[i].setVisible(check);
+		}
+	}
+	
+	
+}
