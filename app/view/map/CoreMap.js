@@ -80,6 +80,7 @@ Ext.define('DgEv.view.map.CoreMap', {
 			window.clearInterval(timerId);
 
 		}, 1);
+
 		
 		me._zoomPointerTop = parseInt($(".zoomPointer").css("top"));
 		me._maxTop = me._zoomPointerTop;
@@ -337,8 +338,11 @@ Ext.define('DgEv.view.map.CoreMap', {
 
     		var zoomLevel = me.map.getView().getZoom();
     		me.wheelZoom(zoomLevel);
+    		
+    		layerIconChange(zoomLevel);
 
     	});
+    	
     },
     wheelZoom:function(zoomLevel){
     	var me = this; 
