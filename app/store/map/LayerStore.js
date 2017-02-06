@@ -2,33 +2,96 @@ Ext.define("DgEv.store.map.LayerStore", {
     extend : 'Ext.data.Store',
     //extend : 'Ext.data.BufferedStore', 
     /* {name: 'OUT_FLOW_SUM', type 'number'}*/
-    
+    proxy: {
+		type: 'ajax',
+		url: 'resources/data/json/dg_point.json',
+		reader: {
+			type: 'json'
+		}
+	},
+	
+	constructor: function(){
+		this.callParent();
+	},
+	
 	listeners: {
 		load: function(store) {
 			
-			var coreMap = Ext.getCmp("_mapDiv_");
+			return;
 			
-			var	proxy = "./resources/Proxy.jsp?url="
+			var jsonArray = "";
 			
-			/*
+			Ext.Ajax.request({
+        		url: './resources/jsp/maria_Db_Connect.jsp',
+        		async: true, // 비동기 = async: true, 동기 = async: false
+        		success : function(response, opts) {
+        			
+        			jsonData = Ext.util.JSON.decode( response.responseText );
+
+        			if(jsonData.data[0].msg == undefined || jsonData.data[0].msg == ""){
+        				console.info(jsonData.data);
+        				
+        				//jsonData.data[6].ULAT
+        				//jsonData.data[6].ULNG
+        				
+        				/*var geocoder = new daum.maps.services.Geocoder(),
+	        				wtmX = jsonData.data[6].ULAT, 
+	        			    wtmY = jsonData.data[6].ULNG;
+        				
+        				geocoder.transCoord(wtmX, 
+        	                    wtmY, 
+        	                    daum.maps.services.Coords.WTM, // 변환을 위해 입력한 좌표계 입니다
+        	                    daum.maps.services.Coords.WGS84, // 변환 결과로 받을 좌표계 입니다 
+        	                    transCoordCB);
+        				
+        				
+        				function transCoordCB(status, result) {
+
+        				    // 정상적으로 검색이 완료됐으면 
+        				    if (status === daum.maps.services.Status.OK) {
+        				    	console.info(result.y);
+        				    	console.info(result.x);
+        				    }
+        				}*/
+        				
+        				
+        			}
+        			else{
+        				alert("데이터가 존재하지 않습니다")
+        			}
+        			
+        		},
+        		failure: function(form, action) {
+        			// 로딩바 숨김
+        			
+        			alert("오류가 발생하였습니다.");
+        		}
+        	});
+			
+			
+			
+			//var coreMap = Ext.getCmp("_mapDiv_");
+			/*var	proxy = "./resources/Proxy.jsp?url="
+			
 			--GUBUN 코드--  
 			01 = 충전중
 			02 = 사용가능
 			03 = 운영정지
 			04 = 점검중
-			05 = 타기관*/
+			05 = 타기관
+				
 				
 			for(var i = 1 ; i < 6 ;i++){
 				
 				
 				
-				/*var fill = new ol.style.Fill({
+				var fill = new ol.style.Fill({
 	        	      color: color
 	        	    });
 	    	    var stroke = new ol.style.Stroke({
 	    	      color: color,
 	    	      width: 1.25
-	    	    });*/
+	    	    });
 				
 				var repidVectorSource = new ol.source.Vector({
 			        format: new ol.format.GeoJSON(),
@@ -76,7 +139,7 @@ Ext.define("DgEv.store.map.LayerStore", {
 				coreMap.map.addLayer(rapidVector);
 				coreMap.map.addLayer(slowVector);
 			
-			}
+			}*/
 				
 				
 			/*var featureRequest = new ol.format.WFS().writeGetFeature({

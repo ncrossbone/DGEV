@@ -281,7 +281,7 @@ Ext.define('DgEv.view.map.CoreMap', {
     },
     initBaseMap: function(val){
     	var me = this; 
-    	me.baseMapLayers.push(new ol.layer.Tile({
+    	/*me.baseMapLayers.push(new ol.layer.Tile({
     		title : '브이월드',
     		visible : true,
     		type : 'base',
@@ -312,12 +312,23 @@ Ext.define('DgEv.view.map.CoreMap', {
     							url : 'http://xdworld.vworld.kr:8080/2d/Satellite/201301/{z}/{x}/{y}.jpeg'
     				})
     	})
-    	)
+    	)*/
+    	
+    	var container = document.getElementById('_mapDiv_');
+		var options = {
+			center: new daum.maps.LatLng(35.871380, 128.601805),
+			level: 8
+		};
+		
+		me.map = new daum.maps.Map(container, options);
+		
+		var layerStore = Ext.create('DgEv.store.map.LayerStore');
+		layerStore.load();
+		
+		LayerSymbol(layerStore);
 
 
-
-
-    	me.map = new ol.Map({
+    	/*me.map = new ol.Map({
     		target: '_mapDiv_',
     		layers: this.baseMapLayers,
     		view: new ol.View({
@@ -325,8 +336,8 @@ Ext.define('DgEv.view.map.CoreMap', {
     			center: [128.6018054910818, 35.871380264652295], //대구광역시청
     			zoom:13
     		})
-    	});
-    	
+    	});*/
+    	/*
     	var layerStore = Ext.create('DgEv.store.map.LayerStore');
 		layerStore.load();
     	
@@ -341,7 +352,7 @@ Ext.define('DgEv.view.map.CoreMap', {
     		
     		layerIconChange(zoomLevel);
 
-    	});
+    	});*/
     	
     },
     wheelZoom:function(zoomLevel){

@@ -38,7 +38,14 @@ Ext.define("DgEv.view.west.WestStSearch", {
 			value: '2700000000',
 			selectOnFocus:true,
 			listeners:{
-	    		select: function(){
+	    		select: function(item,store){
+	    			
+	    			
+	    			
+	    			
+	    			
+	    			//store.data.NAME
+	    			
 	    			var westSido = Ext.ComponentQuery.query("#westSido")[0];
 	    			var searchBtn = Ext.ComponentQuery.query("#searchBtn")[0];
 	    			var serachValue = Ext.ComponentQuery.query("#serachValue")[0];
@@ -50,12 +57,15 @@ Ext.define("DgEv.view.west.WestStSearch", {
 	    			if(serachValue.lastValue!=""){
 	    				serachValue.setValue("");
 	    			}
+	    			
+	    			console.info(westSido);
 	    			if(westSido.lastValue!="all"){
-	    				sidoZoom(westSido.lastValue);
 	    				getSgg(westSido.lastValue,"west");
 	    			}
 	    			
 	    			searchBtn.fireHandler();
+	    			
+	    			SelectZoom(store.data.NAME,"sido");
 	    			
 	    		}
 	    	}
@@ -72,17 +82,19 @@ Ext.define("DgEv.view.west.WestStSearch", {
 			itemId:"westSgg",
 			width:150,
 			listeners:{
-	    		select: function(){
+				select: function(item,store){
+	    			
+	    			
+	    			
 	    			var searchBtn = Ext.ComponentQuery.query("#searchBtn")[0];
 	    			var westSgg = Ext.ComponentQuery.query("#westSgg")[0];
 	    			var serachValue = Ext.ComponentQuery.query("#serachValue")[0];
 	    			if(serachValue.lastValue!=""){
 	    				serachValue.setValue("");
 	    			}
-	    			if(westSgg.lastValue!="all"){
-	    				sggZoom(westSgg.lastValue);
-	    			}
 	    			searchBtn.fireHandler();
+	    			
+	    			SelectZoom(store.data.NAME,"sgg");
 	    			
 	    		}
 	    	}
