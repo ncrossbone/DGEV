@@ -264,7 +264,8 @@ onclickStation = function(val){
 	"<input type='hidden' id='mode' name='mode' value=''>" +*/
 	"<a href='#' onclick='addBookMark();' class='like_ch'><span class='hidden'>즐겨찾기</span></a><h2>"+_searchArr[paramIdx].data.NM +"<em id='distant'></em></h2>" +
 	"</form></div><div id='sub_cont'><div class='sub_info_area' style='margin-top: 0px;'><span class='corp_info'>" +
-	"<img src='./resources/images/test/logo_keco.png' width='20' alt='환경부 로고' style='float: left'> <span>환경부(한국자동차환경협회)</span></span><div class='time_info'><span>" +
+	/*"<img src='./resources/images/test/logo_keco.png' width='20' alt='환경부 로고' style='float: left'> <span>환경부(한국자동차환경협회)</span></span><div class='time_info'><span>" +*/
+	"<span>대구광역시 (대구환경공단)</span></span><div class='time_info'><span>" +
 	"<em>24시간 이용가능</em></span></div></div><table class='table_01'><tbody><tr><th>구분</th><th>충전기 타입</th><th>운전 상태</th></tr><tr><td><dl>" +
 	"<dt class='fast'>01</dt><dd style='margin-left: 0px;'>급속</dd></dl></td><td class='td2'>" +
 	"<span class='ev_type t01'>DC차데모</span>" +
@@ -272,7 +273,7 @@ onclickStation = function(val){
 	"<span class='ev_type t03'>DC콤보</span></td><td class='td3'>	<span class='ev_char c01'>사용가능</span></td></tr></tbody></table></div>" +
 	"<div class='middle_line'></div><div class='sub_group'><h3 class='tit3_info'>상세정보</h3><table class='table_02'>" +
 	"<tbody><tr><th style='width: 70px;'>주소</th><td>"+_searchArr[paramIdx].data.JUSO +"</td></tr><tr><th>운영기관</th>" +
-	"<td>환경부(한국자동차환경협회)</td></tr><tr><th>연락처</th><td>1661-9408</td></tr><tr><th>이용요금</th><td>유료</td></tr>" +
+	"<td>대구광역시 (대구환경공단)</td></tr><tr><th>연락처</th><td>1661-9408</td></tr><tr><th>이용요금</th><td>유료</td></tr>" +
 	"<tr><th>최근 충전일</th><td>2017-01-04 14:28</td></tr><tr>" +
 	"<th>참고사항</th><td>없음 </td></tr></tbody></table></div>" +
 	"<div class='middle_line'></div>" +
