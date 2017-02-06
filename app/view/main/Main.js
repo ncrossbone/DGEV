@@ -12,7 +12,7 @@ Ext.define("DgEv.view.main.Main", {
 	},
 
 	items: [{
-		xtype: "dgev-coremap"
+		xtype: "dgev-coremap",
 	},{
 		xtype: "dgev-northcontainer"
 	},{

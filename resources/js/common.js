@@ -362,4 +362,116 @@ var coreMap = Ext.getCmp("_mapDiv_");
 		}
 		
 	}
+},
+
+
+
+
+SelectZoom = function(value,type){
+	var westSido = Ext.ComponentQuery.query("#westSido")[0];
+	var westSgg = Ext.ComponentQuery.query("#westSgg")[0];
+	
+	
+	var coreMap = Ext.getCmp("_mapDiv_");
+	
+	var geocoder = new daum.maps.services.Geocoder();
+
+	// 주소로 좌표를 검색합니다
+	
+	if(westSgg.getValue() != ""){
+		value = westSido.rawValue + westSgg.rawValue;
+	}
+	
+	geocoder.addr2coord(value, function(status, result) {
+		console.info(result);
+	    // 정상적으로 검색이 완료됐으면 
+	     if (status === daum.maps.services.Status.OK) {
+
+	        var coords = new daum.maps.LatLng(result.addr[0].lat, result.addr[0].lng);
+
+	        // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+	        coreMap.map.setCenter(coords);
+	    } 
+	});    
+},
+
+
+
+LayerSymbol = function(store){
+	var coreMap = Ext.getCmp("_mapDiv_");
+	
+	var x = "";
+	var y = "";
+
+	var positions = [];
+	
+	
+	var timerObj = window.setInterval(function(){
+		
+		
+		for(var i = 0 ; i < store.data.length; i++){
+			x = store.data.items[i].data.X;
+			y = store.data.items[i].data.Y;
+			
+			positions.push({latlng: new daum.maps.LatLng(y, x), 
+							GUBUN: store.data.items[i].data.GUBUN,
+							Rapid: store.data.items[i].data.Rapid,
+							Slow: store.data.items[i].data.Slow});
+			
+		}
+		
+		
+		
+		for (var i = 0; i < positions.length; i ++) {
+		    // 마커 이미지의 이미지 크기 입니다
+		    var imageSize = new daum.maps.Size(29, 26); 
+		    
+		    
+		    var GUBUN = "";
+		    var PARID = "";
+		    
+		    // 마커 이미지를 생성합니다    
+		    if(positions[i].GUBUN == "01"){
+		    	GUBUN = "1";
+		    }else if(positions[i].GUBUN == "02"){
+		    	GUBUN = "2";
+		    }else if(positions[i].GUBUN == "03"){
+		    	GUBUN = "3";
+		    }else if(positions[i].GUBUN == "04"){
+		    	GUBUN = "4";
+		    }else if(positions[i].GUBUN == "05"){
+		    	GUBUN = "5";
+		    }
+		    
+		    if(positions[i].Rapid == ""){
+		    	PARID = "slow";
+		    }else{
+		    	PARID = "fast";
+		    }
+		    
+		    
+		    
+		    var markerImage = new daum.maps.MarkerImage("./resources/images/maker/m"+GUBUN+"_s_"+PARID+".png", imageSize); 
+		    
+		    // 마커를 생성합니다
+		    var marker = new daum.maps.Marker({
+		        map: coreMap.map, // 마커를 표시할 지도
+		        clickable: true,
+		        position: positions[i].latlng, // 마커를 표시할 위치
+		        title : "", // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+		        image : markerImage // 마커 이미지 
+		    });
+	
+			// 마커에 클릭이벤트를 등록합니다
+			daum.maps.event.addListener(marker, 'click', function() {
+				
+			});
+		   
+		    
+		}
+		
+		window.clearInterval(timerObj);
+	}, 100);
+
+	
 }
