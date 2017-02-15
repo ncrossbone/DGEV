@@ -1,0 +1,150 @@
+@charset "utf-8";
+/* CSS Document */
+
+
+/*** 지도 영역 ***/
+#map_area{ height:800px; background:url(../images/gis/map_test.jpg) no-repeat; position:relative;}
+#map_icon {position:absolute;z-index:100;}
+#map_icon .left_icon{position:fixed; height:20px; top:55px; left:7px;}
+#map_icon .left_icon .icon_areamap a{ background:url(../images/gis/icon_areamap.png) no-repeat; width:45px; height:45px; background-size:45px 45px; z-index:2; display:block;}
+#map_icon .left_icon .icon_bookmark a{ background:url(../images/gis/icon_bookmark.png) no-repeat; width:45px; height:45px; background-size:45px 45px; z-index:2; display:block; margin-top:4px;}
+
+#map_icon .right_icon{position:fixed; top:55px; right:7px;}
+#map_icon .right_icon a{display:block;}
+#map_icon .right_icon .icon_zoom a{width:38px; height:41px; z-index:2;}
+#map_icon .right_icon .icon_zoom a.plus{background:url(../images/gis/icon_plus.png) no-repeat;background-size:38px 41px;}
+#map_icon .right_icon .icon_zoom a.minus{background:url(../images/gis/icon_minus.png) no-repeat;background-size:38px 41px; margin-bottom:4px;}
+/* 기준위치 설정 */
+#map_icon .right_icon .icon_point a{background:url(../images/gis/icon_customizing.png) no-repeat;background-size:38px 38px; width:38px; height:41px;}
+/* 현위치 */
+#map_icon .right_icon .icon_uahere a{background:url(../images/gis/icon_uahere.png) no-repeat;background-size:38px 38px; width:38px; height:41px;}
+
+#sub_cont .sub_group{ padding:10px 12px 20px 12px; overflow:hidden;}
+#sub_cont .sub_group .location_info{overflow:hidden;}
+#sub_cont .sub_group .location_info .location_bg{overflow:hidden; width:100%; padding:15px 0; background:url(../images/gis/location_info_bg.gif) repeat-x;}
+#sub_cont .sub_group .location_info div{float:left; width:33%; text-align:center;}
+#sub_cont .sub_group .location_info div a{ background:url(../images/common/btn_01_bg.gif) repeat-x; border:1px solid #ccc; color:#666; width:80px; border:1px solid #6f7075; border-radius:5px; padding:10px; font-size:14px; font-weight:bold; display:inline-block;}
+#sub_cont .sub_group .pic_area div{ float:left; width:33%; text-align:center;}
+#sub_cont .sub_group .pic_area img{ border:1px solid #7c7c7c;}
+
+#sub_cont .sub_info_area .corp_info{ background:#94c318; border-radius:5px; padding:5px 10px; color:#fff; float:left;}
+#sub_cont .sub_info_area .corp_info img{ float:left;}
+#sub_cont div.time_info{ margin-bottom:10px; overflow:hidden;}
+#sub_cont div.time_info span{ background:#18c396; border-radius:5px; padding:5px 10px; float:right; color:#fff;}
+#sub_cont div.time_info span em{ background:url(../images/gis/icon_time.png) no-repeat; background-size:14px; padding-left:20px;}
+
+
+/*** 충전소 검색 필터 ***/
+.ev_corp{background:url(../images/gis/location_info_bg.gif) repeat-x; padding:10px;}
+.ev_corp_list{ padding:15px 10px; display:none;}
+.ev_corp_list ul li{ padding:15px 0; border-bottom:1px solid #ccc; font-size:15px; vertical-align:middle;}
+.ev_corp_list span{ width:80px;  display:inline-block;text-align:center;}
+.ev_type_chk_area dl{ border:1px solid #ccc; border-radius:5px; margin-right:5px; padding:10px;}
+.ev_type_chk_area dl dt{ padding:10px 0; font-size:14px; font-family:'NanumGothicBlod';}
+.ev_type_box{}
+.ev_corp_list.over{ padding:15px 10px; display:block;}
+.ev_status ul li{ float:left; padding:10px; font-size:14px;  font-family:'NanumGothicBlod';}
+
+#sub_tit{position:relative; padding:0 8px; height:46px; background:#4b4c52; line-height:46px; top:0;}
+#sub_tit h2{font-size:15px; color:#fff; padding-left:24px;  font-family:'NanumGothicBlod';}
+#sub_tit a.like_ch{background:url(../images/common/icon_like_off.png) no-repeat; background-size:22px; width:22px; height:22px; display:block; position:absolute; top:11px;}
+#sub_tit a.like_ch.on{background:url(../images/common/icon_like_on.png) no-repeat; background-size:22px;}
+#sub_tit h2 em{color:#ff3300;}
+
+.btn_call{ background:url(../images/gis/icon_call.png) no-repeat center; background-size:18px 23px; border:1px solid #a8a8a8; display:inline-block; width:30px; height:30px; border-radius:3px;}
+.btn_mail{ background:url(../images/gis/icon_mail.png) no-repeat center; background-size:22px 17px; border:1px solid #a8a8a8; display:inline-block; width:30px; height:30px; border-radius:3px;}
+
+
+/*** Table 01 ***/
+.table_01{border-top:2px solid #999; border-bottom:1px solid #296dca; border-left:1px solid #cdcdcd;}
+.table_01 th,
+.table_01 td{border-right:1px solid #cdcdcd; border-bottom:1px solid #cdcdcd; text-align:center; padding:5px 0; vertical-align:middle;}
+.table_01 th{ background:#f7f7f7;}
+.table_01 span.ev_type{padding:22px 5px 0 5px; display:inline-block;}
+.table_01 span.ev_type.t01{ background:url(../images/gis/icon_evtype_01.png) no-repeat center 0; background-size:20px 23px;}
+.table_01 span.ev_type.t02{ background:url(../images/gis/icon_evtype_02.png) no-repeat center 0; background-size:20px 23px;}
+.table_01 span.ev_type.t03{ background:url(../images/gis/icon_evtype_03.png) no-repeat center 0; background-size:20px 23px;}
+.table_01 span.ev_type.t04{ background:url(../images/gis/icon_evtype_04.png) no-repeat center 0; background-size:20px 23px;}
+.table_01 dl dt.fast{ background:url(../images/gis/ev_char_bg01.png) no-repeat center; background-size:30px 18px;}
+.table_01 dl dt.slow{ background:url(../images/gis/ev_char_bg02.png) no-repeat center; background-size:30px 18px;}
+.table_01 td:first-child{padding:0 5px;}
+
+.table_02{border-top:1px solid #f1f1f1;}
+.table_02 th,
+.table_02 td{border-bottom:1px solid #f1f1f1; padding:10px 0; vertical-align:middle; text-align:left; font-size:13px;}
+.table_02 th{ width:60px; font-weight:700;}
+
+span.ev_char {border-radius:5px; display:inline-block; width:60px; padding:5px; color:#fff; text-align:center;}
+span.ev_char.c01{background:#1b73aa;} /* 대기중 */
+span.ev_char.c02{background:#148a3a;} /* 충전중 */
+span.ev_char.c03{background:#980101;} /* 점검중 */
+span.ev_char.c04{background:#ff3a00;} /* 운정중지 */
+span.ev_char.c05{background:#777777;} /* 통신미연결 */
+
+span.ev_char_s {border-radius:3px; display:inline-block; width:55px; padding:3px; color:#fff; text-align:center; letter-spacing:-2px;}
+span.ev_char_s.c01{background:#1b73aa;} /* 대기중 */
+span.ev_char_s.c02{background:#148a3a;} /* 충전중 */
+span.ev_char_s.c03{background:#980101;} /* 점검중 */
+span.ev_char_s.c04{background:#ff3a00;} /* 운정중지 */
+span.ev_char_s.c05{background:#777777;} /* 통신미연결 */
+
+#data_list{}
+#data_list ul li{border-bottom:1px solid #ececec; position:relative;}
+#data_list h4{ font-size:15px; line-height:15px;padding:5px 0;}
+#data_list ul li div.ev_area_info{ padding:0 12px; margin:12px 0;}
+#data_list ul li div.list_logo{ border:1px solid #999; float:left; display:inline-block; width:35px; height:35px; background:url(../images/gis/list_logo.png) no-repeat center; background-size:35px 35px; padding:3px; margin:6px 6px 0 0;}
+#data_list ul li div.ev_area_info .right{ position:absolute; right:0; top:0; padding:10px 0; text-align:right;}
+#data_list ul li div.ev_area_info .right span.char_fast{ border:1px solid #1ba06f; color:#1ba06f; width:55px; height:23px; display:inline-block; line-height:23px; background:url(../images/gis/icon_fast.png) no-repeat 5px center; background-size:18px; border-radius:3px; margin-right:5px;}
+#data_list ul li div.ev_area_info .right span.char_slow{ border:1px solid #7fa01b; color:#7fa01b; width:55px; height:23px; display:inline-block; line-height:23px; background:url(../images/gis/icon_slow.png) no-repeat 5px center; background-size:18px; border-radius:3px; margin-right:5px;}
+#data_list ul li div.ev_area_info .right span p{padding:0 5px 0 25px;}
+
+#data_list ul li div.ev_add_info{ background:url(../images/gis/location_info_bg.gif) repeat-x; margin-top:10px; display:none;}
+#data_list ul li div.ev_add_info .add_cont{padding:10px 12px 0 12px;}
+#data_list ul li div.ev_add_info p{ margin-bottom:10px;}
+
+
+/*** 운영현황 탭 ***/
+.gis_tab{ padding:0 10px;}
+.tab_area{ position:relative; overflow:hidden; margin-top:25px;}
+.tab_area h4 {position:absolute;top:0;left:0;width:33%;height:40px;}
+.tab_area h4 a {height:0;display:block;height:40px; font-size:14px; line-height:40px; text-align:center; color:#666; border:1px solid #b4b6ba; background:#ddd; border-bottom:1px solid #000;}
+.tab_area .wtt1 {background:url(../images/main/tab_off.gif) no-repeat;}
+.tab_area .wtt2 {left:33%; width:34%; background:url(../images/main/tab_off.gif) no-repeat;}
+.tab_area .wtt3 {left:67%; background:url(../images/main/tab_off.gif) no-repeat;}
+
+.tab_area .over .wtt1 a,
+.tab_area .over .wtt2 a,
+.tab_area .over .wtt3 a
+{color:#232323; border:1px solid #232323; background:#fff; border-bottom:1px solid #fff;}
+
+.tab_area #tab_01,
+.tab_area #tab_02,
+.tab_area #tab_03 {display:none;border-top:0;border-bottom:0;background-color:#fff;}
+
+.tab_area .over #tab_01,
+.tab_area .over #tab_02,
+.tab_area .over #tab_03 {display:block; margin-top:50px;}
+
+/*** 운영현황 : 충전기 예약 ***/
+.ev_reserve .date{ background:#d3d6db; font-weight:700; padding:15px 0; text-align:center; color:#3c454a;}
+.ev_reserve .date b{font-size:24px; vertical-align:top;}
+.ev_reserve .date a{ padding:12px 20px; display:inline-block;background:url(../images/common/icon_arrow_pre.png) no-repeat center; background-size:16px;}
+.ev_reserve .date a.next{background:url(../images/common/icon_arrow_next.png) no-repeat center; background-size:16px;}
+.timeUse{ padding:10px 0; margin-top:15px;}
+.timeUse .timeSelect{ overflow:hidden; margin-top:10px; text-align:center;}
+.timeUse .timeSelect a{ background:#f1f1f1; border:1px solid #c5c5c5; display:inline-block; width:40px; height:40px; line-height:40px; text-align:center; margin:0 6px 7px 0; font-size:14px; font-weight:700; color:#999} /* 예약 중 */
+.timeUse .timeSelect .ok{ border:1px solid #36b34f; background:#fff; color:#232323;} /* 예약 가능 */
+.timeUse .timeSelect .no{ background:#c5c5c5; color:#999;}/* 예약 불가 */
+.timeUse .timeSelect .on{ border:1px solid #36b34f; background:#36b34f; color:#fff;} /* 예약 선택 */
+
+.ev_reserve_legend {text-align:center;}
+.ev_reserve_legend span{ font-size:16px; margin-right:15px; line-height:20px; }
+.ev_reserve_legend em{display:inline-block; width:20px; height:20px; margin-right:4px;}
+.ev_reserve_legend em.re_ok{border:1px solid #36b34f; background:#fff; color:#232323; color:#fff;}
+.ev_reserve_legend em.re_ing{background:#f1f1f1; border:1px solid #c5c5c5; color:#f1f1f1}
+.ev_reserve_legend em.re_no{background:#c5c5c5; color:#999; color:#c5c5c5}
+.ev_reserve_info { margin-top:10px;}
+.ev_reserve_info p{background:url(../images/common/dot_dark.gif) no-repeat 5px 14px; background-size:4px; padding:5px 0 5px 14px; font-size:14px;}
+
+
+

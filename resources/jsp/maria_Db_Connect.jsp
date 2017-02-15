@@ -6,7 +6,15 @@
 try{
 
 	
-	sql = "SELECT * FROM EVCS_STATION";
+	sql = "	select distinct c_stat_id 																			";
+	sql += "	             , substring_index(S_GPS_LAT_LNG,',',1) as lat      ";
+	sql += "	             , substring_index(S_GPS_LAT_LNG,',',-1) as lng     ";
+	sql += "	             , s_ko_stat_nm                                     ";
+	sql += "	             , s_addr_1                                         ";
+	sql += "	             , c_stat_id                                        ";
+	sql += "	             , main_stat                                        ";
+	sql += "	             , c_chger_type_cd                                        ";
+	sql += "	             from EV_V_CHARGER                                  ";
 		
 		
    //out.print(sql);
@@ -19,12 +27,13 @@ try{
 	while(rs.next()) {
 		jsonRecord = new JSONObject();
 
-		jsonRecord.put("KO_STAT_NM"	, rs.getString("KO_STAT_NM"));
-		jsonRecord.put("EN_STAT_NM"	, rs.getString("EN_STAT_NM"));
-		jsonRecord.put("ADDR_1"	, rs.getString("ADDR_1"));
-		jsonRecord.put("ADDR_2"	, rs.getString("ADDR_2"));
-		jsonRecord.put("ULAT"	, rs.getString("ULAT"));
-		jsonRecord.put("ULNG"	, rs.getString("ULNG"));
+		jsonRecord.put("KO_STAT_NM"	, rs.getString("s_ko_stat_nm"));
+		jsonRecord.put("STAT_ID"	, rs.getString("c_stat_id"));
+		jsonRecord.put("CHGER_TYPE"	, rs.getString("c_chger_type_cd"));
+		jsonRecord.put("ADDR"	, rs.getString("s_addr_1"));
+		jsonRecord.put("ULAT"	, rs.getString("lat"));
+		jsonRecord.put("ULNG"	, rs.getString("lng"));
+		jsonRecord.put("GUBUN"	, rs.getString("main_stat"));
   	
   		jsonArr.add(jsonRecord);
 	}

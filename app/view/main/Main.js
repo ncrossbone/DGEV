@@ -4,6 +4,7 @@ Ext.define("DgEv.view.main.Main", {
 
 	requires: ["DgEv.view.west.WestContainer",
 	           "DgEv.view.map.CoreMap",
+	           "DgEv.view.west.LogoContainer",
 	           "DgEv.view.north.NorthContainer"],
 	xtype: "dgev-main",
 	title: "",
@@ -15,6 +16,8 @@ Ext.define("DgEv.view.main.Main", {
 		xtype: "dgev-coremap",
 	},{
 		xtype: "dgev-northcontainer"
+	},{
+		xtype:"dgev-logocontainer"
 	},{
 		xtype: "dgev-westcontainer"
 	}],

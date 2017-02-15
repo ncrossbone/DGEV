@@ -1,43 +1,35 @@
-﻿
-_proxyUrl = "./resources/Proxy.jsp?url=";
+﻿_proxyUrl = "./resources/Proxy.jsp?url=";
 _serviceUrl = "http://112.217.167.123:38080/geoserver/";
 _searchArr = [];
 _searchAddressArr = [];
+_markers= [];
 getSido = function(val){
 	var westSido = Ext.ComponentQuery.query("#westSido")[0];
 	
-	
 	var bindArr = [];
 	
+	var sidoStore = Ext.create('DgEv.store.west.SidoStore');
+	sidoStore.load();
 	
-	var params = "tmdl/wfs?service=wfs&version=1.1.0";
-	params += "&request=getfeature";
-	params += "&typename=tmdl:2sido";
-	params += "&PROPERTYNAME=ADM_CD,DO_NM";
-	params += "&outputformat=application/json";
+	var timerObj = window.setInterval(function(){
+		
+		//console.info(sidoStore);
+		for(var i = 0; i < sidoStore.data.items.length; i++){
+    		if(sidoStore.data.items[i].data.name !="대구광역시"){
+    			$('#sidoSelect').append('<option value='+sidoStore.data.items[i].data.code +'>' + sidoStore.data.items[i].data.name + '</option>');
+    			bindArr.push({NAME:sidoStore.data.items[i].data.name,CODE:sidoStore.data.items[i].data.code});
+    		}else{
+    			$('#sidoSelect').append('<option selected value='+sidoStore.data.items[i].data.code +'>' + sidoStore.data.items[i].data.name + '</option>');
+    			bindArr.push({NAME:sidoStore.data.items[i].data.name,CODE:sidoStore.data.items[i].data.code});
+    		}
+    	}
+		
+		window.clearInterval(timerObj);
+	}, 100);
 	
-	$.ajax({
-    	url: _proxyUrl + _serviceUrl + params,
-    	
-        type : 'GET',
-        async : false,
-        
-        contentType : 'text/xml',
-        success : function(response_) {
-        	//test = {NAME:response_.features[0].properties.DO_NM,CODE:""};
-        	bindArr.push({NAME:"전체",CODE:'all'});
-        	for(var i = 0; i < response_.features.length; i++){
-        		if(response_.features[i].properties.DO_NM!="대구광역시"){
-        			$('#sidoSelect').append('<option value='+response_.features[i].properties.ADM_CD +'>' + response_.features[i].properties.DO_NM + '</option>');
-        			bindArr.push({NAME:response_.features[i].properties.DO_NM,CODE:response_.features[i].properties.ADM_CD});
-        		}else{
-        			$('#sidoSelect').append('<option selected value='+response_.features[i].properties.ADM_CD +'>' + response_.features[i].properties.DO_NM + '</option>');
-        			bindArr.push({NAME:response_.features[i].properties.DO_NM,CODE:response_.features[i].properties.ADM_CD});
-        		}
-        	}
-        	
-        }
-    });
+	
+	
+	
 	
 	var storeBind = Ext.create('Ext.data.Store', {
 		fields: ['CODE', 'NAME'],
@@ -77,82 +69,78 @@ sidoZoom = function(val){
         }
     
     });	
-	//console.info(coreMap.map.getView().calculateExtent(coreMap.map.getSize()));
+	//////console.info(coreMap.map.getView().calculateExtent(coreMap.map.getSize()));
 	coreMap.map.getView().fit(extent, coreMap.map.getSize());
 	//coreMap.map.getView().setZoom(14);
 	
 }
 
 getSgg = function(paramSidoCd,con){
-	//console.info(paramSidoCd);
+	//console.info(con);
+	//////console.info(paramSidoCd);
 	var sidoCd = paramSidoCd.toString().substring(0, 2);
-	if(con!="west"){
-		var featureRequest = new ol.format.WFS().writeGetFeature({
-			srsName : "EPSG:4326",
-			featureTypes : ['tmdl:2sigungu'],
-			outputFormat : 'application/json',
-			geometryName : 'SHAPE',
-			maxFeatures : 300,
-			filter: ol.format.filter.like('ADM_CD',sidoCd+'*')
-		});
-
-		$.ajax({
-			url : _proxyUrl + _serviceUrl + "tmdl/wfs?",
-			type : 'POST',
-			data : new XMLSerializer().serializeToString( featureRequest ),
-			async : true,
-			contentType : 'text/xml',
-			success : function(response_) {
-
-				var features = new ol.format.GeoJSON().readFeatures( response_ );
-				$('#sggSelect *').remove();
-				$('#sggSelect').append('<option selected disabled>시군구</option>');
-				for(var i = 0; i < features.length; i++){
-					$('#sggSelect').append('<option value='+response_.features[i].properties.ADM_CD +'>' + response_.features[i].properties.CTY_NM + '</option>');	
-				}
-
-			}
-		});
-	}else{
+	
+	//console.info(sidoCd);
+	
+	var sggStore = Ext.create('DgEv.store.west.SggStore',
+			{sidoCd : sidoCd});
+	sggStore.load();
+	
+	
+	var timerObj = window.setInterval(function(){
+		
 		var westSgg = Ext.ComponentQuery.query("#westSgg")[0];
 		westSgg.value = '';
 		var bindArr = [];
 		
-		var featureRequest = new ol.format.WFS().writeGetFeature({
-			srsName : "EPSG:4326",
-			featureTypes : ['tmdl:2sigungu'],
-			outputFormat : 'application/json',
-			geometryName : 'SHAPE',
-			maxFeatures : 300,
-			filter: ol.format.filter.like('ADM_CD',sidoCd+'*')
+		//bindArr.push({NAME:"전체",CODE:'all'});
+		
+		for(var i = 0; i < sggStore.data.items.length; i++){
+			bindArr.push({NAME:sggStore.data.items[i].data.name,CODE:sggStore.data.items[i].data.code})
+		}
+		
+		var storeBind = Ext.create('Ext.data.Store', {
+			fields: ['CODE', 'NAME'],
+			data: bindArr
 		});
 		
-
-		$.ajax({
-			url : _proxyUrl + _serviceUrl + "tmdl/wfs?",
-			type : 'POST',
-			data : new XMLSerializer().serializeToString( featureRequest ),
-			async : true,
-			contentType : 'text/xml',
-			success : function(response_) {
-				var features = new ol.format.GeoJSON().readFeatures( response_ );
-				bindArr.push({NAME:"전체",CODE:'all'});
-				for(var i = 0; i < features.length; i++){
-					
-					bindArr.push({NAME:response_.features[i].properties.CTY_NM,CODE:response_.features[i].properties.ADM_CD});
-				}
-				
-				var storeBind = Ext.create('Ext.data.Store', {
-					fields: ['CODE', 'NAME'],
-					data: bindArr
-				});
-				
-				westSgg.bindStore(storeBind);
+		westSgg.bindStore(storeBind);
+		
+		/*if(con!="west"){
+			//console.info("if");
+			$('#sggSelect *').remove();
+			$('#sggSelect').append('<option selected disabled>시군구</option>');
+			for(var i = 0; i < sggStore.data.items.length; i++){
+				$('#sggSelect').append('<option value='+sggStore.data.items[i].data.code +'>' + sggStore.data.items[i].data.name + '</option>');	
 			}
-		});
+			
+		}else{
+			//console.info("else");
+			
+			var westSgg = Ext.ComponentQuery.query("#westSgg")[0];
+			westSgg.value = '';
+			var bindArr = [];
+			
+			bindArr.push({NAME:"전체",CODE:'all'});
+			
+			var storeBind = Ext.create('Ext.data.Store', {
+				fields: ['CODE', 'NAME'],
+				data: bindArr
+			});
+			
+			westSgg.bindStore(storeBind);
+			
+			
+		}*/
 		
 		
-	}
+		
+		window.clearInterval(timerObj);
+	}, 500);
+	
+	
+	
+	
 }
 
 sggZoom = function(sggCd){
@@ -214,23 +202,34 @@ getDemo = function(){
 }
 
 placesSearchCB = function(status, data, pagination){
+	////console.info(data.places);
 	if (status === daum.maps.services.Status.OK) {
 		var addressSearch = Ext.ComponentQuery.query("#addressSearch")[0];
 		var html = "";
 		for(var i = 0; i<data.places.length; i++){
 			html += "<dl class='list_add' style='cursor:pointer;' onclick=onClickAddress('"+ i +"');><span>" +
-						"<dl style='padding: 10px;' class='922496' tabindex='0'>" +
-						"<dt>"+data.places[i].title+"</dt>" +
-						"<dd class='tel'>"+data.places[i].phone +
-						"<span class='cate'>"+data.places[i].category +"</span></dd>" +
-						"<dd class='new_addr'>" + data.places[i].newAddress+"</dd>" +
-						"<dd class='old_addr'><span>지번</span>&nbsp"+data.places[i].address +"</dd></dl>" +
-						"<span></span>" +
-						"<span></span>" +
-						"</span></dl>";
+					"<dl style='padding: 10px;' class='922496' tabindex='0'>" +
+					"<dt>"+data.places[i].title+"</dt>" +
+					"<dd class='tel'>"+data.places[i].phone +
+					"<span class='cate'>"+data.places[i].category +"</span></dd>" +
+					"<dd class='new_addr'>" + data.places[i].newAddress+"</dd>" +
+					"<dd class='old_addr'><span>지번</span>&nbsp"+data.places[i].address +"</dd></dl>" +
+					"<dl id = '"+data.places[i].addressBCode+"'></dl>" +
+					"</span></dl>" ;
+					
+					
+					
+			
 			_searchAddressArr.push({data:data.places[i]});
 		}
+		
 		addressSearch.setHtml(html);
+		
+		/*"<div class='fw_path' onclick=onclickStation();><div class='thumb'><img src='./resources/images/test/02.png'></div>" +
+		"<div class='state'><p><strong>가나</strong><em><span class='L0'></span></em></p>" +
+		"<p class='MgT5 borB0'><span class='condition01'>충전중</span>" +
+		"<img alt='급속충전 이미지' src='./resources/images/test/icon_fast.png' width='20px' height='20px' style='margin-left:140px;'>" +
+		"<em style='margin-top:5px;'>급속</em></p></div></div>"*/
 
     } else if (status === daum.maps.services.Status.ZERO_RESULT) {
 
@@ -246,84 +245,95 @@ placesSearchCB = function(status, data, pagination){
 }
 
 onclickStation = function(val){
+	
+	////console.info(_searchArr);
+	
 	var paramIdx = val;
+	////console.info(_searchArr[paramIdx].data);
 	var coreMap = Ext.getCmp("_mapDiv_");
-	var searchX = _searchArr[paramIdx].data.X;
-	var searchY = _searchArr[paramIdx].data.Y;
+	var searchX = _searchArr[paramIdx].data.LAT;
+	var searchY = _searchArr[paramIdx].data.LNG;
 	var isCenterCon = Ext.ComponentQuery.query("#centercontainer")[0];
 	var stationInfo = Ext.ComponentQuery.query("#stationInfo")[0];
-
-	var html = "<div id='wrap' style='width: 390px; position: relative; padding: 3px; min-width: 0px;'>" +
-	"<div class='wrap_content' style='width: 384px; overflow: hidden;'>" +
-	"<section>"+
-	"<div id='sub_tits'>" +
-	"<form id='form' action='' name='form' method='post'>" +
-	/*"<input type='hidden' id='stat_id' name='stat_id' value='45130001'>" +
-	"<input type='hidden' id='stat_nm' name='stat_nm' value='"+_searchArr[paramIdx].data.NM +"'>" +
-	"<input type='hidden' id='stat_addr' name='stat_addr' value='전라북도 군산시 오식도동 1010'>" +
-	"<input type='hidden' id='mode' name='mode' value=''>" +*/
-	"<a href='#' onclick='addBookMark();' class='like_ch'><span class='hidden'>즐겨찾기</span></a><h2>"+_searchArr[paramIdx].data.NM +"<em id='distant'></em></h2>" +
-	"</form></div><div id='sub_cont'><div class='sub_info_area' style='margin-top: 0px;'><span class='corp_info'>" +
-	"<img src='./resources/images/test/logo_keco.png' width='20' alt='환경부 로고' style='float: left'> <span>환경부(한국자동차환경협회)</span></span><div class='time_info'><span>" +
-	"<em>24시간 이용가능</em></span></div></div><table class='table_01'><tbody><tr><th>구분</th><th>충전기 타입</th><th>운전 상태</th></tr><tr><td><dl>" +
-	"<dt class='fast'>01</dt><dd style='margin-left: 0px;'>급속</dd></dl></td><td class='td2'>" +
-	"<span class='ev_type t01'>DC차데모</span>" +
-	"<span class='ev_type t02'>AC3상</span>" +
-	"<span class='ev_type t03'>DC콤보</span></td><td class='td3'>	<span class='ev_char c01'>사용가능</span></td></tr></tbody></table></div>" +
-	"<div class='middle_line'></div><div class='sub_group'><h3 class='tit3_info'>상세정보</h3><table class='table_02'>" +
-	"<tbody><tr><th style='width: 70px;'>주소</th><td>"+_searchArr[paramIdx].data.JUSO +"</td></tr><tr><th>운영기관</th>" +
-	"<td>환경부(한국자동차환경협회)</td></tr><tr><th>연락처</th><td>1661-9408</td></tr><tr><th>이용요금</th><td>유료</td></tr>" +
-	"<tr><th>최근 충전일</th><td>2017-01-04 14:28</td></tr><tr>" +
-	"<th>참고사항</th><td>없음 </td></tr></tbody></table></div>" +
-	"<div class='middle_line'></div>" +
-	"<div class='sub_group'>" +
-	"<h3 class='tit3_pic'>위치사진</h3>" +
-	"<div class='pic_area'>" +
-	"<img src='/mobile/images/common/pic_noimg.jpg' height='100' alt='충전소 사진'>" +
-	"<img src='/mobile/images/common/pic_noimg.jpg' height='100' alt='충전소 사진'>" +
-	"<img src='/mobile/images/common/pic_noimg.jpg' height='100' width='110'>" +
-	"</div>" +
-	"</div>" +
-	"</section></div></div>";
-
-
-	coreMap.map.getView().setCenter([searchX,searchY]);
-	coreMap.map.getView().setZoom(17);
-
-
-	if(isCenterCon == undefined){
-		var centerContainer = Ext.create("DgEv.view.center.CenterContainer");
-		stationInfo = Ext.ComponentQuery.query("#stationInfo")[0];
-		centerContainer.show(); 
-		stationInfo.setHtml(html);
-	}else{
-		stationInfo.setHtml(html);
-	}
+	
+	openWindowCharg(_searchArr[paramIdx].data.KO_STAT_NM, _searchArr[paramIdx].data.ADDR_1, _searchArr[paramIdx].data.STAT_ID);
+	
+	/*coreMap.map.getView().setCenter([searchX,searchY]);
+	coreMap.map.getView().setZoom(17);*/
+	
+	var moveLatLon = new daum.maps.LatLng(searchY, searchX);
+    
+    // 지도 중심을 부드럽게 이동시킵니다
+    // 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
+    coreMap.map.panTo(moveLatLon);
+    coreMap.map.setLevel(4);
 
 }
 
 onClickAddress=function(val){
+	
 	var paramIdx = val;
 	var coreMap = Ext.getCmp("_mapDiv_");
-	//console.info(_searchAddressArr[paramIdx].data);
+	//////console.info(_searchAddressArr[paramIdx].data);
 	var searchX = parseFloat(_searchAddressArr[paramIdx].data.longitude);
 	var searchY = parseFloat(_searchAddressArr[paramIdx].data.latitude);
 	
-	coreMap.map.getView().setCenter([searchX,searchY]);
-	coreMap.map.getView().setZoom(17);
+	
+	
+	var moveLatLon = new daum.maps.LatLng(searchY, searchX);
+	coreMap.map.panTo(moveLatLon);
+    coreMap.map.setLevel(4);
+    
+    var radiusItems = Ext.getCmp("radiusItems");
+    var params = [];
+    params.push(searchX);
+    params.push(searchY);
+    params.push(_searchAddressArr[paramIdx].data);
+    params.push(radiusItems.getValue().radiusItems);
+    
+    
+    
+	var radiusStore = Ext.create('DgEv.store.west.RadiusSearch',
+			params);
+	radiusStore.load();
+	var radiusAdd= "";
+	var timerObj = window.setInterval(function(){
+		
+		var addressRadiusData = [];
+		for(var i=0; i < radiusStore.data.length;i++){
+			addressRadiusData.push({ADDR:radiusStore.data.items[i].data.ADDR,
+				KO_STAT_NM: radiusStore.data.items[i].data.KO_STAT_NM,
+				STAT_ID: radiusStore.data.items[i].data.STAT_ID
+			})
+		}
+		
+		
+		////console.info(addressRadiusData);
+		
+		for(var j=0; j < addressRadiusData.length;j++){
+			radiusAdd += "<div class='fw_path' id='clickTest' onclick='openWindowCharg(\""+addressRadiusData[j].KO_STAT_NM+"\",\""+addressRadiusData[j].ADDR+"\",\""+addressRadiusData[j].STAT_ID+"\");'><div class='thumb'><img src='./resources/images/test/02.png'></div>" +
+			"<div class='state'><p><strong>"+addressRadiusData[j].KO_STAT_NM+"</strong><em><span class='L0'></span></em></p>" +
+			"<p>" +
+			addressRadiusData[j].ADDR +
+			"</p></div></div>";
+		}
+		document.getElementById(radiusStore[2].addressBCode).innerHTML = radiusAdd;
+		
+		window.clearInterval(timerObj);
+	}, 500);
+	
+	
+    
 }
-
-
 
 ChargChkBox = function(data,check){
 	
 	var coreMap = Ext.getCmp("_mapDiv_");
-	var layers = coreMap.map.getLayers();
-	for(var i = 0 ; i < layers.array_.length; i++){
-		console.info();
-		if(layers.array_[i].values_.TITLE != undefined){
-			if(layers.array_[i].values_.TITLE.substring(0,1) == data.layerId){
-				layers.array_[i].setVisible(check);
+	
+	for(var i = 0 ; _markers.length ; i++){
+		if(_markers[i].data != undefined){
+			if(Number(_markers[i].data.GUBUN) == data.layerId){
+				_markers[i].setVisible(check);
 			}
 		}
 	}
@@ -337,7 +347,7 @@ var coreMap = Ext.getCmp("_mapDiv_");
 
 	for(var i = 0 ; i < coreMap.map.getLayers().array_.length  ; i++){
 		if(coreMap.map.getLayers().array_[i].style_ != undefined){
-			console.info(coreMap.map.getLayers().array_[i]);
+			////console.info(coreMap.map.getLayers().array_[i]);
 			if(zoomLevel > 13){
 				coreMap.map.getLayers().array_[i].setStyle(
 					new ol.style.Style({
@@ -382,7 +392,7 @@ SelectZoom = function(value,type){
 	}
 	
 	geocoder.addr2coord(value, function(status, result) {
-		console.info(result);
+		////console.info(result);
 	    // 정상적으로 검색이 완료됐으면 
 	     if (status === daum.maps.services.Status.OK) {
 
@@ -397,6 +407,7 @@ SelectZoom = function(value,type){
 
 
 LayerSymbol = function(store){
+	////console.info(store);
 	var coreMap = Ext.getCmp("_mapDiv_");
 	
 	var x = "";
@@ -404,73 +415,212 @@ LayerSymbol = function(store){
 
 	var positions = [];
 	
+	_markers = [];
 	
 	var timerObj = window.setInterval(function(){
 		
-		
 		for(var i = 0 ; i < store.data.length; i++){
-			x = store.data.items[i].data.X;
-			y = store.data.items[i].data.Y;
+			x = store.data.items[i].data.ULNG;
+			y = store.data.items[i].data.ULAT;
 			
 			positions.push({latlng: new daum.maps.LatLng(y, x), 
 							GUBUN: store.data.items[i].data.GUBUN,
-							Rapid: store.data.items[i].data.Rapid,
-							Slow: store.data.items[i].data.Slow});
-			
+							STAT_ID: store.data.items[i].data.STAT_ID,
+							NM: store.data.items[i].data.KO_STAT_NM,
+							ADDR: store.data.items[i].data.ADDR,
+							Rapid: store.data.items[i].data.CHGER_TYPE});	
 		}
-		
 		
 		
 		for (var i = 0; i < positions.length; i ++) {
 		    // 마커 이미지의 이미지 크기 입니다
 		    var imageSize = new daum.maps.Size(29, 26); 
 		    
-		    
+		    /*
 		    var GUBUN = "";
-		    var PARID = "";
+		    var PARID = "";*/
+		    // 마커 이미지를 생성합니다
+		    /*GUBUN = positions[i].GUBUN;
 		    
-		    // 마커 이미지를 생성합니다    
-		    if(positions[i].GUBUN == "01"){
-		    	GUBUN = "1";
-		    }else if(positions[i].GUBUN == "02"){
-		    	GUBUN = "2";
-		    }else if(positions[i].GUBUN == "03"){
-		    	GUBUN = "3";
-		    }else if(positions[i].GUBUN == "04"){
-		    	GUBUN = "4";
-		    }else if(positions[i].GUBUN == "05"){
-		    	GUBUN = "5";
-		    }
-		    
-		    if(positions[i].Rapid == ""){
+		    if(positions[i].Rapid == 02){
 		    	PARID = "slow";
 		    }else{
 		    	PARID = "fast";
-		    }
+		    }*/
+		    //var markerImage = new daum.maps.MarkerImage("./resources/images/maker/m"+GUBUN+"_s_"+PARID+".png", imageSize); 
+		    var markerImage = new daum.maps.MarkerImage("./resources/images/maker/m1_s_fast.png", imageSize);
 		    
-		    
-		    
-		    var markerImage = new daum.maps.MarkerImage("./resources/images/maker/m"+GUBUN+"_s_"+PARID+".png", imageSize); 
 		    
 		    // 마커를 생성합니다
 		    var marker = new daum.maps.Marker({
-		        map: coreMap.map, // 마커를 표시할 지도
+		        //map: coreMap.map, // 마커를 표시할 지도
 		        clickable: true,
+		        data: positions[i],
 		        position: positions[i].latlng, // 마커를 표시할 위치
 		        title : "", // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
 		        image : markerImage // 마커 이미지 
 		    });
-	
+		    marker.data = positions[i];
+		    
+		    marker.setMap(coreMap.map);
+		    _markers.push(marker);
+		    
 			// 마커에 클릭이벤트를 등록합니다
 			daum.maps.event.addListener(marker, 'click', function() {
 				
+				openWindowCharg(marker.data.NM, marker.data.ADDR, marker.data.STAT_ID);
+				
 			});
-		   
 		    
 		}
 		
 		window.clearInterval(timerObj);
-	}, 100);
+	}, 300);
 
 	
+},
+
+openWindowCharg = function(Name,Addr,stationId){
+	var isCenterCon ="";
+	isCenterCon = Ext.ComponentQuery.query("#centercontainer")[0];
+	var coreMap = Ext.getCmp("_mapDiv_");
+	chargerList = "";
+	//충전기 리스트
+	var stationList = [];
+	chargerList += 
+		"<thead><tr><th>구분</th><th>충전기 타입</th><th>운전 상태</th><th style='border-right: 0px;'>장애 신고</th></tr></thead> " +
+		"<tbody>" ;
+	//해당 충전소에 충전기 정보 담기
+	for(var i = 0; i < coreMap.chargerList.items.length;i++){
+		if(coreMap.chargerList.items[i].data.C_STAT_ID == stationId){
+			stationList.push(coreMap.chargerList.items[i].data);
+		}
+	}
+	
+	if(isCenterCon == undefined){
+		
+		var centerContainer = Ext.create("Ext.window.Window",{
+			itemId:"centercontainer",
+			border:false,
+			title:"충전소 운영 현황",
+			layout:{
+				type:"hbox"
+			},
+			height:700,
+			width:410,
+			x:1400,
+			y:100,
+			items:[{
+				xtype:"panel",
+				itemId:"stationInfo",
+				border:false,
+				height:700,
+				width:410,
+				html: '<iframe id="chagerInfo" style="overflow:auto;width:100%;height:100%;" frameborder="0" src="./resources/jsp/windowpop/stationinfo2.jsp?stationId='+stationId+'"></iframe>'
+			}]
+		});
+		stationInfo = Ext.ComponentQuery.query("#stationInfo")[0];
+		centerContainer.show();
+	}
+
+	  
+	var timerObj = window.setInterval(function(){
+		
+		
+		for(var j = 0; j < stationList.length ; j++){
+			////console.info(stationList[j]);
+			//급속 완속 구분
+			var GUBUN = "";
+			var CHGER_TYPE = "";
+			if(stationList[j].C_CHGER_TYPE_CD == "01"){
+				GUBUN = "급속";
+				CHGER_TYPE = "<span class='ev_type t01'>DC차데모</span>";
+			}else if(stationList[j].C_CHGER_TYPE_CD == "02"){
+				GUBUN = "완속";
+				CHGER_TYPE = "<span class='ev_type t01'>승용차 AC완속</span>" +
+							 "<span class='ev_type t02'>AC3상</span>" ;
+			}else if(stationList[j].C_CHGER_TYPE_CD == "03"){
+				GUBUN = "급속";
+				CHGER_TYPE = "<span class='ev_type t01'>DC차데모</span>" +
+				 			 "<span class='ev_type t02'>AC3상</span>" ;
+			}else{
+				GUBUN = "급속";
+				CHGER_TYPE ="<span class='ev_type t01'>DC차데모</span>" +
+							"<span class='ev_type t02'>AC3상</span>" +
+							"<span class='ev_type t03'>DC콤보</span>";
+			}
+			
+			chargerList +=
+			"<tr> <th>"+stationList[j].C_CHGER_TYPE_CD+GUBUN+"</th>	"+
+			"<td>" +
+			CHGER_TYPE+
+			"</td><td>	" +
+			"<span class='use'>사용가능</span></td>" +
+			"<td>	" +
+			"<span class='phone'>전화</span><span class='message'>문자</span></td></tr>" ;
+		}
+		chargerList += "</tbody>";
+		
+		//충전기
+		var chgerWindow = document.getElementById('chagerInfo').contentWindow;
+		chgerWindow.document.getElementById('table_03').innerHTML = chargerList;
+		
+		
+		var stationHtml = "";
+		stationHtml += 
+			"		<div class='middle_line'></div>					"+
+			"			<div class='sub_group'>               "+
+			"				<h3 class='tit3_info'> 상세정보</h3>   "+
+			"				<table class='table_02'>    "+
+			"						<tbody>     "+
+			"							<tr><th style='width: 70px;'>도로명주소</th><td>"+Addr+"</td></tr>   "+
+			"							<tr><th>운영기관</th><td>(한국자동차환경협회)</td></tr>   "+
+			"							<tr><th>연락처</th><td>1661-9408</td></tr>   "+
+			"							<tr><th>참고사항</th><td>없음 </td></tr>   "+
+			"						</tbody>  "+
+			"				</table>   "+
+			"			</div>   ";
+		
+		//상세정보
+		var stationInfo = chgerWindow.document.getElementById('tab_01');
+		stationInfo.innerHTML = stationHtml;
+		
+		
+		var titleInfo = chgerWindow.document.getElementById('sub_tits');
+		var titleBookMark = ""
+		//console.info(Name);
+		$.ajax({
+		async: false,
+		type: 'POST',
+		url : './resources/jsp/bookMarkList.jsp',
+		data : {
+			STAT_ID:stationId,
+			MEMBER_ID:"test"
+		},
+		dataType : 'json',
+		success:function(data){
+			
+			var timerObj = window.setInterval(function(){
+				
+				//console.info(data);
+				
+				if(data.data.length == 0){
+					titleBookMark += "<a href='#' onclick='addBookMark(\""+stationId+"\",\""+Name+"\")' class='like_ch'><span class='hidden'>즐겨찾기</span></a>";
+				}else{
+					titleBookMark += "<a href='#' onclick='delBookMark(\""+stationId+"\",\""+Name+"\")' class='like_ch_on'><span class='hidden'>즐겨찾기</span></a>";
+					
+				}
+				titleBookMark +="<h2>"+Name+"<em id='distant'></em></h2>";
+				titleInfo.innerHTML = titleBookMark;
+				//console.info(titleBookMark);
+				window.clearInterval(timerObj);
+				}, 300);
+			//$('#cmnt_list').html(html);
+			}
+		});
+		
+		window.clearInterval(timerObj);
+		}, 700);
+
+	  
 }

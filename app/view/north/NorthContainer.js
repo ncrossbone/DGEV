@@ -10,17 +10,7 @@ Ext.define("DgEv.view.north.NorthContainer", {
 	bodyStyle: "margin-left:350px; background:url('./resources/images/design/top_right_bg.gif') !important;",
 	border:false,
 	height:36,
-	html:"<div id='selectArea'>" +
-		"<select id='sidoSelect' style='width: 90px; border: transparent; font-family: notokr; color:gray;'>" +
-		 "<option disabled >시도</option>" +
-		 "</select>"+
-		 "<select id='sggSelect' style='width: 120px; border: transparent; font-family: notokr; color:gray;'>" +
-		 "<option selected disabled >시군구</option>" +
-		 "</select>"+
-		 "<select id='demonLocation' style='margin-left:50px; width: 150px; border: transparent; font-family: notokr; color:gray;'>" +
-		 "<option selected disabled >충전소 이동</option>" +
-		 "</select>" +
-		 "</div>",
+	
 	items:[{
 		xtype:"container",
 		width:10
@@ -92,7 +82,7 @@ Ext.define("DgEv.view.north.NorthContainer", {
 Ext.onReady(function(){ 
 	getSido();
 	getDemo();
-	getSgg(27);
+	//getSgg(27);
 	getSgg(27,"west");
 	
 	$('#sidoSelect').change(function() {
