@@ -212,6 +212,7 @@ Ext.define("DgEv.view.west.WestStSearch", {
 			},{
 				xtype:"button",
 				style:"background : #555; border: 1px solid #303030",
+				id: "searchBtnId",
 				text:"조회",
 				itemId:"searchBtn",
 				handler:function(){
@@ -395,6 +396,7 @@ Ext.define("DgEv.view.west.WestStSearch", {
 				xtype:"button",
 				style:"background : #555; border: 1px solid #303030",
 				text:"초기화",
+				id: "resetBtn",
 				handler:function(){
 					Ext.MessageBox.confirm('급속 충전기 예약', '2016/12/31 03:00에 <br/> 01(급속)충전기를 예약하시겠습니까?', function(btn){
 						   if(btn === 'yes'){
@@ -409,12 +411,13 @@ Ext.define("DgEv.view.west.WestStSearch", {
 		}]
 	},{
 		xtype:"container",
-		height:20
+		height:20,
+		cls:"yamaeStyle"
 	},{
 		xtype:"tabpanel",
 		hidden:true,
 		itemId:"searchResult",
-		title:"<img src='./resources/images/design/blit_st_02_02.png' style='margin-bottom:-3px; margin-right: 3px;'/> 검색결과",
+		title:"<img src='./resources/images/design/blit_st_02_02.png' style='margin-bottom:-5px; margin-right: 3px;'/> 검색결과",
 		width:340,
 		border:false,
 		cls: "navigationTabPanel",
@@ -422,6 +425,8 @@ Ext.define("DgEv.view.west.WestStSearch", {
 		bodyCls: "navigationTabPanelBody",
 		items:[{
 			xtype:"panel",
+			cls:"stationSearchCls",
+			id:"stationSearchPanel",
 			title:"충전소 검색",
 			border:false,
 			//autoScroll:true,
@@ -442,32 +447,36 @@ Ext.define("DgEv.view.west.WestStSearch", {
 			}]
 		},{
 			xtype:"panel",
+			id:"addrSearchPanel",
 			title:"주소 검색",
 			border:false,
 			items:[{
 				xtype:"checkbox",
 				labelSeparator: '',
+				cls:"pdj-24station",
 				hideLabel: true,
-				style:"margin-left:10px;",
-				boxLabel: '24시간 운영 충전소',
+				style:"margin-left:10px; margin-bottom: 0px !important",
+				boxLabel: '<span style="font-size: 11px;font-family: 돋움;color: #465677;">' + '24시간 운영 충전소' + '</span>',
 				fieldLabel: 'text'
 			},{
 				xtype:"radiogroup",
 				fieldLabel: '검색반경',
 				id:"radiusItems",
 				style:"margin-left:10px;",
+				cls:"radiusRadio",
 				labelSeparator: '',
 				items: [{
 					boxLabel:"5km",
+					id:"radius5",
 					inputValue: '5',
 					checked:true
 				},{
 					boxLabel:"10km",
-					style:"margin-left:10px;",
+					id:"radius10",
 					inputValue: '10'
 				},{
 					boxLabel:"20km",
-					style:"margin-left:10px;",
+					id:"radius20",
 					inputValue: '20'
 				}]
 			},{

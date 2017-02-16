@@ -207,8 +207,8 @@ placesSearchCB = function(status, data, pagination){
 		var addressSearch = Ext.ComponentQuery.query("#addressSearch")[0];
 		var html = "";
 		for(var i = 0; i<data.places.length; i++){
-			html += "<dl class='list_add' style='cursor:pointer;' onclick=onClickAddress('"+ i +"');><span>" +
-					"<dl style='padding: 10px;' class='922496' tabindex='0'>" +
+			html += "<dl class='list_add' id='list_"+i+"' style='cursor:pointer;' onclick=onClickAddress('"+ i +"','"+data.places[i].addressBCode+"');><span>" +
+					"<dl style='padding: 15px 10px; font-size: 12px !important;' class='922496' tabindex='0'>" +
 					"<dt>"+data.places[i].title+"</dt>" +
 					"<dd class='tel'>"+data.places[i].phone +
 					"<span class='cate'>"+data.places[i].category +"</span></dd>" +
@@ -270,7 +270,15 @@ onclickStation = function(val){
 
 }
 
-onClickAddress=function(val){
+onClickAddress=function(val,stationId){
+	
+	//다시 클릭시 child remove
+	var clickId = document.getElementById("list_"+val);
+	if(document.getElementById(stationId).children.length != 0){
+		$("#"+stationId).empty();
+		return;
+	}
+	
 	
 	var paramIdx = val;
 	var coreMap = Ext.getCmp("_mapDiv_");
@@ -290,6 +298,8 @@ onClickAddress=function(val){
     params.push(searchY);
     params.push(_searchAddressArr[paramIdx].data);
     params.push(radiusItems.getValue().radiusItems);
+    
+    console.info(params);
     
     
     
@@ -407,7 +417,7 @@ SelectZoom = function(value,type){
 
 
 LayerSymbol = function(store){
-	////console.info(store);
+	console.info(store);
 	var coreMap = Ext.getCmp("_mapDiv_");
 	
 	var x = "";
@@ -419,36 +429,64 @@ LayerSymbol = function(store){
 	
 	var timerObj = window.setInterval(function(){
 		
-		for(var i = 0 ; i < store.data.length; i++){
-			x = store.data.items[i].data.ULNG;
-			y = store.data.items[i].data.ULAT;
+		for(var i = 0 ; i < store.data.items.length; i++){
+			var  cord = store.data.items[i].data.S_GPS_LAT_LNG.split(",");
+			x = cord[1];
+			y = cord[0];
+			
+			
+			
 			
 			positions.push({latlng: new daum.maps.LatLng(y, x), 
-							GUBUN: store.data.items[i].data.GUBUN,
+							//GUBUN: store.data.items[i].data.GUBUN,
 							STAT_ID: store.data.items[i].data.STAT_ID,
-							NM: store.data.items[i].data.KO_STAT_NM,
-							ADDR: store.data.items[i].data.ADDR,
-							Rapid: store.data.items[i].data.CHGER_TYPE});	
+							NM: store.data.items[i].data.S_KO_STAT_NM,
+							Y01: store.data.items[i].data.Y01,
+							N01: store.data.items[i].data.N01,
+							Y02: store.data.items[i].data.Y02,
+							N02: store.data.items[i].data.N02,
+							A01: store.data.items[i].data.A01,
+							A02: store.data.items[i].data.A02,
+							YA: store.data.items[i].data.YA,
+							NA: store.data.items[i].data.NA,
+							AA: store.data.items[i].data.AA
+							//ADDR: store.data.items[i].data.ADDR,
+							//Rapid: store.data.items[i].data.CHGER_TYPE
+							});	
 		}
 		
 		
 		for (var i = 0; i < positions.length; i ++) {
 		    // 마커 이미지의 이미지 크기 입니다
-		    var imageSize = new daum.maps.Size(29, 26); 
+		    var imageSize = new daum.maps.Size(34, 43); 
 		    
-		    /*
+		    
 		    var GUBUN = "";
-		    var PARID = "";*/
+		    var PARID = "";
 		    // 마커 이미지를 생성합니다
-		    /*GUBUN = positions[i].GUBUN;
+		    GUBUN = positions[i].GUBUN;
 		    
-		    if(positions[i].Rapid == 02){
+		    /*if(positions[i].Rapid == 02){
 		    	PARID = "slow";
 		    }else{
 		    	PARID = "fast";
 		    }*/
 		    //var markerImage = new daum.maps.MarkerImage("./resources/images/maker/m"+GUBUN+"_s_"+PARID+".png", imageSize); 
-		    var markerImage = new daum.maps.MarkerImage("./resources/images/maker/m1_s_fast.png", imageSize);
+		    //var markerImage = new daum.maps.MarkerImage("./resources/images/maker/m1_s_fast.png", imageSize);
+		    
+		    var markerImage = "";
+		    var select=undefined;
+		    if(select==undefined||select=="all"){
+				if(positions[i].AA!="10"){
+					markerImage = new daum.maps.MarkerImage("./resources/images/maker_numbering/m1_num0" + positions[i].YA + ".png", imageSize);
+				}else{
+					markerImage = new daum.maps.MarkerImage("./resources/images/maker_numbering/m1_num10.png", imageSize);
+				}
+			}else if(select=="rap"){
+				markerImage = new daum.maps.MarkerImage("./resources/images/maker/m2_b_fast.png", imageSize);
+			}else if(select=="slow"){
+				markerImage = new daum.maps.MarkerImage("./resources/images/maker/m4_b_slow.png", imageSize);
+			}
 		    
 		    
 		    // 마커를 생성합니다
@@ -502,21 +540,24 @@ openWindowCharg = function(Name,Addr,stationId){
 		var centerContainer = Ext.create("Ext.window.Window",{
 			itemId:"centercontainer",
 			border:false,
+			autoScroll:false,
+			id:"stationWindow",
 			title:"충전소 운영 현황",
 			layout:{
 				type:"hbox"
 			},
 			height:700,
 			width:410,
-			x:1400,
+			x:800,
 			y:100,
 			items:[{
 				xtype:"panel",
 				itemId:"stationInfo",
 				border:false,
-				height:700,
+				height:"100%",
+				autoScroll:false,
 				width:410,
-				html: '<iframe id="chagerInfo" style="overflow:auto;width:100%;height:100%;" frameborder="0" src="./resources/jsp/windowpop/stationinfo2.jsp?stationId='+stationId+'"></iframe>'
+				html: '<iframe id="chagerInfo" style="overflow:auto; width:100%; height:100%;" frameborder="0" src="./resources/jsp/windowpop/stationinfo2.jsp?stationId='+stationId+'"></iframe>'
 			}]
 		});
 		stationInfo = Ext.ComponentQuery.query("#stationInfo")[0];
@@ -551,35 +592,57 @@ openWindowCharg = function(Name,Addr,stationId){
 			}
 			
 			chargerList +=
-			"<tr> <th>"+stationList[j].C_CHGER_TYPE_CD+GUBUN+"</th>	"+
+			"<tr> <th class='AC'>"+stationList[j].C_CHGER_TYPE_CD+GUBUN+"</th>	"+
 			"<td>" +
 			CHGER_TYPE+
 			"</td><td>	" +
-			"<span class='use'>사용가능</span></td>" +
-			"<td>	" +
+			"<span class='use' style='font-size: 11px !important;'>사용가능</span></td>" +
+			"<td class='borR0'>	" +
 			"<span class='phone'>전화</span><span class='message'>문자</span></td></tr>" ;
 		}
 		chargerList += "</tbody>";
 		
 		//충전기
 		var chgerWindow = document.getElementById('chagerInfo').contentWindow;
+		
+		console.info(chgerWindow.document.getElementById('table_03'));
 		chgerWindow.document.getElementById('table_03').innerHTML = chargerList;
 		
 		
 		var stationHtml = "";
 		stationHtml += 
-			"		<div class='middle_line'></div>					"+
 			"			<div class='sub_group'>               "+
-			"				<h3 class='tit3_info'> 상세정보</h3>   "+
-			"				<table class='table_02'>    "+
-			"						<tbody>     "+
-			"							<tr><th style='width: 70px;'>도로명주소</th><td>"+Addr+"</td></tr>   "+
-			"							<tr><th>운영기관</th><td>(한국자동차환경협회)</td></tr>   "+
-			"							<tr><th>연락처</th><td>1661-9408</td></tr>   "+
-			"							<tr><th>참고사항</th><td>없음 </td></tr>   "+
-			"						</tbody>  "+
-			"				</table>   "+
+			
+			
+			"  <table class='table_03 MgT10'>																													"+
+			"      <colgroup>                                                                   "+
+			"          <col width='90' />                                                       "+
+			"          <col />                                                                  "+
+			"      </colgroup>                                                                  "+
+			"      <tbody>                                                                      "+
+			"          <tr>                                                                     "+
+			"              <th class='PdL10 AL'>도로명주소</th>                                    "+
+			"              <td class='PdL10 AL borR0'>"+Addr+"</td>       "+
+			"          </tr>                                                                    "+
+			"          <tr>                                                                     "+
+			"              <th class='PdL10 AL'>운영기관</th>                                      "+
+			"              <td class='PdL10 AL borR0'>환경부</td>                   "+
+			"          </tr>                                                                    "+
+			"          <tr>                                                                     "+
+			"              <th class='PdL10 AL'>연락처</th>                                        "+
+			"              <td class='PdL10 AL borR0 L0'>1661-9408</td>                            "+
+			"          </tr>                                                                    "+
+			"          <tr>                                                                     "+
+			"              <th class='PdL10 AL'>참고사항</th>                                      "+
+			"              <td class='PdL10 AL borR0'>없음</td>                                 "+
+			"          </tr>                                                                    "+
+			"      </tbody>                                                                     "+
+			"  </table>                                                                         "+
+			
 			"			</div>   ";
+			
+			
+		
 		
 		//상세정보
 		var stationInfo = chgerWindow.document.getElementById('tab_01');

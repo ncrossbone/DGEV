@@ -15,7 +15,13 @@
 <link rel="stylesheet" type="text/css" href="../../../resources/jsp/windowpop/jquery-impromptu.css">
 <link rel="stylesheet" type="text/css" href="../../../common.css">
 <link rel="stylesheet" type="text/css" href="../../../tooltip.css">
+<link rel="stylesheet" type="text/css" href="../../../BasicSet.css">
+<style>
+html { overflow-x: hidden !important; }
+section { min-height: auto !important; }
 
+
+</style>
 <script src="../../../resources/js/jquery-1.7.2.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui2.js"></script>
 <script type="text/javascript" src="../../../resources/jsp/windowpop/ui2.js"></script>
@@ -33,7 +39,7 @@ function getRegCargerList(){
 	$.ajax({
 		async: false,
 		type: 'POST',
-		url : '/DGEV/resources/jsp/ChargerList.jsp',
+		url : '../../../resources/jsp/ChargerList.jsp',
 		data : {
 			stationId : stationId
 		},
@@ -46,12 +52,15 @@ function getRegCargerList(){
 			
 				var clHtml='';
 				var date=getDate();
-				$('#reg_chargerList').html('');
+				$('#charger_resev').html('');
 				for(var i=0;i<data.data.length;i++){
+					<%-- clHtml+="<div id=\'"+ <%=stationId%> + '_' +data.data[i].C_CHGER_ID + "\'>"; 					
+					clHtml+="</div>"; --%>
+					
 					clHtml+="<div id=\'"+ <%=stationId%> + '_' +data.data[i].C_CHGER_ID + "\'>"; 					
 					clHtml+="</div>";
 					
-					document.getElementById('reg_chargerList').innerHTML = clHtml;
+					document.getElementById('charger_resev').innerHTML = clHtml;
 					//$('#reg_chargerList').append(clHtml);
 					
 					
@@ -123,7 +132,7 @@ function getBookingInfo(stat_id,date,order, day, type){
 	$.ajax({
 		async: false,
 		type: 'POST',
-		url : '/DGEV/resources/jsp/bookingInfo.jsp',
+		url : '../../../resources/jsp/bookingInfo.jsp',
 		data : {
 			STAT_ID:stat_id
 			,RESV_DATE:resv_date
@@ -136,21 +145,23 @@ function getBookingInfo(stat_id,date,order, day, type){
 			
 			var timerObj = window.setInterval(function(){
 				console.info(date);
-				var html='<div class="ev_reserve">'
-						+'<div class="date">'
-						+"<a href=\"javascript:getBookingInfo(\'"+ stat_id +"\',\'"+date +"\',\'"+ order +"\',\'-1\',\'"+ type + "\')\">"
-						+'<span class="none">이전 일</span></a>'
-						+'<b>'+ date +'</b>'
-						+"<a class=\"next\" href=\"javascript:getBookingInfo(\'"+ stat_id +"\',\'"+date +"\',\'"+ order +"\',\'1\',\'"+ type + "\')\">"
-						+'<span class="none">다음 일</span></a></div>'
-						+'</div>';
-				 
+				var html=" <div class='line_info'>"
+						+ "    	<a href=\"javascript:getBookingInfo(\'"+ stat_id +"\',\'"+date +"\',\'"+ order +"\',\'-1\',\'"+ type + "\')\" style='margin-right: 10px;'><img src='../../../resources/images/btn_pre.png' /></a>"
+						+ "    	"+ date +""
+						+ "      <a class=\"next\" href=\"javascript:getBookingInfo(\'"+ stat_id +"\',\'"+date +"\',\'"+ order +"\',\'1\',\'"+ type + "\')\" style='margin-left: 10px;'><img src='../../../resources/images/btn_next.png' /></a>"
+						+ "    </div>";
+						
 				
-				html+='<div class="timeUse">'
-					+'<h5 class="tit5"><span class="textNum">'+ order +'</span>'+ type +' 예약</h5>'
-					+'<div class="timeSelect">'
-			     	+'<div>';
-			
+				
+			     	html+='    <div>								' 
+			     	+'        <p class="tit">예약 시간 선택</p>           ' 
+			     	+'        <div class="divi_sel">                      ' 
+			     	+'            <select id="divi" style="width: 98px">  ' 
+			     	+'                <option>'+ order+type +'</option>             ' 
+			     	+'            </select>                               ' 
+			     	+'        </div>                                      ' 
+			     	+'    </div>                                          ';
+
 				
 				
 				var list=data;
@@ -168,39 +179,40 @@ function getBookingInfo(stat_id,date,order, day, type){
 				}
 				//console.info(times);
 				
+				html+='<ul class="opinion_search MgT3">  ';
 				for(var i=1;i<25;i++){
-					if(i%6==1) html+='<div>';
+					if(i%12==1) html+='<li class="rev">';
 					var booked=false;
 					var mine=false;
 					for(var j=0;j<times.length;j++){
 						if(times[j]['time']==i){
-							if($("#member_id").val()==times[j]['member']){
+							//if($("#member_id").val()==times[j]['member']){
+							if("11"==times[j]['member']){
 								mine=true;
 							}
 							booked=true;
 						}
 					}
 					if(mine){
-						html+='<a href="#" onclick="javascript:alert(\'이미 예약되었습니다\')" class="on">' + i + '</a>';
+						html+='<a class="on" href="#" onclick="javascript:alert(\'이미 예약되었습니다\')" >' + i + '</a>';
 					}else if(booked){
-						html+='<a href="#" onclick="javascript:alert(\'이미 예약되었습니다\')">' + i + '</a>';
+						html+='<a class="on" href="#" onclick="javascript:alert(\'이미 예약되었습니다\')">' + i + '</a>';
 						
 					}else{
 						if(type=='급속'){
-							html+='<a href="#" onclick="javascript:resvCharger(\''+ stat_id +'\',\''+ order +'\',\''+ date +'\',\''+ i +'\',\'0\',\''+ type +'\')\" class="ok">' + i + '</a>';
+							html+='<a href="#" onclick="javascript:resvCharger(\''+ stat_id +'\',\''+ order +'\',\''+ date +'\',\''+ i +'\',\'0\',\''+ type +'\')\" >' + i + '</a>';
 							
 						}else{
-							html+='<a href="#" onclick="javascript:resvCharger2(\''+ stat_id +'\',\''+ order +'\',\''+ date +'\',\''+ i +'\',\''+ type +'\')\" class="ok">' + i + '</a>';
+							html+='<a href="#" onclick="javascript:resvCharger2(\''+ stat_id +'\',\''+ order +'\',\''+ date +'\',\''+ i +'\',\''+ type +'\')\" >' + i + '</a>';
 								
 						}
 						
 					}
-					if(i%6==0) html+='</div>';
+					if(i%12==0) html+='</li>';
 				}
-				
-				html+='</div></div></div>';
-				
-				
+					
+				html += "</ul>";
+				console.info(document.getElementById(stat_id+"_"+order));
 				document.getElementById(stat_id+"_"+order).innerHTML = html;
 				//$("#"+stat_id+"_"+order).html(html);
 			
@@ -225,7 +237,7 @@ function getCmntList(){
 	$.ajax({
 		async: false,
 		type: 'POST',
-		url : '/DGEV/resources/jsp/stationCmnt.jsp',
+		url : '../../../resources/jsp/stationCmnt.jsp',
 		data : {
 			STAT_ID:stat_id
 		},
@@ -250,14 +262,25 @@ function getCmntList(){
 				var charger_id = (list[i].CHARGER_ID == '00' ? '전체' : list[i].CHARGER_ID);
 				
 				if(i==0){
-					html+='<div class="reply_box mt10">';
+					//html+='<div class="reply_box mt10">';
 				}else if(i==list.length-1){
-					html+='<div class="reply_box last">';
+					//html+='<div class="reply_box last">';
 				}else{
-					html+='<div class="reply_box">';
+					//html+='<div class="reply_box">';
 				}
 				 
-				html+='<dl class="reple_info">'
+				
+				html+= ' <dl class="post borB0">  '
+				+ ' 	<a href="#" class="post_del"></a> '
+				+ ' 	<dt>   '
+				+ '     	<span class="divi'+list[i].CMNT_TYPE+'">'+ cmnt_type +'</span><b>' + list[i].INS_ID +'</b><em>01(급속)</em>  '
+				+ '         <time datetime="2017-02-15">'+list[i].INS_DT+'</time>    	      '
+				+ '     </dt>                                                                   '
+				+ '     <dd>'+ list[i].CMNT +'</dd>              '
+				+ ' </dl>                                                                       ';
+				
+				
+				/* html+='<dl class="reple_info">'
 					+'<dt><span class="userName">' + list[i].INS_ID +'</span>'
 					+'<em class="infoType">'+ cmnt_type +'</em><em>'+ charger_id +'</em>'
 					+'<em>'+list[i].INS_DT+'</em></dt>'
@@ -266,8 +289,8 @@ function getCmntList(){
 				if(list[i].INS_ID==$('#member_id').val()){
 					html+='<span class="btn_re_zone"><a href="javascript:deleteCmnt(\''+ list[i].CMNT_ID +'\')" class="btn_close"><em class="none">닫기</em></a></span>';
 				}
-					+'<span class="btn_re_zone"><a href="#" class="btn_close"><em class="none">닫기</em></a></span>'
-				html+='</div>';
+					+'<span class="btn_re_zone"><a href="#" class="btn_close"><em class="none">닫기</em></a></span>' */
+				//html+='</div>';
 			}
 			
 			//////console.info(html);
@@ -310,7 +333,7 @@ function resvCharger(stat_id,order,date,time,expr,type){
 	$.ajax({
 		async: false,
 		type: 'POST',
-		url : '/DGEV/resources/jsp/bookingInsert.jsp',
+		url : '../../../resources/jsp/bookingInsert.jsp',
 		data : {
 			RESV_DATE: resvDate+time+'0000'
 			,EXPR_DATE: resvDate+expr_time+'0000'
@@ -382,13 +405,13 @@ function setCmnt(){
 		return;
 	}
 
-	var charger_id=$('#charger_id option:selected').val();
+	var charger_id=$('#tool_charger option:selected').val();
 	if(charger_id == "1"){
 		charger_id = "01";
 	}else if(charger_id == "2"){
 		charger_id = "02";
 	}
-	var cmnt_type=$('#cmnt_type option:selected').val();
+	var cmnt_type=$('#divi option:selected').val();
 	
 	if(cmnt_type == "1"){
 		cmnt_type = "01";
@@ -420,7 +443,7 @@ function setCmnt(){
 	$.ajax({
 		async: false,
 		type: 'POST',
-		url : '/DGEV/resources/jsp/stationCmntInsert.jsp',
+		url : '../../../resources/jsp/stationCmntInsert.jsp',
 		data : {
 			CHARGER_ID:charger_id
 			,CMNT_TYPE:cmnt_type
@@ -497,27 +520,38 @@ delBookMark = function(stationId,name){
 
 
 </head>
-<div id="wrap" style="width: 390px; position: relative; padding: 3px; min-width: 0px;">
-			<div class="wrap_content" style="width: 384px; overflow: hidden;">
+<div id="wrap" style="position: relative; min-width: 0px;">
+			<div class="wrap_content" style="overflow: hidden;">
 			<section>
 			<div id="sub_tits">
 				<!-- <a href='#' class='like_ch'><span class='hidden'>즐겨찾기</span></a>
 				<h2>새만금경제자유구역사업단<em id='distant'></em></h2> -->
 			</div>
-			<div id="sub_cont">
-				<div class="sub_info_area" style="margin-top: 0px;"><span class="corp_info">
-					<img src="/DGEV/resources/images/test/logo_keco.png" width="20" alt="환경부 로고" style="float: left"> 
-					<span>환경부(한국자동차환경협회)</span></span>
-					<div class="time_info">
-						<span><em>24시간 이용가능</em></span>
-					</div>
-				</div>				
+			
+			
+			<div style="margin: 0px 8px 0px 5px;">
+			
+			
+			
+			<div id="tool_top">
+				<div class="oper">
+					<img src="../../../resources/images/test/logo_keco.png" width="15" alt="환경부 로고" /><span>환경부 (한국자동차환경협회)</span>
+				</div>
+				
+				<div class="work_time">
+					24시간 이용가능
+				</div>
+			</div>
+			
+			
 				<table class="table_03" id="table_03">
 				</table>
 				
+				</div>
+				
 		</div>
 		
-		<div class="gis_tab">
+		<div class="gis_tab" style="margin-left: 5px; margin-right: 8px;">
                 	 <div class="tab_area">
                         <div class="over">
                             <h4 class="wtt1"><a href="javascript:;">충전소 상세정보</a></h4>
@@ -528,7 +562,7 @@ delBookMark = function(stationId,name){
                         <div>
                             <h4 class="wtt2"><a href="javascript:;">충전소 이모저모</a></h4>
                             <div id="tab_02">
-                                <div class="inp_form">
+                                <!-- <div class="inp_form">
                                 	<p class="txt_input">
                                     	<label class="w70">구분</label>
                                     	<select id="cmnt_type">
@@ -551,9 +585,31 @@ delBookMark = function(stationId,name){
                                     <p class="txt_input last">
                                     	<span class="inp_box bg_w fl per75"><input type="text" id="cmnt" placeholder="내용 입력" class="bg_w per90" /></span><a href="#" onclick="javascript:setCmnt();" class="btn_01_2 fl ml10" style="width:10%">등록</a>
                                     </p>
-                                </div>
+                                </div> -->
+                                <div class="opinion_search">
+                                	<p>
+										<label for="divi">구분</label>
+									    <select id="divi" style="width: 110px; height: 30px; ">
+									        <option>선택</option>
+							    				<option value='01'>충전후기</option>
+							    				<option value='02'>불편사항</option>
+							    				<option value='03'>장애사항</option>
+							    				<option value='04'>개선요청</option> 
+							    				<option value='05'>기타</option>
+									    </select>
+									    <label for="tool_charger" style="margin-left: 25px;">충전기</label>
+									    <select id="tool_charger" style="width: 110px; height: 30px; ">
+									        	<option>선택</option>
+							    				<option value='01'>01(급속)</option>
+							    				<option value='02'>02(완속)</option>
+									    </select>
+									</p>
+									<p style="margin-top: 5px;">
+										<input type="text" id="cmnt" style="margin-left: 42px; width: 250px;" placeholder="내용 입력" /><a href="#" onclick="javascript:setCmnt();" class="btn_write">등록</a>
+									</p>
+								</div>
                                 <div id="cmnt_list">
-                                
+                                	
                                 </div>
                                 
                             </div>                            
@@ -561,18 +617,21 @@ delBookMark = function(stationId,name){
                         <div>
                             <h4 class="wtt3"><a href="javascript:;">충전기 예약</a></h4>
                             <div id="tab_03">
-                            	<div id="reg_chargerList">
+                            	<!-- <div id="reg_chargerList"> -->
+                            	<div id="charger_resev">
                             	
                             	</div>
-                              
-                                <div class="ev_reserve_legend">
-                                	<span><em class="re_ok">OK</em>예약가능</span><span><em class="re_ing">ing</em>예약중</span><span><em class="re_no">NO</em>예약불가</span>
-                                </div>
-                                <div class="ev_reserve_info">
-                                <p>충전기를 예약하시려면 해당 충전기의 시간 버튼을 클릭하세요.</p>
-                                <p>급속충전기는 1회 예약시 1시간만 가능합니다.</p>
-                                <p>완속충전기는 1회 예약시 최장 8시간까지 설정 가능합니다.</p>
-                                </div>
+                              	 <ul class="model_ex">
+							    	<li><span class="rev01"></span>예약가능</li>
+							        <li><span class="rev02"></span>예약가능</li>
+							        <li><span class="rev03"></span>예약가능</li>
+							    </ul> 
+							    <ul class="refer">
+							    	<li>충전기를 예약하시려면 해당 충전기의 시간 버튼을 클릭하세요.</li>
+							        <li>급속 충전기는 1회 예약시 1시간만 가능합니다.</li>
+							        <li class="MgB0">완속충전기는 1회 예약시 최장 8시간까지 설정 가능합니다.</li>
+							    </ul>
+							                              	
                             </div>
                         </div>
                     </div>

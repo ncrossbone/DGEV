@@ -38,7 +38,7 @@ Ext.define("DgEv.view.west.WestFavorSt", {
     						
     						if(data.data[i].STAT_ID == coreMap.stationList.items[j].data.STAT_ID){
     							//fvStationList.push({stationId:data.data[i].STAT_ID});
-    							fvHtml += "<div class='fw_path' onclick=onclickStation();><div class='thumb'><img src='./resources/images/test/02.png'></div>" +
+    							fvHtml += "<div class='fw_path' onclick=onclickStation();><a href='#' class='post_del'></a><div class='thumb'><img src='./resources/images/test/02.png'></div>" +
 								"<div class='state'><p class='st_a'><strong>" + coreMap.stationList.items[j].data.KO_STAT_NM + "</strong></p>" +
 								"<p class='st_b'>" +
 								coreMap.stationList.items[j].data.ADDR +

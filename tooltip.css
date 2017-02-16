@@ -6,7 +6,7 @@ body { margin: 0px !important; }
 .table_03 { width: 100%; border-top: 2px solid #004b9a; font-size: 13px; letter-spacing: -1px; margin-top: 5px; }
 .table_03> thead { }
 .table_03> thead> tr {  }
-.table_03> thead> tr> th { padding: 8px 0px; border-bottom: 1px solid #d9d9d9; border-right: 1px solid #d9d9d9; }
+.table_03> thead> tr> th { padding: 8px 0px; border-bottom: 1px solid #d9d9d9; border-right: 1px solid #d9d9d9; text-align: center; }
 .table_03> tbody { }
 .table_03> tbody> tr { }
 .table_03> tbody> tr> th { padding: 8px 0px; background: #f9f9f9; color: #141414; border-bottom: 1px solid #d9d9d9; border-right: 1px solid #d9d9d9; }
@@ -16,3 +16,109 @@ body { margin: 0px !important; }
 .table_03> tbody> tr> td> span.phone, .table_03> tbody> tr> td> span.message { width: 21px; height: 19px; padding-left: 23px; padding-top: 4px; margin-right: 7px; display: inline-block; }
 .table_03> tbody> tr> td> span.phone { background: url(./resources/images/icon_phone.png) no-repeat; }
 .table_03> tbody> tr> td> span.message { background: url(./resources/images/icon_message.png) no-repeat; }
+
+
+/*충전소 이모저모*/
+.opinion_search { padding: 10px 15px; border: 1px solid #dfdfdf; background: #eff4f7; font-size: 13px; letter-spacing: -1px; margin-bottom: 10px; }
+.opinion_search> p { margin: 0px; }
+.opinion_search label { background: url(./resources/images/blit_3.gif) left 7px no-repeat; padding-left: 8px; margin-right: 10px; }
+.opinion_search select, .divi_sel select, input { padding: 4px !important; border: 1px solid #d0d0d0; color: #585858; letter-spacing: -1px; }
+.opinion_search> li { text-align: center; }
+.opinion_search> li.rev { }
+.opinion_search> li.rev> a { width: 20px; height: 17px; padding-top: 3px; margin-right: 1px; border: 1px solid #d3d3c7; background: #fff; font: 11px Verdana; color: #4f4f4f; display: inline-block; }
+.opinion_search> li.rev> a:hover { border-color: #ff333c; }
+.opinion_search> li.rev> a.on { background: #ff333c; color: #fff; border-color: #ff333c; }
+
+dl.post { padding: 10px; border: 1px solid #dfdfdf; font-size: 13px; position: relative; margin: 0px !important; }
+a.post_del { width: 11px; height: 11px; background: url(./resources/images/post_del.png) no-repeat; display: block; position: absolute; right: 10px; top: 14px; }
+a.post_del:hover { background: url(./resources/images/post_del_ov.gif) no-repeat; }
+dl.post> dt { border-bottom: 1px dashed #dfdfdf; padding-bottom: 5px; }
+dl.post> dt:after { content:""; clear: both; display: block; }
+dl.post> dt> b { font: normal 13px 'notokr-regular'; display: inline-block; margin-left: 10px; padding-right: 10px; background: url(./resources/images/linebar.gif) right center no-repeat; }
+dl.post> dt> em { margin-left: 10px; font: normal 13px 'notokr-regular'; }
+dl.post> dt> span { float: left; min-width: 40px; padding: 3px 5px; color: #FFF; font: 11px '돋움'; letter-spacing: -1px; vertical-align: middle; text-align: center; }
+dl.post> dt> span.divi01 { background: #949c72; }
+dl.post> dt> span.divi02 { background: #72879c; }
+dl.post> dt> span.divi03 { background: #729c95; }
+dl.post> dt> span.divi04 { background: #89729c; }
+dl.post> dt> span.divi05 { background: #767676; }
+dl.post> dt> time { margin-top: 3px; margin-right: 15px; float: right; font: 11px Verdana; color: #828282; background: url(./resources/images/icon_clock.png) left center no-repeat; padding-left: 13px; }
+
+
+a.btn_write { padding: 2px 6px; border: 1px solid #475ba6; background: #477aa6; display: inline-block; margin-left: 3px; text-decoration: none; color: #fff; }
+
+
+/*예약*/
+dl.post> dd { margin: 5px 0px 0px 0px; font-size: 12px; color: #4d4d4d; letter-spacing: -1px; }
+#charger_resev { letter-spacing: -1px; }
+#charger_resev> div> .line_info { border: 1px solid #dfdfdf; position: relative; padding: 5px; text-align: center; letter-spacing: 0px; font-size: 15px; }
+#charger_resev> div> .line_info img { vertical-align: middle; }
+#charger_resev> div> div { margin-top: 15px; }
+#charger_resev> div> div:after { content:""; clear: both; display: block; }
+#charger_resev> div> div> .tit { width: 150px; letter-spacing: -2px; background: url(./resources/images/blit007.gif) left center no-repeat; font-size: 14px; padding-left: 20px;float: left; }
+#charger_resev> div> div> .divi_sel { width: 150px; text-align: right; float: right; }
+#charger_resev> div> div> .divi_sel> select { padding: 2px 4px !important; }
+
+.model_ex { font-size: 11px; }
+.model_ex:after { content:""; clear: both; display: block; }
+.model_ex> li { float: left; margin-right: 15px; letter-spacing: -1px; } 
+.model_ex> li> span { width: 13px; height: 13px; margin-right: 3px; display: inline-block; vertical-align: middle; }
+.model_ex> li> span.rev01 { border: 1px solid #d4d3ce; }
+.model_ex> li> span.rev02 { background: #ff333c; border: 1px solid #ff333c; }
+.model_ex> li> span.rev03 { background: #e1e1e1; border: 1px solid #c1c1c1; }
+
+
+.refer { padding: 10px 0px 7px 10px; border: 1px solid #e1e1e1; margin-top: 25px; background: #f5f5f5; }
+.refer> li { background: url(./resources/images/blit008.gif) left 4px no-repeat; padding-left: 5px;  font: 11px '돋움'; margin-bottom: 2px; color: #626262; letter-spacing: -1px; }
+
+
+
+#tool_top { margin-top: 5px; }
+#tool_top:after { content:""; clear: both; display: block; }
+#tool_top> .oper, #tool_top> .work_time { border-radius: 3px; padding: 5px 8px; color: #fff; font: 11px '돋움'; letter-spacing: -1px; }
+#tool_top> .oper { float: left; background: #94c318; }
+#tool_top> .oper img { vertical-align: middle; margin-right: 3px; }
+#tool_top> .work_time { float: right; background: url(./resources/images/test/icon_time.png) 7px center no-repeat #18c396; padding-left: 23px; background-size: 12px 12px; }
+
+
+
+.yamaeStyle{
+	background: #f3f3f3; border-bottom: 1px solid #d9d9d9; border-left: 1px solid #d9d9d9; border-right: 1px solid #d9d9d9; margin: 0px 5px 5px 5px; 
+}	
+
+.radiusRadio{
+	margin: 0px 5px !important;
+    background: url(./resources/images/blit_3.gif) 12px 20px no-repeat #eff4f7;
+    width: 330px;
+    padding: 5px 20px;
+    border: 1px solid #dfdfdf;
+    border-bottom: 0px !important;
+}
+
+#radiusItems-labelTextEl{
+	    font-weight: bold;
+}
+
+#radius5-boxLabelEl, #radius10-boxLabelEl, #radius20-boxLabelEl {
+	letter-spacing: 0px; margin-right: 10px;
+	font-size: 13px; 
+}
+
+#stationWindow_header-title-textEl{
+	    letter-spacing: -1px;
+	    font-family: 'notokr-regular';
+}
+
+#searchBtnId, #resetBtn{
+	    padding: 4px 7px 7px 7px;
+}
+
+#navigationTabPanel_header-title-textEl{
+	    font-size: 14px;
+}
+
+.x-tab-inner .x-tab-inner-default{
+	font-size: 15px;
+    font-family: 'notokr-bold';
+    letter-spacing: -1px;
+}

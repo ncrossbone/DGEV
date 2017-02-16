@@ -18,12 +18,7 @@ Ext.define('DgEv.view.map.CoreMap', {
 
 	width: "100%",
 	height: "100%",
-	html:"<div style='position:absolute; right:30px; top: 50px; z-index:20000;'>" +
-			"<span id='mapSelect'>" +
-		 	"<a class='mapClick' onclick=Ext.getCmp('_mapDiv_').onclickMapSelect(this); id='map0'>&nbsp&nbsp일반지도&nbsp&nbsp</a>" +
-		 	"<a class='mapDefault' onclick=Ext.getCmp('_mapDiv_').onclickMapSelect(this); id='map1'>&nbsp&nbsp위성사진&nbsp&nbsp</a>" +
-		 "</span></div>" +
-		 "<div style='position:absolute; top:8%; left:96%; width:60px; z-index:20000; height:200px;'>" +
+	html:"<div style='position:absolute; top:8%; left:96%; width:60px; z-index:20000; height:200px;'>" +
 	  "<div class='zoomText'>" +
 	  	"<div style='top:75px; background: url(./resources/images/zoom.png) -216px 0px;'></div>" +
 	  	"<div style='top:95px; background: url(./resources/images/zoom.png) -245px 0px;'></div>" +

@@ -32,15 +32,8 @@ Ext.define("DgEv.store.west.ChargerSearchStore", {
         		success : function(response, opts) {
         			
         			jsonData = Ext.util.JSON.decode( response.responseText );
-
-        			if(jsonData.data[0].msg == undefined || jsonData.data[0].msg == ""){
-        				//console.info(jsonData.data);
-        				store.setData(jsonData.data);
-        				//console.info(store);
-        			}
-        			else{
-        				alert("데이터가 존재하지 않습니다")
-        			}
+        			store.setData(jsonData.data);
+        			
         			
         		},
         		failure: function(form, action) {
