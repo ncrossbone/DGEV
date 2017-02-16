@@ -2,7 +2,7 @@ Ext.define("DgEv.store.map.LayerStore", {
     extend : 'Ext.data.Store',
     //extend : 'Ext.data.BufferedStore', 
     /* {name: 'OUT_FLOW_SUM', type 'number'}*/
-    proxy: {
+    /*proxy: {
 		type: 'ajax',
 		url: 'resources/data/json/dg_point.json',
 		reader: {
@@ -12,12 +12,12 @@ Ext.define("DgEv.store.map.LayerStore", {
 	
 	constructor: function(){
 		this.callParent();
-	},
+	},*/
 	
 	listeners: {
 		load: function(store) {
 			
-			return;
+			//return;
 			
 			var jsonArray = "";
 			
@@ -29,30 +29,8 @@ Ext.define("DgEv.store.map.LayerStore", {
         			jsonData = Ext.util.JSON.decode( response.responseText );
 
         			if(jsonData.data[0].msg == undefined || jsonData.data[0].msg == ""){
-        				console.info(jsonData.data);
-        				
-        				//jsonData.data[6].ULAT
-        				//jsonData.data[6].ULNG
-        				
-        				/*var geocoder = new daum.maps.services.Geocoder(),
-	        				wtmX = jsonData.data[6].ULAT, 
-	        			    wtmY = jsonData.data[6].ULNG;
-        				
-        				geocoder.transCoord(wtmX, 
-        	                    wtmY, 
-        	                    daum.maps.services.Coords.WTM, // 변환을 위해 입력한 좌표계 입니다
-        	                    daum.maps.services.Coords.WGS84, // 변환 결과로 받을 좌표계 입니다 
-        	                    transCoordCB);
-        				
-        				
-        				function transCoordCB(status, result) {
-
-        				    // 정상적으로 검색이 완료됐으면 
-        				    if (status === daum.maps.services.Status.OK) {
-        				    	console.info(result.y);
-        				    	console.info(result.x);
-        				    }
-        				}*/
+        				//console.info(jsonData.data);
+        				store.setData(jsonData.data);
         				
         				
         			}

@@ -5,7 +5,7 @@ Ext.define("DgEv.view.west.WestContainer", {
 	collapsible: true,
 	collapseDirection: 'left',
 	headerPosition: 'right',
-
+	y:65,
 	style:"border-bottom:solid 5px #445676;",
 	header:{
 		width:8,
@@ -20,13 +20,21 @@ Ext.define("DgEv.view.west.WestContainer", {
 	defaults: {
 		styleHtmlContent: true
 	},
-	requires: ["DgEv.view.west.WestStSearch",
+	requires: [
+			   "DgEv.view.west.WestStSearch",
 	           "DgEv.view.west.WestFavorSt"],
-	items:[{
+    items:[{
+		xtype:"dgev-weststsearch"
+		},{
+		xtype:"dgev-westfavorst"
+	}],
+	
+	
+	/*{
 		xtype:"dgev-weststsearch"
 	},{
 		xtype:"dgev-westfavorst"
-	}],
+	}*/
 	initComponent: function(){
 
 		this.callParent();

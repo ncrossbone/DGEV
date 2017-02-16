@@ -1,6 +1,6 @@
 <%@ page language="java" import="java.sql.*"%>
 <%
-String DB_URL = "jdbc:mysql://112.217.167.123:43306/evcis";
+String DB_URL = "jdbc:mysql://112.217.167.123:43306/evcis_daegu";
 
 String DB_USER    = "evcis";
 String DB_PASSWORD = "evcis";

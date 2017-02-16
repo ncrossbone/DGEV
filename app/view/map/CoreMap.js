@@ -18,12 +18,7 @@ Ext.define('DgEv.view.map.CoreMap', {
 
 	width: "100%",
 	height: "100%",
-	html:"<div style='position:absolute; right:30px; top: 50px; z-index:20000;'>" +
-			"<span id='mapSelect'>" +
-		 	"<a class='mapClick' onclick=Ext.getCmp('_mapDiv_').onclickMapSelect(this); id='map0'>&nbsp&nbsp일반지도&nbsp&nbsp</a>" +
-		 	"<a class='mapDefault' onclick=Ext.getCmp('_mapDiv_').onclickMapSelect(this); id='map1'>&nbsp&nbsp위성사진&nbsp&nbsp</a>" +
-		 "</span></div>" +
-		 "<div style='position:absolute; top:8%; left:96%; width:60px; z-index:20000; height:200px;'>" +
+	html:"<div style='position:absolute; top:8%; left:96%; width:60px; z-index:20000; height:200px;'>" +
 	  "<div class='zoomText'>" +
 	  	"<div style='top:75px; background: url(./resources/images/zoom.png) -216px 0px;'></div>" +
 	  	"<div style='top:95px; background: url(./resources/images/zoom.png) -245px 0px;'></div>" +
@@ -232,7 +227,7 @@ Ext.define('DgEv.view.map.CoreMap', {
     	
     },
     zoomEvent: function(level){
-    	console.info(level);
+    	//console.info(level);
     	var me = this;
         var zoomLevel = 0;
     	switch (level) {
@@ -281,38 +276,22 @@ Ext.define('DgEv.view.map.CoreMap', {
     },
     initBaseMap: function(val){
     	var me = this; 
-    	/*me.baseMapLayers.push(new ol.layer.Tile({
-    		title : '브이월드',
-    		visible : true,
-    		type : 'base',
-    		source : new ol.source.XYZ(
-    				{
-    					// attribuions : 'Data by <a
-    					// href="http://map.vworld.kr/">VWORLD
-    					// MAP',
-    					attributions : [ new ol.Attribution(
-    							{
-    								html : 'Tiles &copy; <a href="http://www.vworld.kr/"> <img src="./img/vworldlogo.png" /> </a>'
-    							}) ],
-    							url : 'http://xdworld.vworld.kr:8080/2d/Base/201411/{z}/{x}/{y}.png'
-    				})
-    	})
-    	)
-
-    	me.baseMapLayers.push(new ol.layer.Tile({
-    		title : '브이월드 (위성)',
-    		type : 'base',
-    		visible : false,
-    		source : new ol.source.XYZ(
-    				{
-    					attributions : [ new ol.Attribution(
-    							{
-    								html : 'Tiles &copy; <a href="http://www.vworld.kr/"> <img src="./img/vworldlogo.png" /> </a>'
-    							}) ],
-    							url : 'http://xdworld.vworld.kr:8080/2d/Satellite/201301/{z}/{x}/{y}.jpeg'
-    				})
-    	})
-    	)*/
+    	
+    	//충전기 전체 정보 담기
+    	var chargerList =  Ext.create('DgEv.store.map.ChargerList');
+    	chargerList.load();
+    	me.chargerList = [];
+    	me.chargerList = chargerList.data;
+    	////console.info(me.chargerList);
+    	
+    	
+    	//충전소 전체 정보 담기
+    	var stationList =  Ext.create('DgEv.store.map.StationList');
+    	stationList.load();
+    	me.stationList = [];
+    	me.stationList = stationList.data;
+    	//console.info(me.stationList);
+    	
     	
     	var container = document.getElementById('_mapDiv_');
 		var options = {
@@ -324,35 +303,11 @@ Ext.define('DgEv.view.map.CoreMap', {
 		
 		var layerStore = Ext.create('DgEv.store.map.LayerStore');
 		layerStore.load();
+		//console.info(layerStore);
 		
 		LayerSymbol(layerStore);
 
 
-    	/*me.map = new ol.Map({
-    		target: '_mapDiv_',
-    		layers: this.baseMapLayers,
-    		view: new ol.View({
-    			projection : "EPSG:4326",
-    			center: [128.6018054910818, 35.871380264652295], //대구광역시청
-    			zoom:13
-    		})
-    	});*/
-    	/*
-    	var layerStore = Ext.create('DgEv.store.map.LayerStore');
-		layerStore.load();
-    	
-    	me.map.getView().getCenter();
-
-    	
-    	me.wheelZoom(13);
-    	me.map.getView().on('change:resolution', function(evt){
-
-    		var zoomLevel = me.map.getView().getZoom();
-    		me.wheelZoom(zoomLevel);
-    		
-    		layerIconChange(zoomLevel);
-
-    	});*/
     	
     },
     wheelZoom:function(zoomLevel){

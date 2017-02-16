@@ -36,8 +36,6 @@
 				
 				paramsToString += ( "&" + key + "=" + value );
 				
-				System.out.println( "1 paramsToString : " + paramsToString );
-				
 				try {
 					//value = new String(value.getBytes("8859_1"), "UTF-8");
 				} catch (Exception ex) {
@@ -47,7 +45,6 @@
 			paramsToString = paramsToString.replaceFirst( "&url=", "" );
 			//request.setAttribute("Map", map);
 		}
-		System.out.println();
 		//System.out.println( "paramsToString : " + paramsToString );
 		
 		//return (String) map.get(name.toUpperCase());
@@ -82,7 +79,7 @@
 		}
 		 */
 
-		System.out.println(urlParam);
+		
 		if (urlParam == null || urlParam.trim().length() == 0) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 			return;
@@ -98,7 +95,7 @@
 				http.setRequestProperty(key, request.getHeader(key));
 			}
 			
-			System.out.println( "2 paramsToString : " + key );
+			
 		}
 
 		http.setDoInput(true);
@@ -112,7 +109,7 @@
 			ServletInputStream sis = request.getInputStream();
 			while ((read = sis.read(buffer)) != -1) {
 				os.write(buffer, 0, read);
-				System.out.println( "5 paramsToString : " + read);
+				
 			}
 			os.close();
 		}
@@ -136,7 +133,7 @@
 					response.setHeader(key, value);
 				}
 			}
-			System.out.println( "3 paramsToString : " + key );
+			
 		}
 
 		//response.setContentType("text/xml");
@@ -166,7 +163,7 @@
 			sos.write(buffer, 0, read);
 			
 		}
-		System.out.println("end");
+		
 		//out.println("suc");
 		sos.println();
 		response.flushBuffer();
