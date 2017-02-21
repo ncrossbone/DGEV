@@ -14,7 +14,6 @@ Ext.define("DgEv.store.map.ChargerList", {
         		success : function(response, opts) {
         			
         			jsonData = Ext.util.JSON.decode( response.responseText );
-
         			if(jsonData.data[0].msg == undefined || jsonData.data[0].msg == ""){
         				//console.info(jsonData.data);
         				store.setData(jsonData.data);
