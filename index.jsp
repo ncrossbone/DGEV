@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>대구광역시 전기자동차 충전인프라 시스템</title>
+<title>대구광역시 전기차 충전소</title>
 <link rel="stylesheet" type="text/css" href="./ext-6.2.0/build/classic/theme-triton/resources/theme-triton-all.css">
 <link rel="stylesheet" type="text/css" href="common.css">
 <link rel="stylesheet" type="text/css" href="tooltip.css">

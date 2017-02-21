@@ -602,6 +602,24 @@ openWindowCharg = function(Name,Addr,stationId){
 deleteMark = function(stationId,name,busiCd){
 	//var stationId = <%=stationId%>;
 	//delBtn_
+	console.info(document.getElementById('chagerInfo'))
+	if(document.getElementById('chagerInfo') != null){
+		var titleInfo = document.getElementById('chagerInfo').contentWindow.document.getElementById('bookMark_'+stationId);
+		if(titleInfo != null){
+			var sub_tits = document.getElementById('chagerInfo').contentWindow.document.getElementById('sub_tits');
+			$("#sub_tits").empty();
+			//console.info($("#bookMark_"+stationId));
+			//$("#bookMark_"+stationId).attr('class','like_ch');
+			
+			titleBookMark = "";
+			titleBookMark += "<a href='#' id='bookMark_"+stationId+"' onclick='addBookMark(\""+stationId+"\",\""+name+"\",\""+busiCd+"\")' class='like_ch'><span class='hidden'>즐겨찾기</span></a>";
+			titleBookMark +="<h2>"+name+"<em id='distant'></em></h2>";
+			sub_tits.innerHTML = titleBookMark;
+		}
+	}
+	
+	//$("#sub_tits").empty();
+	return;
 	
 	var favStation = document.getElementById('fav_'+stationId);
 	var favDelButton = document.getElementById('delBtn_'+stationId);

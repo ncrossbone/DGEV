@@ -60,7 +60,6 @@ Ext.define("DgEv.view.west.WestContainer", {
 	        	  var favorStation = Ext.ComponentQuery.query("#favorStation")[0];
 	              var fvHtml = "";
 	              var coreMap = Ext.getCmp("_mapDiv_");
-	              console.info(coreMap);
 	              $.ajax({
 	          		async: false,
 	          		type: 'POST',
@@ -74,9 +73,6 @@ Ext.define("DgEv.view.west.WestContainer", {
 	          			var timerObj = window.setInterval(function(){
 	          				console.info(data);
 	          				var fvStationList = [];
-	          				
-	          				
-	          				
 	          				
 	          				for(var i=0;i < data.data.length;i++){
 	          					

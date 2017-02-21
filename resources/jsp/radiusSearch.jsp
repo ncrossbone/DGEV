@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=euc-kr" pageEncoding="EUC-KR" %>
 <%@ include file="dbConn.jsp" %>
 <%@ page import="java.util.*,java.text.*"%>
-<%@page import="org.json.simple.*"%>
+<%@ page import="org.json.simple.*"%>
 <%
 try{
 	

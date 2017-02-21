@@ -119,17 +119,31 @@ $(document).ready(function() {
 	var addr = "";
 	var busi_name = "";
 	var name = "";
+	var phon = "";
+	var useTime = "";
+	var etc = "";
 	//stationId
 	for(var a = 0 ; a < coreMap.stationList.items.length ; a++){
 		if(coreMap.stationList.items[a].data.STAT_ID == stationId){
-			
 			addr = coreMap.stationList.items[a].data.ADDR_1;
 			busi_name = coreMap.stationList.items[a].data.BUSI_NAME;
 			busi_cd = coreMap.stationList.items[a].data.BUSI_KIND_CD;
 			name = coreMap.stationList.items[a].data.KO_STAT_NM;
+			phone = coreMap.stationList.items[a].data.PHONE_NO;
+			useTime = coreMap.stationList.items[a].data.USE_TIME;
+			etc = coreMap.stationList.items[a].data.ETC;
+			if(phone == null){
+				phone = "없음";
+			}
+			if(etc == null){
+				etc = "없음";
+			}
 			console.info(coreMap.stationList.items[a].data);
+			
 		}
 	}
+	
+	
 	
 	
 	var stationHtml = "";
@@ -153,11 +167,11 @@ $(document).ready(function() {
 		"          </tr>                                                                    "+
 		"          <tr>                                                                     "+
 		"              <th class='PdL10 AL'>연락처</th>                                        "+
-		"              <td class='PdL10 AL L0'>1661-9408</td>                            "+
+		"              <td class='PdL10 AL L0'>"+phone+"</td>                            "+
 		"          </tr>                                                                    "+
 		"          <tr>                                                                     "+
 		"              <th class='PdL10 AL'>참고사항</th>                                      "+
-		"              <td class='PdL10 AL'>없음</td>                                 "+
+		"              <td class='PdL10 AL'>"+etc+"</td>                                 "+
 		"          </tr>                                                                    "+
 		"      </tbody>                                                                     "+
 		"  </table>                                                                         "+
@@ -171,6 +185,15 @@ $(document).ready(function() {
 	//var stationInfo = chgerWindow.document.getElementById('tab_01');
 	var stationInfo = document.getElementById('tab_01');
 	stationInfo.innerHTML = stationHtml;
+	console.info(useTime);
+	var work_time = document.getElementById('work_time');
+	if(useTime == "00-23"){
+		work_time.innerHTML = "24시간 이용가능";	
+	}else{
+		work_time.innerHTML = useTime+"시 이용가능";
+	}
+	
+	
 	
 	
 	//var titleInfo = chgerWindow.document.getElementById('sub_tits');
@@ -191,9 +214,9 @@ $(document).ready(function() {
 
 			
 			if(data.data.length == 0){
-				titleBookMark += "<a href='#' onclick='addBookMark(\""+stationId+"\",\""+name+"\",\""+busi_cd+"\")' class='like_ch'><span class='hidden'>즐겨찾기</span></a>";
+				titleBookMark += "<a href='#' id='bookMark_"+stationId+"' onclick='addBookMark(\""+stationId+"\",\""+name+"\",\""+busi_cd+"\")' class='like_ch'><span class='hidden'>즐겨찾기</span></a>";
 			}else{
-				titleBookMark += "<a href='#' onclick='delBookMark(\""+stationId+"\",\""+name+"\",\""+busi_cd+"\")' class='like_ch_on'><span class='hidden'>즐겨찾기</span></a>";
+				titleBookMark += "<a href='#' id='bookMark_"+stationId+"' onclick='delBookMark(\""+stationId+"\",\""+name+"\",\""+busi_cd+"\")' class='like_ch_on'><span class='hidden'>즐겨찾기</span></a>";
 				
 			}
 			titleBookMark +="<h2>"+name+"<em id='distant'></em></h2>";
@@ -677,6 +700,7 @@ function setCmnt(){
 		success:function(data){
 			alert("입력완료");
 			getCmntList();
+			
 		}
 	});
 	
@@ -711,9 +735,100 @@ function delCmnt(CMNT_ID,STAT_ID){
 		success:function(data){
 			alert("삭제완료");
 			getCmntList();
+			
 		}
 	});
 	
+	
+	
+}
+
+
+reLoadFavList = function(){
+	console.info("!");
+
+	  
+	var favorStation = window.parent.Ext.ComponentQuery.query("#favorStation")[0];
+    var fvHtml = "";
+    var coreMap = window.parent.Ext.getCmp("_mapDiv_");
+    $.ajax({
+		async: false,
+		type: 'POST',
+		url : '../../../resources/jsp/bookMarkList.jsp',
+		data : {
+			MEMBER_ID:"test"
+		},
+		dataType : 'json',
+		success:function(data){
+				
+			var timerObj = window.setInterval(function(){
+				console.info(data);
+				var fvStationList = [];
+				
+				for(var i=0;i < data.data.length;i++){
+					
+					for(var j=0;j<coreMap.stationList.items.length;j++){
+						
+						if(data.data[i].STAT_ID == coreMap.stationList.items[j].data.STAT_ID){
+							
+							console.info(coreMap.stationList.items[j].data);
+							
+							var stationCount = "";
+							$.ajax({
+								async: false,
+								type: 'POST',
+								url : '../../../resources/jsp/stationCount.jsp',
+								data : {
+									STAT_ID : coreMap.stationList.items[j].data.STAT_ID
+								},
+								dataType : 'json',
+								success:function(data){
+									for(var k=0;k < data.data.length;k++){
+										if(data.data[k].STAT_ID == coreMap.stationList.items[j].data.STAT_ID){
+											stationCount +="<img src='./resources/images/icon_03.gif'>"+data.data[k].Y01+"/"+data.data[k].A01+" " +
+											"<img src='./resources/images/icon_02.gif' style='margin-left: 10px'>"+data.data[k].Y02+"/"+data.data[k].Y02+" " +
+											"<img src='./resources/images/icon_01.gif' style='margin-left: 10px'>"+data.data[k].YA+"/"+data.data[k].AA+"";
+										}
+									}
+									
+								}
+							});
+							
+							//Name,Addr,stationId
+							//KO_STAT_NM ,ADDR_1 ,STAT_ID
+							
+							//openWindowCharg
+							//fvStationList.push({stationId:data.data[i].STAT_ID});
+							fvHtml += "<div class='aabb'>" +
+							"   <div class='fw_path' id='fav_"+coreMap.stationList.items[j].data.STAT_ID+"' onclick='openWindowCharg(\""+coreMap.stationList.items[j].data.KO_STAT_NM+"\",\""+coreMap.stationList.items[j].data.ADDR_1+"\",\""+coreMap.stationList.items[j].data.STAT_ID+"\")'>" +
+							"<div class='thumb'><img src='./resources/images/test/02.png'></div>" +
+							"<div class='state'><p class='st_a'><strong>" + coreMap.stationList.items[j].data.KO_STAT_NM + "</strong></p>" +
+							"<p class='st_b'>" +
+							coreMap.stationList.items[j].data.ADDR_1 +
+							"<p class='st_c'>" +
+							stationCount +
+							"</p>" +
+							"</div></div>" +
+							"<em id='delBtn_"+coreMap.stationList.items[j].data.STAT_ID+"' onclick='deleteMark(\""+coreMap.stationList.items[j].data.STAT_ID+"\",\""+coreMap.stationList.items[j].data.KO_STAT_NM+"\",\""+coreMap.stationList.items[j].data.BUSI_KIND_CD+"\")' class='post_del' ></em> </div>";
+							
+						}
+					}
+					
+					
+				}
+				favorStation.setHtml(fvHtml);
+				
+				
+				window.clearInterval(timerObj);
+			}, 500);
+			
+			
+			
+				
+			}
+	});
+	  
+
 	
 }
 
@@ -740,9 +855,12 @@ addBookMark = function(stationId,name,busiCd){
 			}
 	});
 	
-	titleBookMark += "<a href='#' onclick='delBookMark(\""+stationId+"\",\""+name+"\",\""+busiCd+"\")' class='like_ch_on'><span class='hidden'>즐겨찾기</span></a>";
+	titleBookMark += "<a href='#' id='bookMark_"+stationId+"' onclick='delBookMark(\""+stationId+"\",\""+name+"\",\""+busiCd+"\")' class='like_ch_on'><span class='hidden'>즐겨찾기</span></a>";
 	titleBookMark +="<h2>"+name+"<em id='distant'></em></h2>";
 	titleInfo.innerHTML = titleBookMark;
+	
+
+	reLoadFavList();
 }
 
 delBookMark = function(stationId,name,busiCd){
@@ -767,9 +885,12 @@ delBookMark = function(stationId,name,busiCd){
 		}
 	});
 	
-	titleBookMark += "<a href='#' onclick='addBookMark(\""+stationId+"\",\""+name+"\",\""+busiCd+"\")' class='like_ch'><span class='hidden'>즐겨찾기</span></a>";
+	titleBookMark += "<a href='#' id='bookMark_"+stationId+"' onclick='addBookMark(\""+stationId+"\",\""+name+"\",\""+busiCd+"\")' class='like_ch'><span class='hidden'>즐겨찾기</span></a>";
 	titleBookMark +="<h2>"+name+"<em id='distant'></em></h2>";
 	titleInfo.innerHTML = titleBookMark;
+	
+
+	reLoadFavList();
 	
 }
 </script>
@@ -780,8 +901,6 @@ delBookMark = function(stationId,name,busiCd){
 			<div class="wrap_content" style="overflow: hidden;">
 			<section>
 			<div id="sub_tits">
-				<!-- <a href='#' class='like_ch'><span class='hidden'>즐겨찾기</span></a>
-				<h2>새만금경제자유구역사업단<em id='distant'></em></h2> -->
 			</div>
 			
 			
@@ -794,8 +913,8 @@ delBookMark = function(stationId,name,busiCd){
 					<img src="../../../resources/images/test/logo_keco.png" width="15" alt="환경부 로고" /><span>환경부 (한국자동차환경협회)</span>
 				</div>
 				
-				<div class="work_time">
-					24시간 이용가능
+				<div class="work_time" id="work_time">
+					
 				</div>
 			</div>
 			
