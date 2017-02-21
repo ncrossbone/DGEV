@@ -19,8 +19,10 @@ Ext.define("DgEv.store.west.CarKindStore", {
         			jsonData = Ext.util.JSON.decode( response.responseText );
 
         			if(jsonData.data[0].msg == undefined || jsonData.data[0].msg == ""){
-        				//console.info(jsonData.data);
         				
+        				
+        				var firstData = {name:"==전체==",code:""};
+        				jsonData.data.unshift(firstData);
         				store.setData(jsonData.data);
         				
         				

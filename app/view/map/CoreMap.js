@@ -6,6 +6,7 @@ Ext.define('DgEv.view.map.CoreMap', {
 	id: '_mapDiv_',
 	map:null,
 	baseMapLayers: [],
+	marker:[],
 
 	_zoomPointerTop:0,
     _zoomBar:0,
@@ -18,7 +19,14 @@ Ext.define('DgEv.view.map.CoreMap', {
 
 	width: "100%",
 	height: "100%",
-	html:"<div style='position:absolute; top:8%; left:96%; width:60px; z-index:20000; height:200px;'>" +
+	html:"<div style='position:absolute; right:15px; top: 50px; z-index:20000;'>" +
+		"<span id='mapSelect'>" +
+	 	"<a class='mapBtn on' onclick=Ext.getCmp('_mapDiv_').mapSelect(this.id); id='all'>전체</a>" +
+	 	"<a class='mapBtn' onclick=Ext.getCmp('_mapDiv_').mapSelect(this.id); id='rap'>급속</a>" +
+	 	"<a class='mapBtn' onclick=Ext.getCmp('_mapDiv_').mapSelect(this.id); id='slow'>완속</a>" +
+	 	"<a class='mapBtn' onclick=Ext.getCmp('_mapDiv_').mapSelect(this.id); style='border-right: 1px solid #d0d0d0 !important;' id='com'>기관</a>" +
+	 	"</span></div>"+
+		"<div style='position:absolute; top:8%; left:96%; width:60px; z-index:20000; height:200px;'>" +
 	  "<div class='zoomText'>" +
 	  	"<div style='top:75px; background: url(./resources/images/zoom.png) -216px 0px;'></div>" +
 	  	"<div style='top:95px; background: url(./resources/images/zoom.png) -245px 0px;'></div>" +
@@ -64,6 +72,22 @@ Ext.define('DgEv.view.map.CoreMap', {
 	initComponent: function() {
 		this.on('render', this.mapRendered, this);
 		this.callParent();
+	},
+	
+	mapSelect: function(select){
+		
+		$("#mapSelect a").removeClass('on');
+		$("#"+select).addClass('on');
+		
+		var me = this;
+    	
+    	for(var i=0; i< me.marker.length; i++){
+    		me.marker[i].setMap(null);
+    	}
+    	
+    	me.marker = [];
+    	
+    	LayerSymbol(select);
 	},
 
 	mapRendered: function(p){
@@ -305,7 +329,10 @@ Ext.define('DgEv.view.map.CoreMap', {
 		layerStore.load();
 		//console.info(layerStore);
 		
-		LayerSymbol(layerStore);
+		
+		me.layerInfo = layerStore;
+		
+		LayerSymbol();
 
 
     	

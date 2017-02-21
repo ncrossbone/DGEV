@@ -32,14 +32,15 @@ try{
 	sql += "    		,DATE_FORMAT(SYSDATE(),'%Y%m%d%H%i%s')      ";
 	sql += "    	)                                             ";
 	
-	
-	out.print(sql);
-   stmt = con.createStatement();   
-   rs = stmt.executeQuery(sql);
+	stmt = con.createStatement();   
+	rs = stmt.executeQuery(sql);
 	JSONObject jsonObj  = new JSONObject();
 	JSONArray jsonArr = new JSONArray();
 	JSONObject jsonRecord = null;
-   //out.print("success");
+		
+	   
+    out.print(jsonObj);
+    
 }catch(Exception ex){
 	//throw;
 	System.out.println(ex);

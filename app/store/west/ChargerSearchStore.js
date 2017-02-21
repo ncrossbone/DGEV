@@ -26,7 +26,8 @@ Ext.define("DgEv.store.west.ChargerSearchStore", {
 					sidoValue: store.sidoValue,
 					sggValue: store.sggValue,
 					carValue:  store.carValue,
-					chargValue: store.chargValue
+					chargValue: store.chargValue,
+					searchText: store.searchText
         		},
         		async: true, // 비동기 = async: true, 동기 = async: false
         		success : function(response, opts) {

@@ -7,9 +7,10 @@ try{
 	
 	String stationId = request.getParameter("STAT_ID");
 	String memberId = request.getParameter("MEMBER_ID");
+	String busiCd = request.getParameter("BUSI_CD");
 	
-	sql = "	insert into EVCS_MOBILE_BOOKMARK (MEMBER_ID,CARD_NO,STAT_ID,REG_DATE) VALUES(	 ";
-	sql += " '"+memberId+"','aaa','"+stationId+"',SYSDATE() ) " ;
+	sql = "	insert into EVCS_MOBILE_BOOKMARK (MEMBER_ID,CARD_NO,STAT_ID,BUSI_KIND_CD,REG_DATE) VALUES(	 ";
+	sql += " '"+memberId+"','aaa','"+stationId+"','"+busiCd+"',SYSDATE() ) " ;
 	
 	
 	out.print(sql);

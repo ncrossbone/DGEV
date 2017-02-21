@@ -10,6 +10,14 @@ try{
 	String sggValue = request.getParameter("sggValue");
 	String carValue = request.getParameter("carValue");
 	String chargValue = request.getParameter("chargValue");
+	String searchText = request.getParameter("searchText");
+	
+	System.out.println("sidoValue::"+sidoValue);
+	System.out.println("sggValue::"+sggValue);
+	System.out.println("carValue::"+carValue);
+	System.out.println("chargValue::"+chargValue);
+	System.out.println("searchText::"+searchText);
+	System.out.println("==============");
 	
 	sql = "select DISTINCT CHR.C_STAT_ID																								";
 	sql += "     , CHR.S_ADDR_1                                                         ";
@@ -67,6 +75,9 @@ try{
 	}
 	if(carValue != ""){
 		sql += "   AND CARTYPE.CARTYPECD = '"+carValue+"'                                           ";	
+	}
+	if(searchText != ""){
+		sql += "   AND  S_KO_STAT_NM LIKE '%"+searchText+"%'" ;
 	}
 	
 	

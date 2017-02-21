@@ -17,18 +17,6 @@ Ext.define("DgEv.view.north.NorthContainer", {
 	},{
 		xtype:"container",
 		width:"55%"
-	},{
-		xtype:"panel",
-		html:"<a class='mapClick' onclick=\"javascript:;\"; id='map0'>&nbsp&nbsp전체&nbsp&nbsp</a>"
-	},{
-		xtype:"panel",
-		html:"<a class='mapClick' onclick=\"\"; id='map0'>&nbsp&nbsp급속&nbsp&nbsp</a>"
-	},{
-		xtype:"panel",
-		html:"<a class='mapClick' onclick=\"\"; id='map0'>&nbsp&nbsp완속&nbsp&nbsp</a>"
-	},{
-		xtype:"panel",
-		html:"<a class='mapClick' onclick=\"\"; id='map0'>&nbsp&nbsp기관&nbsp&nbsp</a>"
 	}/*,{
 		xtype:"checkbox",
 		labelSeparator: '',

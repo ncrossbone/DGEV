@@ -7,7 +7,7 @@ try{
 	
 	String memberId = request.getParameter("MEMBER_ID");
 	String statId = request.getParameter("STAT_ID");
-	
+	String busiCd = request.getParameter("BUSI_CD");
 	sql = " select * from EVCS_MOBILE_BOOKMARK ";
 	if(statId == null){
 		sql += " where MEMBER_ID = '"+memberId+"'";

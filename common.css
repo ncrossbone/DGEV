@@ -228,6 +228,27 @@ div {
 
 
 
+
+
+/* station search result*/
+.fw_path_addr{height: auto; border-bottom: 1px solid #c4c4c4; cursor: pointer; padding: 15px 0px; position: relative; }
+.fw_path_addr:hover { background: #ebf1f6; }
+.fw_path_addr:after { content:""; clear: both; display: block; *zoom: 1; }
+.fw_path_addr> .thumb { width: 43px; min-height: 23px; height: auto; padding: 10px 0px; border: 1px solid #bebebe; float: left; display: block; text-align: center; margin-left:5px; margin-right: 7px; /*margin-top: 16px;*/ }
+
+.fw_path_addr> .state { width: 220px; height: auto; display: block; float: left; letter-spacing: -1px; font-family: 'notokr-regular';}
+.fw_path_addr> .state> p { margin: 0px; }
+.fw_path_addr> .state> p> img { vertical-align: middle; margin-right: 3px; }
+.fw_path_addr> .state> p.st_a { padding-bottom: 3px; border-bottom: 1px dotted #cbcbcb; }
+.fw_path_addr> .state> p.st_b { margin-top: 3px; font-size: 12px; }
+.fw_path_addr> .state> p.st_c { font-size: 11px; font-family: 'Verdana'; }
+.fw_path_addr> .state> p:hover { content:""; clear: both; display: block; *zoom: 1; }
+.fw_path_addr> .state> p> strong { color: #3d464d; font-size: 13px }
+.fw_path_addr> .state> p:after { display: block; clear: both; content: '';}
+.fw_path_addr> .state> p> em { font-size: 11px; float: right; letter-spacing: 0px; font-style: normal; }
+
+
+
 .fw_path> .state> p> span { padding: 2px 0px; text-align: center; font-size: 12px; color: #FFF; letter-spacing: -1px; display: block; width: 70px; float: left; display: block; }
 
 .condition01 { background: #00a651; border: 1px solid #00793b; } /*충전중*/
@@ -322,7 +343,7 @@ div {
 }
 
 #sub_tits a.like_ch {
-    background: url("./resources/images/test/icon_like_on.png") no-repeat;
+    background: url("./resources/images/test/icon_like_off.png") no-repeat;
     width: 20px;
     height: 19px;
     display: block;
@@ -499,54 +520,66 @@ h3.tit3_pic {
 .list_add>span> dl {
     position: relative;
     border-bottom: 1px solid #c4c4c4;
+    padding: 13px 10px !important;
 }
 
 .list_add>span> dl> dt {
-    padding-bottom: 7px;
-    margin-top: -5px;
+    padding-bottom: 10px;
     border-bottom: 1px dotted #cbcbcb;
-    font-weight: bold;
+    color: #000;
+    letter-spacing: -1px;
+	font-family: 'notokr-regular';
+	font-size: 13px;
 }
 
 .list_add>span> dl> .tel {
-    margin-top: 7px;
-    margin-left: 0px;
+    margin: 7px 0px 2px 0px;
+    font-family: Verdana;
+    font-size: 11px;
+    color: #565656;
 }
 
 .list_add>span> dl> .new_addr {
-    margin-top: 8px;
     margin-left: 0px;
+    font-family: 'notokr-regular';
+    font-size: 12px;
+    letter-spacing: -1px; 
+	margin-bottom: 1px;
 }
 
-.list_add>span> dl> .tel> span {
+.list_add>span> dl> .tel> .cate {
     color: #7c7c7c;
-    border-left: 1px solid #d1d1d1;
-    padding-left: 9px;
-    margin-left: 9px;
+    font-family: 돋움;
     letter-spacing: -1px;
 }
 .list_add>span>dl>.old_addr {
-	color: #7b7b7b;
-	margin-top: 4px;
-	margin-left: -3px;
+	color: #656565;
+	margin-left: 0px;
+	font-family: 'notokr-regular';
+    font-size: 12px;
+    letter-spacing: -1px; 
 }
 
 .list_add>span> dl> .old_addr> span {
     padding: 3px 4px;
-    border: : 1px solid #9f9f9f;
-    background: #b0b0b0;
+    border: : 1px solid #000;
+    background: #b4b4b4;
     color: #fff;
     letter-spacing: -1px;
     font-size: 11px;
     font-family: 돋움;
 }
+
+
 /*address search end*/
 
 
-#mapSelect .mapDefault {
+#mapSelect .mapBtn {
+	padding: 4px 15px;	    
 	width: 100px;
 	height: 20px;
 	border: 1px solid #d0d0d0;
+	border-right: none !important;
 	color: #333;
 	background: #fff;
 	letter-spacing: -1px;
@@ -554,7 +587,8 @@ h3.tit3_pic {
 	cursor: pointer;
 }
 
-#mapSelect .mapClick {
+#mapSelect .mapBtn.on{
+	padding: 4px 15px;
 	width: 100px;
 	height: 20px;
 	border: 1px solid #126dae;
@@ -570,6 +604,8 @@ h3.tit3_pic {
 	letter-spacing: -1px;
 	cursor: pointer;
 }
+
+
 
 #selectArea {
 	position: absolute;
@@ -630,3 +666,4 @@ dl {
     border-top: 0px;
 	
 }
+

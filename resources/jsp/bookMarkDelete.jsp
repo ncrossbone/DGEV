@@ -7,11 +7,13 @@ try{
 	
 	String stationId = request.getParameter("STAT_ID");
 	String memberId = request.getParameter("MEMBER_ID");
+	String busiCd = request.getParameter("BUSI_CD");
 	
 	sql = "	DELETE FROM  EVCS_MOBILE_BOOKMARK ";
-	sql += "   where MEMBER_ID = '"+memberId+"' and STAT_ID = '"+stationId+"' ";
+	sql += "   where MEMBER_ID = '"+memberId+"' and STAT_ID = '"+stationId+"' and BUSI_KIND_CD='"+busiCd+"' ";
 	
 	
+	System.out.println(sql);
 	stmt = con.createStatement();   
 	rs = stmt.executeQuery(sql);
 	JSONObject jsonObj  = new JSONObject();
