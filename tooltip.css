@@ -11,8 +11,15 @@ body { margin: 0px !important; }
 .table_03> tbody> tr { }
 .table_03> tbody> tr> th { padding: 8px 0px; background: #f9f9f9; color: #141414; border-bottom: 1px solid #d9d9d9; border-right: 1px solid #d9d9d9; }
 .table_03> tbody> tr> td { border-bottom: 1px solid #d9d9d9; border-right: 1px solid #d9d9d9; text-align: center; }
-.table_03> tbody> tr> td> span { font-family: '돋움' !important; font-size: 11px; }
-.table_03> tbody> tr> td> span.use { padding: 4px 6px; color: #fff; background: #004a93; }
+.table_03> tbody> tr> td:last-child { border-right: 0px !important; }
+.table_03> tbody> tr> td> span, .table_03> tbody> tr> td> b { font-family: '돋움' !important; font-size: 11px;  color: #333; }
+.table_03> tbody> tr> td> b { color: #fff; padding: 4px 6px; font-weight: normal; }
+.table_03> tbody> tr> td> b.use00 { background: fff; border: 1px solid #9b9b9b; }
+.table_03> tbody> tr> td> b.use01 { background: #9b9b9b; color: #fff;}
+.table_03> tbody> tr> td> b.use02 { background: #0054a6; color: #fff;}
+.table_03> tbody> tr> td> b.use03 { background: #62aa00; color: #fff;}
+.table_03> tbody> tr> td> b.use04 { background: #ff8a00; color: #fff;}
+.table_03> tbody> tr> td> b.use05 { background: #ff0036; color: #fff;}
 .table_03> tbody> tr> td> span.phone, .table_03> tbody> tr> td> span.message { width: 21px; height: 19px; padding-left: 23px; padding-top: 4px; margin-right: 7px; display: inline-block; }
 .table_03> tbody> tr> td> span.phone { background: url(./resources/images/icon_phone.png) no-repeat; }
 .table_03> tbody> tr> td> span.message { background: url(./resources/images/icon_message.png) no-repeat; }
@@ -25,13 +32,14 @@ body { margin: 0px !important; }
 .opinion_search select, .divi_sel select, input { padding: 4px !important; border: 1px solid #d0d0d0; color: #585858; letter-spacing: -1px; }
 .opinion_search> li { text-align: center; }
 .opinion_search> li.rev { }
-.opinion_search> li.rev> a { width: 20px; height: 17px; padding-top: 3px; margin-right: 1px; border: 1px solid #d3d3c7; background: #fff; font: 11px Verdana; color: #4f4f4f; display: inline-block; }
+.opinion_search> li:last-child { margin-top: 3px; }
+.opinion_search> li.rev> a { width: 20px; height: 17px; padding-top: 3px; margin-right: 2px; border: 1px solid #d3d3c7; background: #fff; font: 11px Verdana; color: #4f4f4f; display: inline-block; }
 .opinion_search> li.rev> a:hover { border-color: #ff333c; }
-.opinion_search> li.rev> a.on { background: #ff333c; color: #fff; border-color: #ff333c; }
 
-dl.post { padding: 10px; border: 1px solid #dfdfdf; font-size: 13px; position: relative; margin: 0px !important; }
-a.post_del { width: 11px; height: 11px; background: url(./resources/images/post_del.png) no-repeat; display: block; position: absolute; right: 10px; top: 14px; }
-a.post_del:hover { background: url(./resources/images/post_del_ov.gif) no-repeat; }
+dl.post { padding: 10px; border: 1px solid #dfdfdf; border-bottom: 0px !important;  font-size: 13px; position: relative; margin: 0px !important; }
+dl.post:last-child { border-bottom: 1px solid #dfdfdf !important; }
+.post_del { width: 11px; height: 11px; background: url(./resources/images/post_del.png) no-repeat; display: block; position: absolute; right: 10px; top: 14px; cursor: pointer;  }
+.post_del:hover { background: url(./resources/images/post_del_ov.gif) no-repeat; }
 dl.post> dt { border-bottom: 1px dashed #dfdfdf; padding-bottom: 5px; }
 dl.post> dt:after { content:""; clear: both; display: block; }
 dl.post> dt> b { font: normal 13px 'notokr-regular'; display: inline-block; margin-left: 10px; padding-right: 10px; background: url(./resources/images/linebar.gif) right center no-repeat; }
@@ -42,7 +50,7 @@ dl.post> dt> span.divi02 { background: #72879c; }
 dl.post> dt> span.divi03 { background: #729c95; }
 dl.post> dt> span.divi04 { background: #89729c; }
 dl.post> dt> span.divi05 { background: #767676; }
-dl.post> dt> time { margin-top: 3px; margin-right: 15px; float: right; font: 11px Verdana; color: #828282; background: url(./resources/images/icon_clock.png) left center no-repeat; padding-left: 13px; }
+dl.post> dt> time { margin-top: 3px; margin-right: 17px; float: right; font: 11px Verdana; color: #828282; background: url(./resources/images/icon_clock.png) left center no-repeat; padding-left: 13px; }
 
 
 a.btn_write { padding: 2px 6px; border: 1px solid #475ba6; background: #477aa6; display: inline-block; margin-left: 3px; text-decoration: none; color: #fff; }
@@ -56,6 +64,7 @@ dl.post> dd { margin: 5px 0px 0px 0px; font-size: 12px; color: #4d4d4d; letter-s
 #charger_resev> div> div { margin-top: 15px; }
 #charger_resev> div> div:after { content:""; clear: both; display: block; }
 #charger_resev> div> div> .tit { width: 150px; letter-spacing: -2px; background: url(./resources/images/blit007.gif) left center no-repeat; font-size: 14px; padding-left: 20px;float: left; }
+#charger_resev> div> div> .tit> span { font-family: 'notokr-bold';}
 #charger_resev> div> div> .divi_sel { width: 150px; text-align: right; float: right; }
 #charger_resev> div> div> .divi_sel> select { padding: 2px 4px !important; }
 
@@ -63,9 +72,10 @@ dl.post> dd { margin: 5px 0px 0px 0px; font-size: 12px; color: #4d4d4d; letter-s
 .model_ex:after { content:""; clear: both; display: block; }
 .model_ex> li { float: left; margin-right: 15px; letter-spacing: -1px; } 
 .model_ex> li> span { width: 13px; height: 13px; margin-right: 3px; display: inline-block; vertical-align: middle; }
-.model_ex> li> span.rev01 { border: 1px solid #d4d3ce; }
-.model_ex> li> span.rev02 { background: #ff333c; border: 1px solid #ff333c; }
-.model_ex> li> span.rev03 { background: #e1e1e1; border: 1px solid #c1c1c1; }
+.rev01 { border: 1px solid #d4d3ce; }
+.rev02 { background: #ff333c !important; border: 1px solid #ff333c !important; }
+.rev03 { background: #e1e1e1 !important; border: 1px solid #c1c1c1 !important; }
+.rev04 { background: url(./resources/images/rev_none.png) #ececec !important; border: 1px solid #c1c1c1 !important; cursor: DEFAULT; }
 
 
 .refer { padding: 10px 0px 7px 10px; border: 1px solid #e1e1e1; margin-top: 25px; background: #f5f5f5; }
@@ -122,3 +132,15 @@ dl.post> dd { margin: 5px 0px 0px 0px; font-size: 12px; color: #4d4d4d; letter-s
     font-family: 'notokr-bold';
     letter-spacing: -1px;
 }
+
+
+.addr_opner {
+	position: absolute;
+	right: 10px;
+	top: 13px;	
+}
+
+.list_num { border-right: 1px solid #d1d1d1; margin-right: 9px; padding-right: 9px; }
+
+
+.aabb { position: relative;}

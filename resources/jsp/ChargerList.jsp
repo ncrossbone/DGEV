@@ -47,7 +47,8 @@ try{
 	sql += "			C_COUNT_YN	,     ";
 	sql += "			S_USE_TIME	,     ";
 	sql += "			S_PARKING_FREE	, ";
-	sql += "			CHGE_MANAGE_GUBUN	";
+	sql += "			CHGE_MANAGE_GUBUN,	";
+	sql += "			S_USE_TIME	";
 	sql += "		FROM EV_V_CHARGER   ";
 	if(stationId != null){
 		sql += "WHERE C_STAT_ID ='"+stationId+"'";
@@ -101,6 +102,7 @@ try{
 		jsonRecord.put("S_USE_TIME",rs.getString("S_USE_TIME"));
 		jsonRecord.put("S_PARKING_FREE",rs.getString("S_PARKING_FREE"));
 		jsonRecord.put("CHGE_MANAGE_GUBUN",rs.getString("CHGE_MANAGE_GUBUN"));
+		jsonRecord.put("S_USE_TIME",rs.getString("S_USE_TIME"));
 
   	
   		jsonArr.add(jsonRecord);

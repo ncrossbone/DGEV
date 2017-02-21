@@ -21,6 +21,7 @@ try{
 	sql += "	    		,INS_DT                   ";
 	sql += "	    		,CMNT_TYPE                ";
 	sql += "	    		,CHARGER_ID               ";
+	sql += "	    		,BUSI_KIND_CD               ";
 	sql += "	    	)                           ";
 	sql += "	    	VALUES                      ";
 	sql += "	    	(                           ";
@@ -29,7 +30,8 @@ try{
 	sql += "	    		,"+MEMBER_ID+"              ";
 	sql += "	    		,SYSDATE()                ";
 	sql += "	    		,'"+CMNT_TYPE+"'              ";
-	sql += "	    		,'"+CHARGER_ID+"'      )       ";
+	sql += "	    		,'"+CHARGER_ID+"'     ";
+	sql += "	    		,'DE'		)       ";
 	
 	
 	stmt = con.createStatement();   

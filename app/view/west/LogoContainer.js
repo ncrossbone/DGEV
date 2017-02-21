@@ -13,7 +13,6 @@ Ext.define("DgEv.view.west.LogoContainer", {
 		xtype:"image",
 		cls:"logocontainer",
 		src:"./resources/images/top_logo.gif",
-		//style:"margin-top:13px; margin-left:20px; ",
 		width:342
 	}]
 });

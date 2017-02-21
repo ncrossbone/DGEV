@@ -21,6 +21,8 @@ Ext.define("DgEv.store.west.SidoStore", {
         			if(jsonData.data[0].msg == undefined || jsonData.data[0].msg == ""){
         				console.info(jsonData.data);
         				
+        				var firstData = {name:"==시도 전체==",code:""};
+        				jsonData.data.unshift(firstData);
         				store.setData(jsonData.data);
         				
         				

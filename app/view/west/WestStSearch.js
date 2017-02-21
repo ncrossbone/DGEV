@@ -146,26 +146,10 @@ Ext.define("DgEv.view.west.WestStSearch", {
 				xtype:"combobox",
 				itemId:"carStore",
 				store: Ext.create('DgEv.store.west.CarKindStore'),
-				value:"==전체==",
+				emptyText:"==전체==",
 				editable:false,
 				displayField: 'name',
 				valueField: 'code',
-				/*,
-				displayField: 'name',
-				valueField: 'code',
-				store: Ext.create('Ext.data.Store', {
-				    fields: ['code', 'name'],
-				    data : [
-				        {"code":"all","name":"==전체=="},
-				        {"code":"01", "name":"SM3"},
-				        {"code":"02", "name":"스파크"},
-				        {"code":"03", "name":"레이"},
-				        {"code":"04", "name":"BMW I3"},
-				        {"code":"05", "name":"Nissan LEAF"},
-				        {"code":"06", "name":"SOUL"},
-				        {"code":"07", "name":"아이오닉"}
-				    ]
-				}),*/
 				width:150
 			},{
 				xtype:"container",
@@ -230,27 +214,30 @@ Ext.define("DgEv.view.west.WestStSearch", {
 					var chargStore = "";
 					var sidoValue="";
 					var sggValue="";
+					var searchText = "";
 					
 					var carValue = Ext.ComponentQuery.query("#carStore")[0].value;
 					var chargValue = Ext.ComponentQuery.query("#chargStore")[0].value;
-					//console.info(carStore);
-					//console.info(chargStore);
 					
-					if(areaChk.checked == true){
-						
-					}else{
-						
+					
+					console.info(serachValue.lastValue);
+					if(serachValue.lastValue != ""){
+						searchText =serachValue.lastValue;
 					}
 					
+					
+					
+					//차량종류
 					if(carChk.checked == true){
 						carValue = Ext.ComponentQuery.query("#carStore")[0].value;
-						if(carValue == "==전체=="){
+						if(carValue == "==전체==" || carValue == null){
 							carValue = "";
 						}
 					}else{
 						carValue ="";
 					}
 					
+					//충전기 구분
 					if(chargChk.checked == true){
 						chargValue = Ext.ComponentQuery.query("#chargStore")[0].value;
 						if(chargValue == "00"){
@@ -264,7 +251,7 @@ Ext.define("DgEv.view.west.WestStSearch", {
 					_searchAddressArr = [];
 					
 					var ChargerSearchStore = "";
-					console.info(westSgg.value);
+					
 					
 					if(westSido.value == "대구광역시"){
 						sidoValue = "27";
@@ -289,7 +276,8 @@ Ext.define("DgEv.view.west.WestStSearch", {
 						sidoValue:sidoValue,
 						sggValue: sggValue,
 						carValue : carValue,
-						chargValue : chargValue
+						chargValue : chargValue,
+						searchText : searchText
 					});
 					ChargerSearchStore.load();
 					
@@ -306,7 +294,6 @@ Ext.define("DgEv.view.west.WestStSearch", {
 							var gubunHtml ="";
 							for(var j=0;j<coreMap.chargerList.items.length;j++){
 								if(coreMap.chargerList.items[j].data.C_STAT_ID == ChargerSearchStore.data.items[i].data.STAT_ID){
-									
 									if(coreMap.chargerList.items[j].data.C_CHGER_TYPE_CD == "02"){
 										rapidity = "완속";
 									}else{
@@ -341,8 +328,8 @@ Ext.define("DgEv.view.west.WestStSearch", {
 									
 								}
 							});
-							
-							html += "<div class='fw_path' onclick=onclickStation("+i+");><div class='thumb'><img src='./resources/images/test/02.png'></div>" +
+							//console.info(ChargerSearchStore.data.items[i].data);
+							html += "<div class='fw_path' id='fw_path_"+ChargerSearchStore.data.items[i].data.STAT_ID+"' onclick=onclickStation("+i+");><div class='thumb'><img src='./resources/images/test/02.png'></div>" +
 							"<div class='state'><p class='st_a'><strong>" + ChargerSearchStore.data.items[i].data.KO_STAT_NM + "</strong></p>" +
 							"<p class='st_b'>" +
 							ChargerSearchStore.data.items[i].data.ADDR_1 +
@@ -358,24 +345,28 @@ Ext.define("DgEv.view.west.WestStSearch", {
 						}
 						
 						
-						/**/
-						
-						
-						
-						
-						var searchParam = westSido.rawValue+westSgg.rawValue+serachValue.lastValue;
-						////console.info(html);
 						stationSearch.setHtml(html);
+						
+						
+						/*  주소 검색    */
+						
+						var search1, search2, search3;
+						search1 = westSido.rawValue;
+						search2 = westSgg.rawValue;
+						search3 = serachValue.lastValue;
+						
+						//시군구 기본검색값일때 주소검색
+						if(search2 == "==시/군/구 전체=="){
+							search2 = "";
+						}
+						
+						var searchParam = "";
+						searchParam = search1+search2+search3;
+						
+						//daum api 주소검색
 						var ps = new daum.maps.services.Places();
 						ps.keywordSearch(searchParam, placesSearchCB);
 						
-						
-						
-						
-						
-						
-							
-							
 							window.clearInterval(timerObj);
 						}, 300);
 						
@@ -398,14 +389,13 @@ Ext.define("DgEv.view.west.WestStSearch", {
 				text:"초기화",
 				id: "resetBtn",
 				handler:function(){
-					Ext.MessageBox.confirm('급속 충전기 예약', '2016/12/31 03:00에 <br/> 01(급속)충전기를 예약하시겠습니까?', function(btn){
-						   if(btn === 'yes'){
-						       //some code
-						   }
-						   else{
-						      //some code
-						   }
-						 });
+					var stationSearch = Ext.ComponentQuery.query("#stationSearch")[0];
+					var addressSearch = Ext.ComponentQuery.query("#addressSearch")[0];
+					var searchResult = Ext.ComponentQuery.query("#searchResult")[0];
+					
+					stationSearch.setHtml("");
+					addressSearch.setHtml("");
+					searchResult.hide();
 				}
 			}]
 		}]
@@ -437,7 +427,25 @@ Ext.define("DgEv.view.west.WestStSearch", {
 				hideLabel: true,
 				style:"margin-left:10px; margin-bottom: 0px !important",
 				boxLabel: '<span style="font-size: 11px;font-family: 돋움;color: #465677;">' + '24시간 운영 충전소' + '</span>',
-				fieldLabel: 'text'
+				fieldLabel: 'text',
+				listeners: {
+                    change: function (checkbox, newVal, oldVal) {
+                    	
+                    	var coreMap = Ext.getCmp("_mapDiv_"); 
+
+						for(var j=0;j<coreMap.chargerList.items.length;j++){
+							if(coreMap.chargerList.items[j].data.S_USE_TIME != "00-23"){
+								if(newVal == true){
+		                    		document.getElementById("fw_path_"+coreMap.chargerList.items[j].data.C_STAT_ID).style.display= "none";
+		                    	}else{
+		                    		document.getElementById("fw_path_"+coreMap.chargerList.items[j].data.C_STAT_ID).style.display= "";
+		                    	}
+							}
+						}
+                    	//console.info(document.getElementById('fw_path'));
+                    	
+                    }
+                }
 			},{
 				xtype:"panel",
 				height:517,
@@ -457,7 +465,25 @@ Ext.define("DgEv.view.west.WestStSearch", {
 				hideLabel: true,
 				style:"margin-left:10px; margin-bottom: 0px !important",
 				boxLabel: '<span style="font-size: 11px;font-family: 돋움;color: #465677;">' + '24시간 운영 충전소' + '</span>',
-				fieldLabel: 'text'
+				fieldLabel: 'text',
+				listeners: {
+                    change: function (checkbox, newVal, oldVal) {
+                    	
+                    	var coreMap = Ext.getCmp("_mapDiv_"); 
+
+						for(var j=0;j<coreMap.chargerList.items.length;j++){
+							if(coreMap.chargerList.items[j].data.S_USE_TIME != "00-23"){
+								if(newVal == true){
+		                    		document.getElementById("fw_path_addr_"+coreMap.chargerList.items[j].data.C_STAT_ID).style.display= "none";
+		                    	}else{
+		                    		document.getElementById("fw_path_addr_"+coreMap.chargerList.items[j].data.C_STAT_ID).style.display= "";
+		                    	}
+							}
+						}
+                    	//console.info(document.getElementById('fw_path'));
+                    	
+                    }
+                }
 			},{
 				xtype:"radiogroup",
 				fieldLabel: '검색반경',

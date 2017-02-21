@@ -3,6 +3,7 @@
 	request.setCharacterEncoding("UTF-8");
 	response.setCharacterEncoding("UTF-8");
 	
+	// 충전소 id param
 	String stationId = request.getParameter("stationId");
 	
 %>
@@ -26,12 +27,189 @@ section { min-height: auto !important; }
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui2.js"></script>
 <script type="text/javascript" src="../../../resources/jsp/windowpop/ui2.js"></script>
 <script type="text/javascript" src="../../../resources/jsp/windowpop/jquery-impromptu.js"></script>
+<script type="text/javascript" src="../../../ext-6.2.0/build/ext-all.js"></script>
 
 
 <script>
 
-getCmntList();
-getRegCargerList();
+$(document).ready(function() { 
+
+
+	window._chargerList = [];
+	getCmntList();
+	getRegCargerList();
+	
+	
+	var coreMap = window.parent.Ext.getCmp("_mapDiv_");
+	var stationId =  <%=stationId%>;
+	
+	chargerList = "";
+	chargerList += 
+		"<thead><tr><th>구분</th><th>충전기 타입</th><th>운전 상태</th><th style='border-right: 0px;'>장애 신고</th></tr></thead> " +
+		"<tbody>" ;
+	
+	//충전기 리스트
+	var stationList = [];
+	//해당 충전소에 충전기 정보 담기
+	for(var i = 0; i < coreMap.chargerList.items.length;i++){
+		if(coreMap.chargerList.items[i].data.C_STAT_ID == stationId){
+			stationList.push(coreMap.chargerList.items[i].data);
+		}
+	}
+	
+	for(var j = 0; j < stationList.length ; j++){
+		//급속 완속 구분
+		var GUBUN = "";
+		var CHGER_TYPE = "";
+		if(stationList[j].C_CHGER_TYPE_CD == "01"){
+			GUBUN = "급속";
+			CHGER_TYPE = "<span class='ev_type t01'>DC차데모</span>";
+		}else if(stationList[j].C_CHGER_TYPE_CD == "02"){
+			GUBUN = "완속";
+			CHGER_TYPE = "<span class='ev_type t01'>승용차 AC완속</span>" +
+						 "<span class='ev_type t02'>AC3상</span>" ;
+		}else if(stationList[j].C_CHGER_TYPE_CD == "03"){
+			GUBUN = "급속";
+			CHGER_TYPE = "<span class='ev_type t01'>DC차데모</span>" +
+			 			 "<span class='ev_type t02'>AC3상</span>" ;
+		}else{
+			GUBUN = "급속";
+			CHGER_TYPE ="<span class='ev_type t01'>DC차데모</span>" +
+						"<span class='ev_type t02'>AC3상</span>" +
+						"<span class='ev_type t03'>DC콤보</span>";
+		}
+		
+		var mainStat = "";
+		if(stationList[j].MAIN_STAT == "1"){
+			mainStat = "<b class='use01'>통신이상</b>";
+		}else if(stationList[j].MAIN_STAT == "2"){
+			mainStat = "<b class='use02'>충전대기</b>";
+		}else if(stationList[j].MAIN_STAT == "3"){
+			mainStat = "<b class='use03'>충전중</b>";
+		}else if(stationList[j].MAIN_STAT == "4"){
+			mainStat = "<b class='use04'>운영중지</b>";
+		}else if(stationList[j].MAIN_STAT == "5"){
+			mainStat = "<b class='use05'>점검중</b>";
+		}else if(stationList[j].MAIN_STAT == "0"){
+			mainStat = "<b class='use00'>알수없음</b>";
+		}
+		
+		console.info(stationList[j]);
+		
+		chargerList +=
+		"<tr> <th class='AC'>"+stationList[j].C_CHGER_ID+GUBUN+"</th>	"+
+		"<td>" +
+		CHGER_TYPE+
+		"</td><td>	" +
+		mainStat+
+		"</td>" +
+		"<td class='borR0'>	" +
+		"<span class='phone'>전화</span><span class='message'>문자</span></td></tr>" ;
+	}
+	chargerList += "</tbody>";
+	
+	//충전기
+	var chgerWindow = document.getElementById('chagerInfo');
+	
+	document.getElementById('table_03').innerHTML = chargerList;
+	//chgerWindow.document.getElementById('table_03').innerHTML = chargerList;
+	
+	
+	
+	var addr = "";
+	var busi_name = "";
+	var name = "";
+	//stationId
+	for(var a = 0 ; a < coreMap.stationList.items.length ; a++){
+		if(coreMap.stationList.items[a].data.STAT_ID == stationId){
+			
+			addr = coreMap.stationList.items[a].data.ADDR_1;
+			busi_name = coreMap.stationList.items[a].data.BUSI_NAME;
+			busi_cd = coreMap.stationList.items[a].data.BUSI_KIND_CD;
+			name = coreMap.stationList.items[a].data.KO_STAT_NM;
+			console.info(coreMap.stationList.items[a].data);
+		}
+	}
+	
+	
+	var stationHtml = "";
+	stationHtml += 
+		"			<div class='sub_group'>               "+
+		
+		
+		"  <table class='table_03 MgT10'>																													"+
+		"      <colgroup>                                                                   "+
+		"          <col width='90' />                                                       "+
+		"          <col />                                                                  "+
+		"      </colgroup>                                                                  "+
+		"      <tbody>                                                                      "+
+		"          <tr>                                                                     "+
+		"              <th class='PdL10 AL'>도로명주소</th>                                    "+
+		"              <td class='PdL10 AL'>"+addr+"</td>       "+
+		"          </tr>                                                                    "+
+		"          <tr>                                                                     "+
+		"              <th class='PdL10 AL'>운영기관</th>                                      "+
+		"              <td class='PdL10 AL'>"+busi_name+"</td>                   "+
+		"          </tr>                                                                    "+
+		"          <tr>                                                                     "+
+		"              <th class='PdL10 AL'>연락처</th>                                        "+
+		"              <td class='PdL10 AL L0'>1661-9408</td>                            "+
+		"          </tr>                                                                    "+
+		"          <tr>                                                                     "+
+		"              <th class='PdL10 AL'>참고사항</th>                                      "+
+		"              <td class='PdL10 AL'>없음</td>                                 "+
+		"          </tr>                                                                    "+
+		"      </tbody>                                                                     "+
+		"  </table>                                                                         "+
+		
+		"			</div>   ";
+		
+		
+	
+	
+	//상세정보
+	//var stationInfo = chgerWindow.document.getElementById('tab_01');
+	var stationInfo = document.getElementById('tab_01');
+	stationInfo.innerHTML = stationHtml;
+	
+	
+	//var titleInfo = chgerWindow.document.getElementById('sub_tits');
+	var titleInfo = document.getElementById('sub_tits');
+	var titleBookMark = "";
+	$.ajax({
+	async: false,
+	type: 'POST',
+	url : '../../../resources/jsp/bookMarkList.jsp',
+	data : {
+		STAT_ID:stationId,
+		MEMBER_ID:"test"
+	},
+	dataType : 'json',
+	success:function(data){
+		
+		var timerObj = window.setInterval(function(){
+
+			
+			if(data.data.length == 0){
+				titleBookMark += "<a href='#' onclick='addBookMark(\""+stationId+"\",\""+name+"\",\""+busi_cd+"\")' class='like_ch'><span class='hidden'>즐겨찾기</span></a>";
+			}else{
+				titleBookMark += "<a href='#' onclick='delBookMark(\""+stationId+"\",\""+name+"\",\""+busi_cd+"\")' class='like_ch_on'><span class='hidden'>즐겨찾기</span></a>";
+				
+			}
+			titleBookMark +="<h2>"+name+"<em id='distant'></em></h2>";
+			titleInfo.innerHTML = titleBookMark;
+			window.clearInterval(timerObj);
+			}, 300);
+		//$('#cmnt_list').html(html);
+		}
+	});
+	
+	
+	
+});
+
+
+
 function getRegCargerList(){
 	
 	var stationId =  <%=stationId%>;
@@ -45,29 +223,39 @@ function getRegCargerList(){
 		},
 		dataType : 'json',
 		success:function(data){
-			//////console.info(data);
 			
 			var timerObj = window.setInterval(function(){
-				
 			
 				var clHtml='';
 				var date=getDate();
 				$('#charger_resev').html('');
-				for(var i=0;i<data.data.length;i++){
-					<%-- clHtml+="<div id=\'"+ <%=stationId%> + '_' +data.data[i].C_CHGER_ID + "\'>"; 					
-					clHtml+="</div>"; --%>
+				
+				//var chargerList = [];
+				
+				for(var j=1;j<data.data.length+1;j++){
 					
-					clHtml+="<div id=\'"+ <%=stationId%> + '_' +data.data[i].C_CHGER_ID + "\'>"; 					
-					clHtml+="</div>";
+					var type2=data.data[j-1].C_CHGER_TYPE_CD == '02' ? '완속' : '급속';
+					//전역변수 설정
+					window._chargerList.push({chargerId:<%=stationId%>+'_0'+j,type:type2,order:data.data[j-1].C_CHGER_ID});
+					
+					
+				}
+				for(var i=0;i<data.data.length;i++){
+					
+					if(i == 0){
+						clHtml+="<div id=\'"+ <%=stationId%> + '_' +data.data[i].C_CHGER_ID + "\'>"; 					
+						clHtml+="</div>";	
+					}else{
+						clHtml+="<div id=\'"+ <%=stationId%> + '_' +data.data[i].C_CHGER_ID + "\' style='display:none'>"; 					
+						clHtml+="</div>";
+					}
+					
 					
 					document.getElementById('charger_resev').innerHTML = clHtml;
 					//$('#reg_chargerList').append(clHtml);
 					
-					
-					
-					
 					var type=data.data[i].C_CHGER_TYPE_CD == '02' ? '완속' : '급속';
-					getBookingInfo(stationId,date,data.data[i].C_CHGER_ID, 0, type);
+					getBookingInfo(stationId,date,data.data[i].C_CHGER_ID, 0, type, data.data[i].S_USE_TIME);
 					
 					
 				}
@@ -87,6 +275,7 @@ function zeroPad(target){
 	return target < 10 ? '0' + target : target;
 }
 
+
 function getDate(date, day){
 	if( typeof( date ) !== 'undefined' ) {
 		date = date.split('/');
@@ -105,8 +294,9 @@ function getDate(date, day){
 	
 }
 
-function getBookingInfo(stat_id,date,order, day, type){
-	//console.info("day"+day);
+function getBookingInfo(stat_id,date,order, day, type,usetime){
+	var chargerList = window._chargerList;
+	console.info(chargerList);
 	if( typeof( day ) !== 'undefined' ) {
 		date = date.split('/');
 		date[1] = date[1] - 1;
@@ -142,68 +332,90 @@ function getBookingInfo(stat_id,date,order, day, type){
 		dataType : 'json',
 		success:function(data){
 			
-			
 			var timerObj = window.setInterval(function(){
-				console.info(date);
-				var html=" <div class='line_info'>"
-						+ "    	<a href=\"javascript:getBookingInfo(\'"+ stat_id +"\',\'"+date +"\',\'"+ order +"\',\'-1\',\'"+ type + "\')\" style='margin-right: 10px;'><img src='../../../resources/images/btn_pre.png' /></a>"
+				//chargerList
+				var chagerOption = "";
+				for(var a=0;a < chargerList.length;a++){
+					if(stat_id+"_"+order == chargerList[a].chargerId){
+						chagerOption += " <option selected='selected' value="+chargerList[a].chargerId+">"+ chargerList[a].order+chargerList[a].type +"</option>"
+					}else{
+						chagerOption += " <option value="+chargerList[a].chargerId+">"+ chargerList[a].order+chargerList[a].type +"</option>"	
+					}
+					
+					
+				}
+				
+				var html=" <div class='line_info'>"//_chargerList
+						+ "    	<a href=\"javascript:getBookingInfo(\'"+ stat_id +"\',\'"+date +"\',\'"+ order +"\',\'-1\',\'"+ type + "\',\'"+ usetime + "\')\" style='margin-right: 10px;'><img src='../../../resources/images/btn_pre.png' /></a>"
 						+ "    	"+ date +""
-						+ "      <a class=\"next\" href=\"javascript:getBookingInfo(\'"+ stat_id +"\',\'"+date +"\',\'"+ order +"\',\'1\',\'"+ type + "\')\" style='margin-left: 10px;'><img src='../../../resources/images/btn_next.png' /></a>"
+						+ "      <a class=\"next\" href=\"javascript:getBookingInfo(\'"+ stat_id +"\',\'"+date +"\',\'"+ order +"\',\'1\',\'"+ type + "\',\'"+ usetime + "\')\" style='margin-left: 10px;'><img src='../../../resources/images/btn_next.png' /></a>"
 						+ "    </div>";
 						
-				
+									
 				
 			     	html+='    <div>								' 
-			     	+'        <p class="tit">예약 시간 선택</p>           ' 
+			     	+'        <p class="tit"><span>'+order+type+'</span>　예약 시간 선택</p>           ' 
 			     	+'        <div class="divi_sel">                      ' 
-			     	+'            <select id="divi" style="width: 98px">  ' 
-			     	+'                <option>'+ order+type +'</option>             ' 
+			     	+'            <select id="divi_'+stat_id+"_"+order+'" onchange="change1(this.value,'+ stat_id +','+ order +')" style="width: 98px">  ' 
+			     	//+'                <option>'+ order+type +'</option>             ' 
+			     	+ chagerOption
 			     	+'            </select>                               ' 
 			     	+'        </div>                                      ' 
 			     	+'    </div>                                          ';
 
-				
-				
+		     	var open=Number(usetime.split('-')[0]);
+				var close=Number(usetime.split('-')[1]);
+				close = close+1;
+				var opens=[];
+				for(var i=open;i<=close;i++){
+					opens.push(i);
+				}
 				var list=data;
 				var times=[];
-				//console.info(list);
 				
 				for(var k=0;k < list.data.length;k++){
 					var start=Number(list.data[k].RESV_DATE.substring(8,10));
-					//console.info(start);
 					var end=Number(list.data[k].EXPR_DATE.substring(8,10));
-					//console.info(end);
 					for(var j=start;j<=end;j++){
 						times.push({time:j,member:list.data[k].MEMBER_ID});
 					}
 				}
-				//console.info(times);
+				
 				
 				html+='<ul class="opinion_search MgT3">  ';
 				for(var i=1;i<25;i++){
 					if(i%12==1) html+='<li class="rev">';
 					var booked=false;
 					var mine=false;
+					var opened=false;
+					for(var j=0;j<opens.length;j++){
+						if(i==opens[j]){
+							opened=true;
+						}
+					}
 					for(var j=0;j<times.length;j++){
 						if(times[j]['time']==i){
 							//if($("#member_id").val()==times[j]['member']){
-							if("11"==times[j]['member']){
+							console.info(times[j]['member']);	
+							if("test22"==times[j]['member']){
 								mine=true;
 							}
 							booked=true;
 						}
 					}
-					if(mine){
-						html+='<a class="on" href="#" onclick="javascript:alert(\'이미 예약되었습니다\')" >' + i + '</a>';
+					if(!opened){
+						html+='<a class="rev03" href="#" onclick="javascript:alert(\'사용시간이 아닙니다\')" >' + i + '</a>';
+					}else if(mine){
+						html+='<a class="rev02" href="#" onclick="javascript:alert(\'내 예약되었습니다\')" >' + i + '</a>';
 					}else if(booked){
-						html+='<a class="on" href="#" onclick="javascript:alert(\'이미 예약되었습니다\')">' + i + '</a>';
+						html+='<a class="rev04" href="#" onclick="javascript:alert(\'다른사람 예약되었습니다\')">' + i + '</a>';
 						
 					}else{
-						if(type=='급속'){
-							html+='<a href="#" onclick="javascript:resvCharger(\''+ stat_id +'\',\''+ order +'\',\''+ date +'\',\''+ i +'\',\'0\',\''+ type +'\')\" >' + i + '</a>';
+						if(type=='급속'){//chargerList
+							html+='<a href="#" onclick="javascript:resvCharger(\''+ stat_id +'\',\''+ order +'\',\''+ date +'\',\''+ i +'\',\'0\',\''+ type +'\',\''+ usetime + '\',\''+ chargerList + '\')\" >' + i + '</a>';
 							
 						}else{
-							html+='<a href="#" onclick="javascript:resvCharger2(\''+ stat_id +'\',\''+ order +'\',\''+ date +'\',\''+ i +'\',\''+ type +'\')\" >' + i + '</a>';
+							html+='<a href="#" onclick="javascript:resvCharger2(\''+ stat_id +'\',\''+ order +'\',\''+ date +'\',\''+ i +'\',\''+ type +'\',\''+ usetime + '\',\''+ chargerList + '\')\" >' + i + '</a>';
 								
 						}
 						
@@ -212,28 +424,39 @@ function getBookingInfo(stat_id,date,order, day, type){
 				}
 					
 				html += "</ul>";
-				console.info(document.getElementById(stat_id+"_"+order));
+				
 				document.getElementById(stat_id+"_"+order).innerHTML = html;
 				//$("#"+stat_id+"_"+order).html(html);
 			
 			window.clearInterval(timerObj);
 			}, 300);
 			
-			
 		}
 	});
 	
+}
+
+function change1(value,a,b){
 	
+	$("#divi_"+a+'_0'+b).val(a+'_0'+b).attr("selected","selected");
+	var selectDiv = document.getElementById('charger_resev');
 	
-	
+	for(var i=0;i < selectDiv.childNodes.length;i++){
+		if(selectDiv.childNodes[i].id != value){
+			document.getElementById(selectDiv.childNodes[i].style.display= "none")
+		}else{
+			document.getElementById(selectDiv.childNodes[i].style.display= "")
+		}
+		
+	}
 	
 	
 }
-
-
+	
+	
 function getCmntList(){
 	var stat_id=<%=stationId%>;
-	////console.info(stat_id);
+	var memberId = "dongjin";
 	$.ajax({
 		async: false,
 		type: 'POST',
@@ -246,7 +469,8 @@ function getCmntList(){
 			 var list=data.data;
 			var html='';
 			for(var i=0;i<list.length;i++){
-				var cmnt_type;
+				var cmnt_type ;
+				var chager_id = "";
 				if(list[i].CMNT_TYPE=='01'){
 					cmnt_type='충전후기';
 				}else if(list[i].CMNT_TYPE=='02'){
@@ -259,43 +483,42 @@ function getCmntList(){
 					cmnt_type='기타';
 				}
 				
+				
+				if(list[i].CHARGER_ID=='01'){
+					chager_id='01(급속)';
+				}else if(list[i].CHARGER_ID=='02'){
+					chager_id='02(완속)';
+				}else if(list[i].CHARGER_ID=='03'){
+					chager_id='03(급속)';
+				}else if(list[i].CHARGER_ID=='04'){
+					chager_id='04(급속)';
+				}else if(list[i].CHARGER_ID=='05'){
+					chager_id='05(급속)';
+				}else if(list[i].CHARGER_ID=='06'){
+					chager_id='06(급속)';
+				}
+				
 				var charger_id = (list[i].CHARGER_ID == '00' ? '전체' : list[i].CHARGER_ID);
 				
-				if(i==0){
-					//html+='<div class="reply_box mt10">';
-				}else if(i==list.length-1){
-					//html+='<div class="reply_box last">';
-				}else{
-					//html+='<div class="reply_box">';
+				//list[i].CMNT_TYPE
+				var memberHtml = '';
+				if(memberId == list[i].INS_ID){
+					memberHtml+= '<a class="post_del" onclick="delCmnt(\''+list[i].CMNT_ID+'\')"></a>';
 				}
-				 
 				
-				html+= ' <dl class="post borB0">  '
-				+ ' 	<a href="#" class="post_del"></a> '
+				html+= ' <dl class="post">  '
+				
+				+ memberHtml
 				+ ' 	<dt>   '
-				+ '     	<span class="divi'+list[i].CMNT_TYPE+'">'+ cmnt_type +'</span><b>' + list[i].INS_ID +'</b><em>01(급속)</em>  '
+				+ '     	<span class="divi'+list[i].CMNT_TYPE+'">'+ cmnt_type +'</span><b>' + list[i].INS_ID +'</b><em>'+chager_id+'</em> '
+				//+ '<a onclick="delCmnt(\''+list[i].CMNT_ID+'\')">del</a>  '
+				
 				+ '         <time datetime="2017-02-15">'+list[i].INS_DT+'</time>    	      '
 				+ '     </dt>                                                                   '
 				+ '     <dd>'+ list[i].CMNT +'</dd>              '
 				+ ' </dl>                                                                       ';
 				
-				
-				/* html+='<dl class="reple_info">'
-					+'<dt><span class="userName">' + list[i].INS_ID +'</span>'
-					+'<em class="infoType">'+ cmnt_type +'</em><em>'+ charger_id +'</em>'
-					+'<em>'+list[i].INS_DT+'</em></dt>'
-					+'<dl>'+ list[i].CMNT +'</dl>'
-					+'</dl>'
-				if(list[i].INS_ID==$('#member_id').val()){
-					html+='<span class="btn_re_zone"><a href="javascript:deleteCmnt(\''+ list[i].CMNT_ID +'\')" class="btn_close"><em class="none">닫기</em></a></span>';
-				}
-					+'<span class="btn_re_zone"><a href="#" class="btn_close"><em class="none">닫기</em></a></span>' */
-				//html+='</div>';
 			}
-			
-			//////console.info(html);
-			////console.info($('#cmnt_list'));
-			
 			
 			var timerObj = window.setInterval(function(){
 				
@@ -310,9 +533,9 @@ function getCmntList(){
 }
 
 
-function resvCharger(stat_id,order,date,time,expr,type){
+function resvCharger(stat_id,order,date,time,expr,type,usetime,chargerList){
 	//var mem = $("#member_id").val();
-	var mem = "test";
+	var mem = "test22";
 	if(mem == '' || mem == null){
 			var con = confirm("로그인 후에 사용 하실 수 있습니다. 로그인 페이지로 이동 하시겠습니까?");
 			if (con) {
@@ -339,16 +562,14 @@ function resvCharger(stat_id,order,date,time,expr,type){
 			,EXPR_DATE: resvDate+expr_time+'0000'
 			,CHGER_ID: order
 			,STAT_ID: stat_id
-			,MEMBER_ID: "test"
+			,MEMBER_ID: mem
 		},
 		dataType : 'json',
 		success : function(data){
-			if(data.errorMsg==''){
-				
-			}else{
-				alert(data.errorMsg);
-			}
-			getBookingInfo(stat_id,date,order,0,type);
+			alert("예약완료");
+			//getBookingInfo(stat_id,date,order,0,type,usetime,chargerList);
+			getRegCargerList();
+			
 		}
 	});
 
@@ -356,7 +577,7 @@ function resvCharger(stat_id,order,date,time,expr,type){
 
 
 
-function resvCharger2(stat_id,order,date,time,type){
+function resvCharger2(stat_id,order,date,time,type,usetime,chargerList){
 	var statesdemo = {
 			state0: {
 				title: '완속 충전기 예약',
@@ -463,10 +684,44 @@ function setCmnt(){
 }
 
 
+function delCmnt(CMNT_ID,STAT_ID){
+	
+	 var mem = "test";
+	 
+	 if(mem == '' || mem == null){
+			var con = confirm("로그인 후에 사용 하실 수 있습니다. 로그인 페이지로 이동 하시겠습니까?");
+			if (con) {
+				window.close();
+				opener.location.href = "/mobile/login";
+			}
+		return;
+	}
+	
+	
+	
+	$.ajax({
+		async: false,
+		type: 'POST',
+		url : '../../../resources/jsp/stationCmntDelete.jsp',
+		data : {
+			CMNT_ID: CMNT_ID
+			,MEMBER_ID:mem
+		},
+		dataType : 'json',
+		success:function(data){
+			alert("삭제완료");
+			getCmntList();
+		}
+	});
+	
+	
+}
 
-addBookMark = function(stationId,name){
+
+
+addBookMark = function(stationId,name,busiCd){
 	var stationId = <%=stationId%>;
-	console.info(name);
+	
 	var titleInfo = document.getElementById('sub_tits');
 	$("#sub_tits").empty();
 	var titleBookMark = ""
@@ -476,7 +731,8 @@ addBookMark = function(stationId,name){
 		url : '../../../resources/jsp/bookMarkInsert.jsp',
 		data : {
 			STAT_ID:stationId,
-			MEMBER_ID:"test"
+			MEMBER_ID:"test",
+			BUSI_CD:busiCd
 		},
 		dataType : 'json',
 		success:function(data){
@@ -484,17 +740,17 @@ addBookMark = function(stationId,name){
 			}
 	});
 	
-	titleBookMark += "<a href='#' onclick='delBookMark(\""+stationId+"\",\""+name+"\")' class='like_ch_on'><span class='hidden'>즐겨찾기</span></a>";
+	titleBookMark += "<a href='#' onclick='delBookMark(\""+stationId+"\",\""+name+"\",\""+busiCd+"\")' class='like_ch_on'><span class='hidden'>즐겨찾기</span></a>";
 	titleBookMark +="<h2>"+name+"<em id='distant'></em></h2>";
 	titleInfo.innerHTML = titleBookMark;
 }
 
-delBookMark = function(stationId,name){
+delBookMark = function(stationId,name,busiCd){
 	var stationId = <%=stationId%>;
-	console.info(name);
+	
 	var titleInfo = document.getElementById('sub_tits');
 	$("#sub_tits").empty();
-	console.info(titleInfo);
+	
 	var titleBookMark = ""
 	$.ajax({
 	async: false,
@@ -502,16 +758,16 @@ delBookMark = function(stationId,name){
 	url : '../../../resources/jsp/bookMarkDelete.jsp',
 	data : {
 		STAT_ID:stationId,
-		MEMBER_ID:"test"
+		MEMBER_ID:"test",
+		BUSI_CD:busiCd
 	},
 	dataType : 'json',
 	success:function(data){
-			console.info("success");
+			alert("삭제 완료");
 		}
 	});
 	
-	
-	titleBookMark += "<a href='#' onclick='addBookMark(\""+stationId+"\",\""+name+"\")' class='like_ch'><span class='hidden'>즐겨찾기</span></a>";
+	titleBookMark += "<a href='#' onclick='addBookMark(\""+stationId+"\",\""+name+"\",\""+busiCd+"\")' class='like_ch'><span class='hidden'>즐겨찾기</span></a>";
 	titleBookMark +="<h2>"+name+"<em id='distant'></em></h2>";
 	titleInfo.innerHTML = titleBookMark;
 	
@@ -562,30 +818,7 @@ delBookMark = function(stationId,name){
                         <div>
                             <h4 class="wtt2"><a href="javascript:;">충전소 이모저모</a></h4>
                             <div id="tab_02">
-                                <!-- <div class="inp_form">
-                                	<p class="txt_input">
-                                    	<label class="w70">구분</label>
-                                    	<select id="cmnt_type">
-						    				<option>:::선택:::</option>
-						    				<option value='01'>충전후기</option>
-						    				<option value='02'>불편사항</option>
-						    				<option value='03'>장애사항</option>
-						    				<option value='04'>개선요청</option> 
-						    				<option value='05'>기타</option>
-						    			</select>
-									</p>
-									<p class="txt_input">
-                                        <label class="w70">충전기</label>
-                                    	<select id="charger_id">
-                                        	<option>:::선택:::</option>
-						    				<option value='01'>01(급속)</option>
-						    				<option value='02'>02(완속)</option>
-                                        </select>
-                                    </p>
-                                    <p class="txt_input last">
-                                    	<span class="inp_box bg_w fl per75"><input type="text" id="cmnt" placeholder="내용 입력" class="bg_w per90" /></span><a href="#" onclick="javascript:setCmnt();" class="btn_01_2 fl ml10" style="width:10%">등록</a>
-                                    </p>
-                                </div> -->
+                               
                                 <div class="opinion_search">
                                 	<p>
 										<label for="divi">구분</label>
@@ -617,14 +850,14 @@ delBookMark = function(stationId,name){
                         <div>
                             <h4 class="wtt3"><a href="javascript:;">충전기 예약</a></h4>
                             <div id="tab_03">
-                            	<!-- <div id="reg_chargerList"> -->
                             	<div id="charger_resev">
                             	
                             	</div>
                               	 <ul class="model_ex">
 							    	<li><span class="rev01"></span>예약가능</li>
-							        <li><span class="rev02"></span>예약가능</li>
-							        <li><span class="rev03"></span>예약가능</li>
+							        <li><span class="rev02"></span>예약선택</li>
+							        <li><span class="rev04"></span>예약불가</li>
+							        <li><span class="rev03"></span>운영안함</li>
 							    </ul> 
 							    <ul class="refer">
 							    	<li>충전기를 예약하시려면 해당 충전기의 시간 버튼을 클릭하세요.</li>
@@ -640,4 +873,5 @@ delBookMark = function(stationId,name){
 	</section>
 </div>
 </div>
+
 </html>
