@@ -73,9 +73,9 @@ dl.post> dd { margin: 5px 0px 0px 0px; font-size: 12px; color: #4d4d4d; letter-s
 .model_ex> li { float: left; margin-right: 15px; letter-spacing: -1px; } 
 .model_ex> li> span { width: 13px; height: 13px; margin-right: 3px; display: inline-block; vertical-align: middle; }
 .rev01 { border: 1px solid #d4d3ce; }
-.rev02 { background: #ff333c !important; border: 1px solid #ff333c !important; }
+.rev02 { background: #ff333c !important; border: 1px solid #ff333c !important; color: #fff !important;}
 .rev03 { background: #e1e1e1 !important; border: 1px solid #c1c1c1 !important; }
-.rev04 { background: url(./resources/images/rev_none.png) #ececec !important; border: 1px solid #c1c1c1 !important; cursor: DEFAULT; }
+.rev04 { background: url(./resources/images/rev_none.png) #ececec !important; border: 1px solid #c1c1c1 !important; cursor: DEFAULT; color: #919191 !important;}
 
 
 .refer { padding: 10px 0px 7px 10px; border: 1px solid #e1e1e1; margin-top: 25px; background: #f5f5f5; }

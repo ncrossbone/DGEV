@@ -619,7 +619,7 @@ deleteMark = function(stationId,name,busiCd){
 	}
 	
 	//$("#sub_tits").empty();
-	return;
+	//return;
 	
 	var favStation = document.getElementById('fav_'+stationId);
 	var favDelButton = document.getElementById('delBtn_'+stationId);

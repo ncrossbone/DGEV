@@ -427,11 +427,11 @@ function getBookingInfo(stat_id,date,order, day, type,usetime){
 						}
 					}
 					if(!opened){
-						html+='<a class="rev03" href="#" onclick="javascript:alert(\'사용시간이 아닙니다\')" >' + i + '</a>';
+						html+='<a class="rev04" href="#" onclick="javascript:alert(\'사용시간이 아닙니다\')" >' + i + '</a>';
 					}else if(mine){
 						html+='<a class="rev02" href="#" onclick="javascript:alert(\'내 예약되었습니다\')" >' + i + '</a>';
 					}else if(booked){
-						html+='<a class="rev04" href="#" onclick="javascript:alert(\'다른사람 예약되었습니다\')">' + i + '</a>';
+						html+='<a class="rev03" href="#" onclick="javascript:alert(\'다른사람 예약되었습니다\')">' + i + '</a>';
 						
 					}else{
 						if(type=='급속'){//chargerList
@@ -975,8 +975,8 @@ delBookMark = function(stationId,name,busiCd){
                               	 <ul class="model_ex">
 							    	<li><span class="rev01"></span>예약가능</li>
 							        <li><span class="rev02"></span>예약선택</li>
-							        <li><span class="rev04"></span>예약불가</li>
-							        <li><span class="rev03"></span>운영안함</li>
+							        <li><span class="rev03"></span>예약불가</li>
+							        <li><span class="rev04"></span>운영안함</li>
 							    </ul> 
 							    <ul class="refer">
 							    	<li>충전기를 예약하시려면 해당 충전기의 시간 버튼을 클릭하세요.</li>
