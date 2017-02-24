@@ -14,8 +14,13 @@ try{
 	sql = "	DELETE FROM  EVCS_STATION_CMNT WHERE CMNT_ID = '"+CMNT_ID+"'";
 	
 	
-	stmt = con.createStatement();   
-	rs = stmt.executeQuery(sql);
+	stmt = con.createStatement();
+	stmt.executeUpdate(sql);
+	//stmt = con.createStatement();
+	 
+	//rs = stmt.executeUpdate(sql);
+	   
+	   
 	JSONObject jsonObj  = new JSONObject();
 	JSONArray jsonArr = new JSONArray();
 	JSONObject jsonRecord = null;

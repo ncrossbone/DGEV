@@ -525,9 +525,7 @@ function getCmntList(){
 				
 				//list[i].CMNT_TYPE
 				var memberHtml = '';
-				if(memberId == list[i].INS_ID){
 					memberHtml+= '<a class="post_del" onclick="delCmnt(\''+list[i].CMNT_ID+'\')"></a>';
-				}
 				
 				html+= ' <dl class="post">  '
 				
@@ -639,6 +637,7 @@ function resvCharger2(stat_id,order,date,time,type,usetime,chargerList){
 function setCmnt(){
 	 //var mem = $("#member_id").val();
 	 var mem = <%=stationId%>;
+	 //var mem = "test";
 	 
 	 if(mem == '' || mem == null){
 			var con = confirm("로그인 후에 사용 하실 수 있습니다. 로그인 페이지로 이동 하시겠습니까?");
@@ -694,7 +693,7 @@ function setCmnt(){
 			,CMNT:cmnt
 			,STAT_ID:stat_id
 			,MODE:'insert'
-			,MEMBER_ID:mem
+			,MEMBER_ID:"test"
 		},
 		dataType : 'json',
 		success:function(data){

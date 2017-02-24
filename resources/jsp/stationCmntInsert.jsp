@@ -27,15 +27,20 @@ try{
 	sql += "	    	(                           ";
 	sql += "	    		"+STAT_ID+"                 ";
 	sql += "	    		,'"+CMNT+"'                   ";
-	sql += "	    		,"+MEMBER_ID+"              ";
+	sql += "	    		,'"+MEMBER_ID+"'              ";
 	sql += "	    		,SYSDATE()                ";
 	sql += "	    		,'"+CMNT_TYPE+"'              ";
 	sql += "	    		,'"+CHARGER_ID+"'     ";
 	sql += "	    		,'DE'		)       ";
 	
 	
-	stmt = con.createStatement();   
-	rs = stmt.executeQuery(sql);
+	stmt = con.createStatement();
+	stmt.executeUpdate(sql);
+	//stmt = con.createStatement();
+	 
+	//rs = stmt.executeUpdate(sql);
+	   
+	   
 	JSONObject jsonObj  = new JSONObject();
 	JSONArray jsonArr = new JSONArray();
 	JSONObject jsonRecord = null;

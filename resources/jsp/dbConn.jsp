@@ -14,7 +14,7 @@ String sql=null;
 
 try
 {
-	Class.forName("org.mariadb.jdbc.Driver");
+	Class.forName("com.mysql.jdbc.Driver");
 	con = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
 }catch(SQLException ex){
 	System.out.println(ex);

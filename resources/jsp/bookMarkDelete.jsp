@@ -13,13 +13,19 @@ try{
 	sql += "   where MEMBER_ID = '"+memberId+"' and STAT_ID = '"+stationId+"' and BUSI_KIND_CD='"+busiCd+"' ";
 	
 	
-	System.out.println(sql);
-	stmt = con.createStatement();   
-	rs = stmt.executeQuery(sql);
+	stmt = con.createStatement();
+	stmt.executeUpdate(sql);
+	//stmt = con.createStatement();
+	 
+	//rs = stmt.executeUpdate(sql);
+	   
+	   
 	JSONObject jsonObj  = new JSONObject();
 	JSONArray jsonArr = new JSONArray();
 	JSONObject jsonRecord = null;
-   //out.print("success");
+		
+	   
+    out.print(jsonObj);
 }catch(Exception ex){
 	//throw;
 	System.out.println(ex);
