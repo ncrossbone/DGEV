@@ -10,8 +10,9 @@ try{
 	String chgerId = request.getParameter("CHGER_ID");
 	String resvDate = request.getParameter("RESV_DATE");
 	String exprDate = request.getParameter("EXPR_DATE");
+	String cardNo = request.getParameter("CARD_NO");
 	
-	sql = "	INSERT INTO EVCS_RESERVATION											";
+	sql = "	INSERT INTO EVCS_RESERVATION						  ";
 	sql += "    	(                                             ";
 	sql += "    		MEMBER_ID                                   ";
 	sql += "    		,CHGER_ID                                   ";
@@ -24,23 +25,25 @@ try{
 	sql += "    	VALUES                                        ";
 	sql += "    	(                                             ";
 	sql += "    		'"+memberId+"'                                 ";
-	sql += "    		,"+chgerId+"                                 ";
+	sql += "    		,'"+chgerId+"'                                 ";
 	sql += "    		,"+stationId+"                                  ";
-	sql += "    		,'aaa'                                      ";
+	sql += "    		,'"+cardNo+"'                                      ";
 	sql += "    		,"+resvDate+"                                ";
 	sql += "    		,"+exprDate+"                                ";
 	sql += "    		,DATE_FORMAT(SYSDATE(),'%Y%m%d%H%i%s')      ";
 	sql += "    	)                                             ";
 	
-	stmt = con.createStatement();
-	stmt.executeUpdate(sql);
-	//stmt = con.createStatement();
-	 
-	//rs = stmt.executeUpdate(sql);
-	   
-	   
+	stmt = con.createStatement();   
+	stmt.executeUpdate(sql); 
+	/* rs = stmt.executeQuery(sql);
 	JSONObject jsonObj  = new JSONObject();
-	out.print(jsonObj);
+	JSONArray jsonArr = new JSONArray();
+	JSONObject jsonRecord = null;
+		
+	   
+    out.print(jsonObj); */
+	JSONObject jsonObj  = new JSONObject();
+    out.print(jsonObj);
     
 }catch(Exception ex){
 	//throw;

@@ -81,7 +81,7 @@ Ext.define("DgEv.view.north.NorthContainer", {
 
 Ext.onReady(function(){ 
 	getSido();
-	getDemo();
+	//getDemo();
 	//getSgg(27);
 	getSgg(27,"west");
 	

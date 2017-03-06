@@ -65,7 +65,7 @@ Ext.define("DgEv.view.west.WestContainer", {
 	          		type: 'POST',
 	          		url : './resources/jsp/bookMarkList.jsp',
 	          		data : {
-	          			MEMBER_ID:"test"
+	          			MEMBER_ID:member_id
 	          		},
 	          		dataType : 'json',
 	          		success:function(data){

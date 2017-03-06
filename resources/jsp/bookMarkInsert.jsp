@@ -13,18 +13,17 @@ try{
 	sql += " '"+memberId+"','aaa','"+stationId+"','"+busiCd+"',SYSDATE() ) " ;
 	
 	
-	stmt = con.createStatement();
+	out.print(sql);
+	stmt = con.createStatement();   
 	stmt.executeUpdate(sql);
-	//stmt = con.createStatement();
-	 
-	//rs = stmt.executeUpdate(sql);
-	   
-	   
+	/* stmt = con.createStatement();   
+	rs = stmt.executeQuery(sql);
 	JSONObject jsonObj  = new JSONObject();
 	JSONArray jsonArr = new JSONArray();
-	JSONObject jsonRecord = null;
-		
-	   
+	JSONObject jsonRecord = null; */
+   //out.print("success");
+	
+	JSONObject jsonObj  = new JSONObject();
     out.print(jsonObj);
 }catch(Exception ex){
 	//throw;

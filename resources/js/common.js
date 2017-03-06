@@ -262,6 +262,8 @@ onclickStation = function(val){
 	var isCenterCon = Ext.ComponentQuery.query("#centercontainer")[0];
 	var stationInfo = Ext.ComponentQuery.query("#stationInfo")[0];
 	
+	console.info(_searchArr[paramIdx].data);
+	
 	openWindowCharg(_searchArr[paramIdx].data.KO_STAT_NM, _searchArr[paramIdx].data.ADDR_1, _searchArr[paramIdx].data.STAT_ID);
 	
 	/*coreMap.map.getView().setCenter([searchX,searchY]);
@@ -271,7 +273,7 @@ onclickStation = function(val){
     
     // 지도 중심을 부드럽게 이동시킵니다
     // 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
-    coreMap.map.panTo(moveLatLon);
+	coreMap.map.setCenter(moveLatLon);
     coreMap.map.setLevel(4);
 
 }
@@ -299,7 +301,7 @@ onClickAddress=function(val,stationId,addrId){
 	
 	
 	var moveLatLon = new daum.maps.LatLng(searchY, searchX);
-	coreMap.map.panTo(moveLatLon);
+	coreMap.map.setCenter(moveLatLon);
     coreMap.map.setLevel(4);
     
     var radiusItems = Ext.getCmp("radiusItems");
@@ -436,10 +438,9 @@ LayerSymbol = function(select){
 	
 	var timerObj = window.setInterval(function(){
 		for(var i = 0 ; i < store.data.items.length; i++){
-			var  cord = store.data.items[i].data.S_GPS_LAT_LNG.split(",");
-			x = cord[1];
-			y = cord[0];
-			
+			//var  cord = store.data.items[i].data.S_GPS_LAT_LNG.split(",");
+			x = store.data.items[i].data.S_LNG;
+			y = store.data.items[i].data.S_LAT;
 			/*var addr = "";
 			for(var j=0;j < coreMap.stationList.items.length;j++){
 				if(coreMap.stationList.items[j].data.STAT_ID == store.data.items[i].data.STAT_ID){
@@ -447,10 +448,10 @@ LayerSymbol = function(select){
 				}
 			}*/
 			
-			
 			positions.push({latlng: new daum.maps.LatLng(y, x), 
 							//GUBUN: store.data.items[i].data.GUBUN,
 							STAT_ID: store.data.items[i].data.STAT_ID,
+							BUSI_CD: store.data.items[i].data.DAEGU_EV,
 							NM: store.data.items[i].data.S_KO_STAT_NM,
 							Y01: store.data.items[i].data.Y01,
 							N01: store.data.items[i].data.N01,
@@ -475,6 +476,7 @@ LayerSymbol = function(select){
 		    
 		    // 마커 이미지를 생성합니다
 		    
+		    console.info(positions[i]);
 		    
 		    var markerImage = "";
 		    if(select==undefined||select=="all"){
@@ -517,7 +519,7 @@ LayerSymbol = function(select){
 		    
 		    daum.maps.event.addListener(marker, 'click', function() {
 		    	
-		    	openWindowCharg(this.data.NM, this.data.ADDR, this.data.STAT_ID);
+		    	openWindowCharg(this.data.NM, this.data.ADDR, this.data.STAT_ID, this.data.BUSI_CD);
 				
 			});
 			
@@ -534,7 +536,7 @@ LayerSymbol = function(select){
 
 
 
-openWindowCharg = function(Name,Addr,stationId){
+openWindowCharg = function(Name,Addr,stationId, busiCd){
 	
 		
 		
@@ -584,7 +586,7 @@ openWindowCharg = function(Name,Addr,stationId){
 			height:"100%",
 			autoScroll:false,
 			width:410,
-			html: '<iframe id="chagerInfo" style="overflow:auto; width:100%; height:100%;" frameborder="0" src="./resources/jsp/windowpop/stationinfo2.jsp?stationId='+stationId+'"></iframe>'
+			html: '<iframe id="chagerInfo" style="overflow:auto; width:100%; height:100%;" frameborder="0" src="./resources/jsp/windowpop/stationinfo2.jsp?stationId='+stationId+'&busiCd='+busiCd+'"></iframe>'
 		}]
 	});
 	stationInfo = Ext.ComponentQuery.query("#stationInfo")[0];
@@ -635,7 +637,7 @@ deleteMark = function(stationId,name,busiCd){
 	url : './resources/jsp/bookMarkDelete.jsp',
 	data : {
 		STAT_ID:stationId,
-		MEMBER_ID:"test",
+		MEMBER_ID:member_id,
 		BUSI_CD:busiCd
 	},
 	dataType : 'json',

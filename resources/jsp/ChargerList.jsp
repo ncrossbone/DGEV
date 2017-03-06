@@ -27,7 +27,7 @@ try{
 	sql += "			S_GPS_LAT_LNG	,   ";
 	sql += "			S_ULAT	,         ";
 	sql += "			S_ULNG	,         ";
-	sql += "			ALM_STAT	,       ";
+//	sql += "			ALM_STAT	,       ";
 	sql += "			CHRG_STAT	,       ";
 	sql += "			COM_STAT	,       ";
 	sql += "			DOOR_STAT	,       ";
@@ -80,7 +80,7 @@ try{
 		jsonRecord.put("S_GPS_LAT_LNG",rs.getString("S_GPS_LAT_LNG"));
 		jsonRecord.put("S_ULAT",rs.getString("S_ULAT"));
 		jsonRecord.put("S_ULNG",rs.getString("S_ULNG"));
-		jsonRecord.put("ALM_STAT",rs.getString("ALM_STAT"));
+		/* jsonRecord.put("ALM_STAT",rs.getString("ALM_STAT")); */
 		jsonRecord.put("CHRG_STAT",rs.getString("CHRG_STAT"));
 		jsonRecord.put("COM_STAT",rs.getString("COM_STAT"));
 		jsonRecord.put("DOOR_STAT",rs.getString("DOOR_STAT"));

@@ -119,7 +119,16 @@ Ext.define("DgEv.view.west.WestStSearch", {
 				hideLabel: true,
 				style:"margin-left:10px;",
 				boxLabel: '차량 종류 설정',
-				fieldLabel: 'text' 
+				fieldLabel: 'text',
+				handler:function(obj,checked){
+					var carStore = Ext.ComponentQuery.query("#carStore")[0];
+
+					if(checked==true){
+						carStore.setDisabled(false);
+					}else{
+						carStore.setDisabled(true);
+					}
+				}
 			},{
 				xtype:"container",
 				width:45
@@ -130,7 +139,16 @@ Ext.define("DgEv.view.west.WestStSearch", {
 				hideLabel: true,
 				style:"margin-left:10px;",
 				boxLabel: '충전기 구분',
-				fieldLabel: 'text' 
+				fieldLabel: 'text',
+				handler:function(obj,checked){
+					var chargStore = Ext.ComponentQuery.query("#chargStore")[0];
+
+					if(checked==true){
+						chargStore.setDisabled(false);
+					}else{
+						chargStore.setDisabled(true);
+					}
+				} 
 			}]
 		},{
 			xtype:"panel",
@@ -145,6 +163,7 @@ Ext.define("DgEv.view.west.WestStSearch", {
 			},{
 				xtype:"combobox",
 				itemId:"carStore",
+				disabled:true,
 				store: Ext.create('DgEv.store.west.CarKindStore'),
 				emptyText:"==전체==",
 				editable:false,
@@ -157,6 +176,7 @@ Ext.define("DgEv.view.west.WestStSearch", {
 			},{
 				xtype:"combobox",
 				itemId:"chargStore",
+				disabled:true,
 				value:"00",
 				editable:false,
 				width:150,
@@ -492,18 +512,18 @@ Ext.define("DgEv.view.west.WestStSearch", {
 				cls:"radiusRadio",
 				labelSeparator: '',
 				items: [{
-					boxLabel:"5km",
+					boxLabel:"1km",
 					id:"radius5",
-					inputValue: '5',
+					inputValue: '1',
 					checked:true
 				},{
-					boxLabel:"10km",
+					boxLabel:"3km",
 					id:"radius10",
-					inputValue: '10'
+					inputValue: '3'
 				},{
-					boxLabel:"20km",
+					boxLabel:"5km",
 					id:"radius20",
-					inputValue: '20'
+					inputValue: '5'
 				}]
 			},{
 				xtype:"panel",

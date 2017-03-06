@@ -36,16 +36,15 @@ try{
 	
 	stmt = con.createStatement();
 	stmt.executeUpdate(sql);
-	//stmt = con.createStatement();
-	 
-	//rs = stmt.executeUpdate(sql);
-	   
-	   
+	/* stmt = con.createStatement();   
+	rs = stmt.executeQuery(sql);
 	JSONObject jsonObj  = new JSONObject();
 	JSONArray jsonArr = new JSONArray();
 	JSONObject jsonRecord = null;
 		
 	   
+    out.print(jsonObj); */
+	JSONObject jsonObj  = new JSONObject();
     out.print(jsonObj);
     
 }catch(Exception ex){
