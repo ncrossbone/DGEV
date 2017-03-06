@@ -50,7 +50,6 @@ sidoZoom = function(val){
         filter: ol.format.filter.like('ADM_CD',val+'*')
     });
 	
-	
 	$.ajax({
         url : _proxyUrl + _serviceUrl + "tmdl/wfs?",
         type : 'POST',
@@ -171,7 +170,8 @@ sggZoom = function(sggCd){
 }
 
 getDemo = function(){
-	
+
+	alert("1");
 	var params = "EV/wfs?service=wfs&version=1.1.0";
 	params += "&request=getfeature";
 	params += "&typename=EV:EV_point";
@@ -271,7 +271,7 @@ onclickStation = function(val){
     
     // 지도 중심을 부드럽게 이동시킵니다
     // 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
-    coreMap.map.panTo(moveLatLon);
+    coreMap.map.setCenter(moveLatLon);
     coreMap.map.setLevel(4);
 
 }
@@ -299,7 +299,7 @@ onClickAddress=function(val,stationId,addrId){
 	
 	
 	var moveLatLon = new daum.maps.LatLng(searchY, searchX);
-	coreMap.map.panTo(moveLatLon);
+	coreMap.map.setCenter(moveLatLon);
     coreMap.map.setLevel(4);
     
     var radiusItems = Ext.getCmp("radiusItems");
@@ -635,7 +635,7 @@ deleteMark = function(stationId,name,busiCd){
 	url : './resources/jsp/bookMarkDelete.jsp',
 	data : {
 		STAT_ID:stationId,
-		MEMBER_ID:"test",
+		MEMBER_ID:member_id,
 		BUSI_CD:busiCd
 	},
 	dataType : 'json',

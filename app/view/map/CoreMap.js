@@ -19,14 +19,14 @@ Ext.define('DgEv.view.map.CoreMap', {
 
 	width: "100%",
 	height: "100%",
-	html:"<div style='position:absolute; right:15px; top: 50px; z-index:20000;'>" +
+	html:"<div style='position:absolute; right:60px; top: 20px; z-index:20000;'>" +
 		"<span id='mapSelect'>" +
 	 	"<a class='mapBtn on' onclick=Ext.getCmp('_mapDiv_').mapSelect(this.id); id='all'>전체</a>" +
 	 	"<a class='mapBtn' onclick=Ext.getCmp('_mapDiv_').mapSelect(this.id); id='rap'>급속</a>" +
 	 	"<a class='mapBtn' onclick=Ext.getCmp('_mapDiv_').mapSelect(this.id); id='slow'>완속</a>" +
 	 	"<a class='mapBtn' onclick=Ext.getCmp('_mapDiv_').mapSelect(this.id); style='border-right: 1px solid #d0d0d0 !important;' id='com'>기관</a>" +
-	 	"</span></div>"+
-		"<div style='position:absolute; top:8%; left:96%; width:60px; z-index:20000; height:200px;'>" +
+	 	"</span></div>",
+		/*"<div style='position:absolute; top:8%; left:96%; width:60px; z-index:20000; height:200px;'>" +
 	  "<div class='zoomText'>" +
 	  	"<div style='top:75px; background: url(./resources/images/zoom.png) -216px 0px;'></div>" +
 	  	"<div style='top:95px; background: url(./resources/images/zoom.png) -245px 0px;'></div>" +
@@ -68,7 +68,7 @@ Ext.define('DgEv.view.map.CoreMap', {
 	  "</div>" +
 	  "<div class='zoomPointer' style='overflow: hidden; position: absolute; margin: -5px 0px 0px; width: 18px; height: 11px; background: url(./resources/images/zoom.png) -157px 0px; transition: top 0.1s; left: 31px; top: 135px;'></div>" +
 	  "<div class='minus' style='top:141px; left:30px; position: absolute; width: 20px; height: 20px; background: url(./resources/images/zoom.png) -100px 0px no-repeat;'></div>" +
-	  "</div>",
+	  "</div>",*/
 	initComponent: function() {
 		this.on('render', this.mapRendered, this);
 		this.callParent();
@@ -333,8 +333,12 @@ Ext.define('DgEv.view.map.CoreMap', {
 		me.layerInfo = layerStore;
 		
 		LayerSymbol();
-
-
+		
+		/*var mapTypeControl = new daum.maps.MapTypeControl();
+		me.map.addControl(mapTypeControl, daum.maps.ControlPosition.TOPRIGHT);*/
+		
+		var zoomControl = new daum.maps.ZoomControl();
+		me.map.addControl(zoomControl, daum.maps.ControlPosition.RIGHT);
     	
     },
     wheelZoom:function(zoomLevel){

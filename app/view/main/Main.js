@@ -2,9 +2,8 @@ Ext.define("DgEv.view.main.Main", {
 
 	extend: "Ext.panel.Panel",
 
-	requires: ["DgEv.view.west.WestContainer",
+	requires: ["DgEv.view.west.West",
 	           "DgEv.view.map.CoreMap",
-	           "DgEv.view.west.LogoContainer",
 	           "DgEv.view.north.NorthContainer"],
 	xtype: "dgev-main",
 	title: "",
@@ -17,9 +16,7 @@ Ext.define("DgEv.view.main.Main", {
 	},{
 		xtype: "dgev-northcontainer"
 	},{
-		xtype:"dgev-logocontainer"
-	},{
-		xtype: "dgev-westcontainer"
+		xtype: "dgev-west"
 	}],
 	initComponent: function(){
 		

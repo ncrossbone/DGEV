@@ -10,7 +10,7 @@ Ext.define("DgEv.view.north.NorthContainer", {
 	bodyStyle: "margin-left:350px; background:url('./resources/images/design/top_right_bg.gif') !important;",
 	border:false,
 	height:36,
-	
+	hidden:true,
 	items:[{
 		xtype:"container",
 		width:10
@@ -81,7 +81,7 @@ Ext.define("DgEv.view.north.NorthContainer", {
 
 Ext.onReady(function(){ 
 	getSido();
-	getDemo();
+	//getDemo();
 	//getSgg(27);
 	getSgg(27,"west");
 	

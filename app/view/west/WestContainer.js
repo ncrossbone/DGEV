@@ -2,16 +2,7 @@ Ext.define("DgEv.view.west.WestContainer", {
 
 	extend: "Ext.TabPanel",
 	xtype: "dgev-westcontainer",
-	collapsible: true,
-	collapseDirection: 'left',
-	headerPosition: 'right',
-	y:65,
 	style:"border-bottom:solid 5px #445676;",
-	header:{
-		width:8,
-		style:"background-color : #445676;",
-		titlePosition:1
-	},
 	id: "westcontainer",
 	width: 350,
 	border:false,
@@ -25,7 +16,7 @@ Ext.define("DgEv.view.west.WestContainer", {
 	           "DgEv.view.west.WestFavorSt"],
     items:[{
 		xtype:"dgev-weststsearch"
-		},{
+	},{
 		xtype:"dgev-westfavorst"
 	}],
 	
@@ -43,7 +34,7 @@ Ext.define("DgEv.view.west.WestContainer", {
 	},
 
 	listeners:{
-		collapse:{
+		/*collapse:{
 			fn: function(el){
 				Ext.get("westcontainer_header-innerCt").setStyle("background","url('./resources/images/button/btn_arrow_open.png') no-repeat");
 			}
@@ -53,7 +44,7 @@ Ext.define("DgEv.view.west.WestContainer", {
 
 				Ext.get("westcontainer_header-innerCt").setStyle("background","url('./resources/images/button/btn_arrow_close.png') no-repeat");
 			}
-		},
+		},*/
 		tabchange : function (panel, tab) {
 	          if(tab.xtype == "dgev-westfavorst"){
 	        	  
