@@ -69,23 +69,14 @@ div {
 }
 */
 
-
-
-
-
-
-
-
-
-
 /* westcontainer collapse css */
-#westcontainer_header-innerCt {
+#west_header-innerCt {
 	position: absolute;
 	top: 40%;
 	background: url("./resources/images/button/btn_arrow_close.png") no-repeat;
 }
 
-#westcontainer_header-targetEl div {
+#west_header-targetEl div {
 	margin-top: 10px;
 	left: -10px;
 	width: 20px;

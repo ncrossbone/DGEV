@@ -19,7 +19,7 @@
 var member_id='TEST';
 </script>
 <script type="text/javascript" src="resources/js/jquery-1.7.2.js"></script>
-<script type="text/javascript" src="http://apis.daum.net/maps/maps3.js?apikey=e7428cdca81e44e54d7b8d4c43c9ac87&libraries=services"></script>
+<script type="text/javascript" src="http://apis.daum.net/maps/maps3.js?apikey=86910e6115e657699a03277d171f9a91&libraries=services"></script>
 <!-- <script type="text/javascript" src="http://apis.daum.net/maps/maps3.js?apikey=86910e6115e657699a03277d171f9a91&libraries=services"></script> -->
 <!-- <script type="text/javascript" src="http://apis.daum.net/maps/maps3.js?apikey=09ead6971c6abd2f79c1c39ffa48b3c7&libraries=services"></script> -->
 <script type="text/javascript" src="ext-6.2.0/build/ext-all.js"></script>

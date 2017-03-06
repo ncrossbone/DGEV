@@ -122,7 +122,6 @@ Ext.define("DgEv.view.west.WestStSearch", {
 				fieldLabel: 'text',
 				handler:function(obj,checked){
 					var carStore = Ext.ComponentQuery.query("#carStore")[0];
-
 					if(checked==true){
 						carStore.setDisabled(false);
 					}else{
@@ -142,7 +141,6 @@ Ext.define("DgEv.view.west.WestStSearch", {
 				fieldLabel: 'text',
 				handler:function(obj,checked){
 					var chargStore = Ext.ComponentQuery.query("#chargStore")[0];
-
 					if(checked==true){
 						chargStore.setDisabled(false);
 					}else{

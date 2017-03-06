@@ -50,7 +50,6 @@ sidoZoom = function(val){
         filter: ol.format.filter.like('ADM_CD',val+'*')
     });
 	
-	
 	$.ajax({
         url : _proxyUrl + _serviceUrl + "tmdl/wfs?",
         type : 'POST',
@@ -171,7 +170,8 @@ sggZoom = function(sggCd){
 }
 
 getDemo = function(){
-	
+
+	alert("1");
 	var params = "EV/wfs?service=wfs&version=1.1.0";
 	params += "&request=getfeature";
 	params += "&typename=EV:EV_point";
