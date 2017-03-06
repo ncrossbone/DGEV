@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
-<%-- <%@page import="egovframework.cms.member.MemberVo"%> --%>
+<%@page import="egovframework.cms.member.MemberVo"%>
 <%
 	request.setCharacterEncoding("UTF-8");
 	response.setCharacterEncoding("UTF-8");
@@ -10,12 +10,11 @@
 	
 %>
 <%
-	String member_id="test1";
-	/* MemberVo memberVo = (MemberVo)request.getSession().getAttribute("userVO");
+	MemberVo memberVo = (MemberVo)request.getSession().getAttribute("userVO");
 	String member_id="";	
 	if(memberVo!=null){
 		member_id=memberVo.getMember_id();
-	} */
+	}
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -34,9 +33,10 @@ section { min-height: auto !important; }
 
 </style>
 <script src="../../../resources/js/jquery-1.7.2.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui2.js"></script>
 <script type="text/javascript" src="../../../resources/jsp/windowpop/ui2.js"></script>
 <script type="text/javascript" src="../../../resources/jsp/windowpop/jquery-impromptu.js"></script>
-<script type="text/javascript" src="../../../ext-6.2.0/build/ext-all.js"></script>
+<script type="text/javascript" src="../../../../monitor/ext-6.2.0/build/ext-all.js"></script>
 
 
 <script>
@@ -247,7 +247,12 @@ function setCard(stat_id,order,date,time,type,usetime,chargerList){
 	
 	var mem = member_id;
 	if(mem == '' || mem == null){
-		alert("로그인 후에 사용 하실 수 있습니다.");
+		
+		var con = confirm("로그인 후에 사용 하실 수 있습니다. 로그인 페이지로 이동 하시겠습니까?");
+		if (con) {
+			window.location.href = "/portal/login/?pMENUMST_ID=21565";
+		}
+		
 		return;
 	}
 	
@@ -308,9 +313,11 @@ function setCard(stat_id,order,date,time,type,usetime,chargerList){
 
 function setCard2(stat_id,order,date,time,type,usetime,chargerList){
 	 var mem = member_id;
-	 console.info(mem);
 		if(mem == '' || mem == null){
-			alert("로그인 후에 사용 하실 수 있습니다.");
+			var con = confirm("로그인 후에 사용 하실 수 있습니다. 로그인 페이지로 이동 하시겠습니까?");
+			if (con) {
+				window.location.href = "/portal/login/?pMENUMST_ID=21565";
+			}
 			return;
 		}
 	$.ajax({
@@ -602,16 +609,25 @@ function change1(value,a,b){
 	
 }
 	
-	
+
 function getCmntList(){
 	var stat_id=<%=stationId%>;
+	var busiCd='<%=busiCd%>';
+	console.info(busiCd);
+	if(busiCd == "Y"){
+		busiCd = "DE";
+	}else{
+		busiCd = "N";
+	}
+	
 	var memberId = member_id;
 	$.ajax({
 		async: false,
 		type: 'POST',
 		url : '../../../resources/jsp/stationCmnt.jsp',
 		data : {
-			STAT_ID:stat_id
+			STAT_ID:stat_id,
+			BUSI_CD: busiCd
 		},
 		dataType : 'json',
 		success:function(data){
@@ -772,11 +788,11 @@ function setCmnt(){
 			var con = confirm("로그인 후에 사용 하실 수 있습니다. 로그인 페이지로 이동 하시겠습니까?");
 			if (con) {
 				window.close();
-				opener.location.href = "/mobile/login";
+				opener.location.href = "/portal/login/?pMENUMST_ID=21565";
 			}
 		return;
 	}
-
+	 
 	var charger_id=$('#tool_charger option:selected').val();
 	if(charger_id == "1"){
 		charger_id = "01";
@@ -844,7 +860,7 @@ function delCmnt(CMNT_ID,STAT_ID){
 			var con = confirm("로그인 후에 사용 하실 수 있습니다. 로그인 페이지로 이동 하시겠습니까?");
 			if (con) {
 				window.close();
-				opener.location.href = "/mobile/login";
+				opener.location.href = "/portal/login/?pMENUMST_ID=21565";
 			}
 		return;
 	}
@@ -963,10 +979,16 @@ reLoadFavList = function(){
 
 
 addBookMark = function(stationId,name,busiCd){
-	if(member_id==''){
-		alert('로그인후 사용가능합니다.');
-		return;
-	}
+	
+	var mem = member_id;
+	if(mem == '' || mem == null || mem == 'undefined'){
+		var con = confirm("로그인 후에 사용 하실 수 있습니다. 로그인 페이지로 이동 하시겠습니까?");
+		if (con) {
+			window.close();
+			opener.location.href = "/portal/login/?pMENUMST_ID=21565";
+		}
+	return;
+}
 	var stationId = <%=stationId%>;
 	
 	var titleInfo = document.getElementById('sub_tits');

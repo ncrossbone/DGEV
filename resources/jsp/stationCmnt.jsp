@@ -6,9 +6,10 @@
 try{
 	
 	String stationId = request.getParameter("STAT_ID");
+	String busiCd = request.getParameter("BUSI_CD");
 	
 	
-	sql = " select * from EVCS_STATION_CMNT WHERE STAT_ID = '"+stationId+"'  ORDER BY INS_DT DESC";
+	sql = " select * from EVCS_STATION_CMNT WHERE STAT_ID = '"+stationId+"' AND BUSI_KIND_CD = '"+busiCd+"'  ORDER BY INS_DT DESC";
 	
 		
    stmt = con.createStatement();   
